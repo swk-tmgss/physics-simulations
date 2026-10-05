@@ -1,0 +1,902 @@
+<!DOCTYPE html><html lang="en"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Motion Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE'
+                    }
+                }
+            }
+        }
+    </script>
+<script src="https://puc.poecdn.net/authenticated_preview_page/syncedState.bd4eeeb8e8e02052ee92.js"></script></head>
+<body class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-primary mb-2">Wave Motion Simulator</h1>
+            <p class="text-gray-600 dark:text-gray-400">Interactive simulation of transverse and longitudinal waves</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Wave Parameters</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Amplitude (A)</label>
+                    <input type="range" id="amplitude" min="10" max="80" value="40" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span id="amplitudeValue">40</span> units
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Wavelength (λ)</label>
+                    <input type="range" id="wavelength" min="100" max="400" value="200" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span id="wavelengthValue">200</span> px
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Frequency (f)</label>
+                    <input type="range" id="frequency" min="0.5" max="3" step="0.1" value="1" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span id="frequencyValue">1.0</span> Hz
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Animation Speed</label>
+                    <input type="range" id="animationSpeed" min="0.1" max="2" step="0.1" value="0.1" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span id="speedValue">0.1</span>x speed
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Display Options -->
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+                <h3 class="text-lg font-medium mb-3">Display Options</h3>
+                <div class="flex flex-wrap gap-4 mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="showLabels" class="mr-2">
+                        <span class="text-sm">Phase Labels</span>
+                    </label>
+                </div>
+            </div>
+            
+
+            
+            <div class="flex flex-wrap gap-4 mt-6">
+                <button id="playPause" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                    Pause
+                </button>
+                <button id="reset" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                    Reset
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Wave Simulations -->
+        <div class="space-y-8">
+            <!-- Transverse Wave -->
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">Transverse Wave</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Particles oscillate perpendicular to the direction of wave propagation
+                </p>
+                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                    <canvas id="transverseCanvas" class="block w-full bg-white dark:bg-gray-900"></canvas>
+                </div>
+            </div>
+
+            <!-- Longitudinal Wave -->
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">Longitudinal Wave</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Particles oscillate parallel to the direction of wave propagation
+                </p>
+                <div class="border-2 border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                    <canvas id="longitudinalCanvas" class="block w-full bg-white dark:bg-gray-900"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Particle Details Panel -->
+        <div id="particleDetails" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mt-6 hidden">
+            <h3 class="text-lg font-semibold mb-4">Selected Particle Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div>
+                    <span class="font-medium">Position:</span>
+                    <div id="particlePosition" class="text-primary">Click a particle</div>
+                </div>
+                <div>
+                    <span class="font-medium">Velocity:</span>
+                    <div id="particleVelocity" class="text-primary">-</div>
+                </div>
+                <div>
+                    <span class="font-medium">Acceleration:</span>
+                    <div id="particleAcceleration" class="text-primary">-</div>
+                </div>
+                <div>
+                    <span class="font-medium">Phase:</span>
+                    <div id="particlePhase" class="text-primary">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phase Relationship Legend -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mt-6">
+            <h3 class="text-lg font-semibold mb-4">Phase Relationship Legend</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-yellow-400 mr-2"></div>
+                    <span>Reference Particle</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+                    <span>In Phase (0°, 360°)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
+                    <span>Antiphase (180°)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 rounded-full bg-red-400 dark:bg-red-300 mr-2"></div>
+                    <span>Other Particles</span>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400 mt-3">
+                Particles that oscillate together (in phase) are shown in green. Particles that oscillate opposite to the reference (antiphase) are shown in blue.
+            </p>
+        </div>
+
+        <!-- Wave Information -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mt-6">
+            <h3 class="text-lg font-semibold mb-4">Wave Properties</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <span class="font-medium">Wave Number (k):</span>
+                    <span id="waveNumber" class="ml-2">0.031</span> rad/px
+                </div>
+                <div>
+                    <span class="font-medium">Angular Frequency (ω):</span>
+                    <span id="angularFreq" class="ml-2">6.28</span> rad/s
+                </div>
+                <div>
+                    <span class="font-medium">Period (T):</span>
+                    <span id="period" class="ml-2">1.0</span> s
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        class WaveSimulator {
+            constructor() {
+                this.transverseCanvas = document.getElementById('transverseCanvas');
+                this.longitudinalCanvas = document.getElementById('longitudinalCanvas');
+                this.transverseCtx = this.transverseCanvas.getContext('2d');
+                this.longitudinalCtx = this.longitudinalCanvas.getContext('2d');
+                
+                this.amplitude = 40;
+                this.wavelength = 200;
+                this.frequency = 1;
+                this.time = 0;
+                this.isPlaying = true;
+                this.animationSpeed = 0.1;
+                
+                // Display options
+                this.showLabels = false;
+                
+                // Label customization properties
+                this.labelBgColor = '#ffffff';
+                this.labelTextColor = '#000000';
+                this.labelBorderColor = '#333333';
+                this.labelOpacity = 0.9;
+                this.labelFontSize = 10;
+                this.labelFontFamily = 'sans-serif';
+                this.labelFontStyle = 'bold';
+                
+                // Particle tracking data
+                this.selectedParticle = null;
+                this.particleTrails = new Map();
+                this.maxTrailLength = 50;
+                
+                // Phase relationship tracking
+                this.referenceParticleIndex = 5; // Reference particle for phase comparison
+                
+                this.setupCanvases();
+                this.setupControls();
+                this.setupInteractivity();
+                this.animate();
+            }
+            
+            setupInteractivity() {
+                // Add click listeners to both canvases
+                this.transverseCanvas.addEventListener('click', (e) => {
+                    this.handleCanvasClick(e, 'transverse');
+                });
+                
+                this.longitudinalCanvas.addEventListener('click', (e) => {
+                    this.handleCanvasClick(e, 'longitudinal');
+                });
+            }
+            
+            handleCanvasClick(event, waveType) {
+                const canvas = waveType === 'transverse' ? this.transverseCanvas : this.longitudinalCanvas;
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                
+                // Find nearest particle - updated for new spacing
+                const particleSpacing = waveType === 'transverse' ? 10 : 15;
+                const nearestParticleIndex = Math.round(x / particleSpacing);
+                const particleX = nearestParticleIndex * particleSpacing;
+                
+                // Check if click is near a particle (within 15px)
+                if (Math.abs(x - particleX) < 15) {
+                    this.selectedParticle = {
+                        index: nearestParticleIndex,
+                        x: particleX,
+                        type: waveType
+                    };
+                    document.getElementById('particleDetails').classList.remove('hidden');
+                }
+            }
+            
+            calculateParticleProperties(particleX, waveType) {
+                const k = 2 * Math.PI / this.wavelength;
+                const omega = 2 * Math.PI * this.frequency;
+                const phaseShift = omega * this.time;
+                const phase = k * particleX - phaseShift;
+                
+                if (waveType === 'transverse') {
+                    const centerY = this.transverseCanvas.height / 2;
+                    const displacement = this.amplitude * Math.sin(phase);
+                    const velocity = -this.amplitude * omega * Math.cos(phase);
+                    const acceleration = -this.amplitude * omega * omega * Math.sin(phase);
+                    
+                    return {
+                        position: { x: particleX, y: centerY + displacement },
+                        displacement: displacement,
+                        velocity: velocity,
+                        acceleration: acceleration,
+                        phase: phase
+                    };
+                } else {
+                    const displacement = this.amplitude * 0.5 * Math.sin(phase);
+                    const velocity = -this.amplitude * 0.5 * omega * Math.cos(phase);
+                    const acceleration = -this.amplitude * 0.5 * omega * omega * Math.sin(phase);
+                    
+                    return {
+                        position: { x: particleX + displacement, y: this.longitudinalCanvas.height / 2 },
+                        displacement: displacement,
+                        velocity: velocity,
+                        acceleration: acceleration,
+                        phase: phase
+                    };
+                }
+            }
+            
+            updateSelectedParticleInfo() {
+                if (!this.selectedParticle) return;
+                
+                const props = this.calculateParticleProperties(this.selectedParticle.x, this.selectedParticle.type);
+                
+                document.getElementById('particlePosition').textContent = 
+                    `(${props.position.x.toFixed(1)}, ${props.position.y.toFixed(1)})`;
+                
+                document.getElementById('particleVelocity').textContent = 
+                    `${props.velocity.toFixed(2)} px/s`;
+                
+                document.getElementById('particleAcceleration').textContent = 
+                    `${props.acceleration.toFixed(2)} px/s²`;
+                
+                document.getElementById('particlePhase').textContent = 
+                    `${(props.phase % (2 * Math.PI)).toFixed(2)} rad`;
+            }
+            
+            addToTrail(particleIndex, position, waveType) {
+                const key = `${waveType}-${particleIndex}`;
+                if (!this.particleTrails.has(key)) {
+                    this.particleTrails.set(key, []);
+                }
+                
+                const trail = this.particleTrails.get(key);
+                trail.push({ ...position });
+                
+                // Limit trail length
+                if (trail.length > this.maxTrailLength) {
+                    trail.shift();
+                }
+            }
+            
+            drawVelocityVector(ctx, x, y, velocity, waveType, color) {
+                if (!this.showVectors) return;
+                
+                const scale = 0.5; // Scale factor for vector display
+                let vx, vy;
+                
+                if (waveType === 'transverse') {
+                    vx = 0;
+                    vy = velocity * scale;
+                } else {
+                    vx = velocity * scale;
+                    vy = 0;
+                }
+                
+                // Draw velocity vector
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + vx, y + vy);
+                ctx.stroke();
+                
+                // Draw arrowhead
+                const angle = Math.atan2(vy, vx);
+                const arrowLength = 5;
+                ctx.beginPath();
+                ctx.moveTo(x + vx, y + vy);
+                ctx.lineTo(x + vx - arrowLength * Math.cos(angle - 0.3), y + vy - arrowLength * Math.sin(angle - 0.3));
+                ctx.moveTo(x + vx, y + vy);
+                ctx.lineTo(x + vx - arrowLength * Math.cos(angle + 0.3), y + vy - arrowLength * Math.sin(angle + 0.3));
+                ctx.stroke();
+            }
+            
+            drawAccelerationVector(ctx, x, y, acceleration, waveType, color) {
+                if (!this.showAcceleration) return;
+                
+                const scale = 0.01; // Different scale for acceleration
+                let ax, ay;
+                
+                if (waveType === 'transverse') {
+                    ax = 0;
+                    ay = acceleration * scale;
+                } else {
+                    ax = acceleration * scale;
+                    ay = 0;
+                }
+                
+                // Draw acceleration vector (dashed)
+                ctx.setLineDash([3, 3]);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + ax, y + ay);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            drawTrail(ctx, particleIndex, waveType) {
+                if (!this.showTrails) return;
+                
+                const key = `${waveType}-${particleIndex}`;
+                const trail = this.particleTrails.get(key);
+                
+                if (!trail || trail.length < 2) return;
+                
+                ctx.strokeStyle = 'rgba(255, 165, 0, 0.6)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                
+                trail.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point.x, point.y);
+                    } else {
+                        ctx.lineTo(point.x, point.y);
+                    }
+                });
+                
+                ctx.stroke();
+            }
+            
+            drawPhaseIndicator(ctx, x, y, phase, radius = 15) {
+                if (!this.showPhase) return;
+                
+                const isDark = document.documentElement.classList.contains('dark');
+                const phaseColor = isDark ? '#A78BFA' : '#8B5CF6';
+                
+                // Draw phase circle
+                ctx.strokeStyle = phaseColor;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(x, y - 25, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                // Draw phase indicator line
+                const phaseX = x + radius * Math.cos(phase);
+                const phaseY = y - 25 + radius * Math.sin(phase);
+                
+                ctx.beginPath();
+                ctx.moveTo(x, y - 25);
+                ctx.lineTo(phaseX, phaseY);
+                ctx.stroke();
+                
+                // Draw phase dot
+                ctx.fillStyle = phaseColor;
+                ctx.beginPath();
+                ctx.arc(phaseX, phaseY, 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            getPhaseRelationshipColor(particleIndex, waveType) {
+                // Calculate phase difference relative to reference particle
+                const k = 2 * Math.PI / this.wavelength;
+                const particleSpacing = waveType === 'transverse' ? 10 : 15; // Updated to match actual particle spacing
+                
+                const referenceX = this.referenceParticleIndex * particleSpacing;
+                const particleX = particleIndex * particleSpacing;
+                
+                const phaseDiff = Math.abs(k * (particleX - referenceX));
+                const normalizedPhaseDiff = phaseDiff % (2 * Math.PI);
+                
+                // Check for in-phase relationship (phase difference ≈ 0 or 2π)
+                if (normalizedPhaseDiff < 0.3 || normalizedPhaseDiff > (2 * Math.PI - 0.3)) {
+                    return '#00FF00'; // Bright green for in-phase
+                }
+                
+                // Check for antiphase relationship (phase difference ≈ π)
+                if (Math.abs(normalizedPhaseDiff - Math.PI) < 0.3) {
+                    return '#0080FF'; // Bright blue for antiphase
+                }
+                
+                // Reference particle
+                if (particleIndex === this.referenceParticleIndex) {
+                    return '#FFD700'; // Gold for reference particle
+                }
+                
+                // Default particle color
+                return null; // Use default color
+            }
+            
+            getPhaseRelationshipLabel(particleIndex, waveType) {
+                // Calculate phase difference relative to reference particle
+                const k = 2 * Math.PI / this.wavelength;
+                const particleSpacing = waveType === 'transverse' ? 10 : 15;
+                
+                const referenceX = this.referenceParticleIndex * particleSpacing;
+                const particleX = particleIndex * particleSpacing;
+                
+                const phaseDiff = Math.abs(k * (particleX - referenceX));
+                const normalizedPhaseDiff = phaseDiff % (2 * Math.PI);
+                const phaseDiffDegrees = (normalizedPhaseDiff * 180 / Math.PI).toFixed(0);
+                
+                // Reference particle
+                if (particleIndex === this.referenceParticleIndex) {
+                    return { text: 'REF', subtext: '0°' };
+                }
+                
+                // Check for in-phase relationship (phase difference ≈ 0 or 2π)
+                if (normalizedPhaseDiff < 0.3 || normalizedPhaseDiff > (2 * Math.PI - 0.3)) {
+                    return { text: 'IN-PHASE', subtext: '0°' };
+                }
+                
+                // Check for antiphase relationship (phase difference ≈ π)
+                if (Math.abs(normalizedPhaseDiff - Math.PI) < 0.3) {
+                    return { text: 'ANTIPHASE', subtext: '180°' };
+                }
+                
+                return null; // No label for other particles
+            }
+            
+            drawParticleLabel(ctx, x, y, label, waveType) {
+                if (!label || !this.showLabels) return;
+                
+                // Use customizable colors and properties
+                const textColor = this.labelTextColor;
+                const borderColor = this.labelBorderColor;
+                const bgColor = this.labelBgColor;
+                const opacity = this.labelOpacity;
+                
+                // Convert hex to rgba for background
+                const hexToRgba = (hex, alpha) => {
+                    const r = parseInt(hex.slice(1, 3), 16);
+                    const g = parseInt(hex.slice(3, 5), 16);
+                    const b = parseInt(hex.slice(5, 7), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                };
+                
+                // Set font properties using customizable settings
+                const mainFontSize = this.labelFontSize;
+                const subFontSize = Math.max(6, this.labelFontSize - 2);
+                ctx.font = `${this.labelFontStyle} ${mainFontSize}px ${this.labelFontFamily}`;
+                ctx.textAlign = 'center';
+                
+                // Calculate label position (above particle for transverse, below for longitudinal)
+                const labelY = waveType === 'transverse' ? y - 15 : y + 20;
+                
+                // Measure text to create background
+                const mainTextWidth = ctx.measureText(label.text).width;
+                ctx.font = `${this.labelFontStyle} ${subFontSize}px ${this.labelFontFamily}`;
+                const subTextWidth = ctx.measureText(label.subtext).width;
+                const maxWidth = Math.max(mainTextWidth, subTextWidth);
+                
+                const padding = 3;
+                const boxHeight = mainFontSize + subFontSize + 4;
+                
+                // Draw background rectangle with custom color and opacity
+                ctx.fillStyle = hexToRgba(bgColor, opacity);
+                ctx.fillRect(x - maxWidth/2 - padding, labelY - 10, maxWidth + (padding * 2), boxHeight);
+                
+                // Draw border with custom color
+                ctx.strokeStyle = borderColor;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x - maxWidth/2 - padding, labelY - 10, maxWidth + (padding * 2), boxHeight);
+                
+                // Draw main label text
+                ctx.fillStyle = textColor;
+                ctx.font = `${this.labelFontStyle} ${mainFontSize}px ${this.labelFontFamily}`;
+                ctx.fillText(label.text, x, labelY - 2);
+                
+                // Draw subtext
+                ctx.font = `${this.labelFontStyle} ${subFontSize}px ${this.labelFontFamily}`;
+                ctx.fillText(label.subtext, x, labelY + mainFontSize + 2);
+            }
+            
+            setupCanvases() {
+                const setCanvasSize = (canvas) => {
+                    const rect = canvas.getBoundingClientRect();
+                    canvas.width = rect.width;
+                    canvas.height = 300;
+                };
+                
+                setCanvasSize(this.transverseCanvas);
+                setCanvasSize(this.longitudinalCanvas);
+                
+                window.addEventListener('resize', () => {
+                    setCanvasSize(this.transverseCanvas);
+                    setCanvasSize(this.longitudinalCanvas);
+                });
+            }
+            
+            setupControls() {
+                const controls = {
+                    amplitude: document.getElementById('amplitude'),
+                    wavelength: document.getElementById('wavelength'),
+                    frequency: document.getElementById('frequency'),
+                    animationSpeed: document.getElementById('animationSpeed')
+                };
+                
+                const values = {
+                    amplitude: document.getElementById('amplitudeValue'),
+                    wavelength: document.getElementById('wavelengthValue'),
+                    frequency: document.getElementById('frequencyValue'),
+                    animationSpeed: document.getElementById('speedValue')
+                };
+                
+                Object.keys(controls).forEach(key => {
+                    controls[key].addEventListener('input', (e) => {
+                        this[key] = parseFloat(e.target.value);
+                        if (key === 'frequency' || key === 'animationSpeed') {
+                            values[key].textContent = this[key].toFixed(1);
+                        } else {
+                            values[key].textContent = this[key];
+                        }
+                        this.updateWaveInfo();
+                    });
+                });
+                
+                document.getElementById('playPause').addEventListener('click', (e) => {
+                    this.isPlaying = !this.isPlaying;
+                    e.target.textContent = this.isPlaying ? 'Pause' : 'Play';
+                });
+                
+                document.getElementById('reset').addEventListener('click', () => {
+                    this.time = 0;
+                });
+                
+                // Display option controls
+                document.getElementById('showLabels').addEventListener('change', (e) => {
+                    this.showLabels = e.target.checked;
+                });
+                
+                this.updateWaveInfo();
+            }
+            
+            resetLabelStyles() {
+                this.labelBgColor = '#ffffff';
+                this.labelTextColor = '#000000';
+                this.labelBorderColor = '#333333';
+                this.labelOpacity = 0.9;
+                this.labelFontSize = 10;
+                this.labelFontFamily = 'sans-serif';
+                this.labelFontStyle = 'bold';
+                this.updateLabelControls();
+            }
+            
+            applyModernPreset() {
+                this.labelBgColor = '#1f2937';
+                this.labelTextColor = '#f9fafb';
+                this.labelBorderColor = '#6366f1';
+                this.labelOpacity = 0.8;
+                this.labelFontSize = 11;
+                this.labelFontFamily = 'Arial';
+                this.labelFontStyle = 'bold';
+                this.updateLabelControls();
+            }
+            
+            applyClassicPreset() {
+                this.labelBgColor = '#fef3c7';
+                this.labelTextColor = '#92400e';
+                this.labelBorderColor = '#d97706';
+                this.labelOpacity = 0.95;
+                this.labelFontSize = 12;
+                this.labelFontFamily = 'serif';
+                this.labelFontStyle = 'bold italic';
+                this.updateLabelControls();
+            }
+            
+            updateLabelControls() {
+                document.getElementById('labelBgColor').value = this.labelBgColor;
+                document.getElementById('labelTextColor').value = this.labelTextColor;
+                document.getElementById('labelBorderColor').value = this.labelBorderColor;
+                document.getElementById('labelOpacity').value = this.labelOpacity;
+                document.getElementById('opacityValue').textContent = Math.round(this.labelOpacity * 100);
+                document.getElementById('labelFontSize').value = this.labelFontSize;
+                document.getElementById('fontSizeValue').textContent = this.labelFontSize;
+                document.getElementById('labelFontFamily').value = this.labelFontFamily;
+                document.getElementById('labelFontStyle').value = this.labelFontStyle;
+            }
+            
+            updateWaveInfo() {
+                const k = 2 * Math.PI / this.wavelength;
+                const omega = 2 * Math.PI * this.frequency;
+                const period = 1 / this.frequency;
+                
+                document.getElementById('waveNumber').textContent = k.toFixed(4);
+                document.getElementById('angularFreq').textContent = omega.toFixed(2);
+                document.getElementById('period').textContent = period.toFixed(1);
+            }
+            
+            drawTransverseWave() {
+                const canvas = this.transverseCanvas;
+                const ctx = this.transverseCtx;
+                const width = canvas.width;
+                const height = canvas.height;
+                const centerY = height / 2;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                // Set colors based on dark mode
+                const isDark = document.documentElement.classList.contains('dark');
+                const waveColor = isDark ? '#60A5FA' : '#3B82F6';
+                const particleColor = isDark ? '#F87171' : '#EF4444';
+                const gridColor = isDark ? '#374151' : '#E5E7EB';
+                
+                // Draw grid
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 2]);
+                
+                // Horizontal center line
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(width, centerY);
+                ctx.stroke();
+                
+                // Reset line dash
+                ctx.setLineDash([]);
+                
+                // Calculate wave parameters
+                const k = 2 * Math.PI / this.wavelength;
+                const omega = 2 * Math.PI * this.frequency;
+                const phaseShift = omega * this.time;
+                
+                // Draw wave
+                ctx.strokeStyle = waveColor;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                for (let x = 0; x < width; x += 2) {
+                    const y = centerY + this.amplitude * Math.sin(k * x - phaseShift);
+                    if (x === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                
+                // Draw particles with enhanced tracking - MORE PARTICLES
+                const particleSpacing = 10; // Doubled particle density
+                
+                for (let i = 0; i < width / particleSpacing; i++) {
+                    const x = i * particleSpacing;
+                    const equilibriumY = centerY;
+                    const currentY = centerY + this.amplitude * Math.sin(k * x - phaseShift);
+                    const phase = k * x - phaseShift;
+                    const velocity = -this.amplitude * omega * Math.cos(phase);
+                    const acceleration = -this.amplitude * omega * omega * Math.sin(phase);
+                    
+
+                    
+                    // Draw equilibrium position (small gray dot)
+                    ctx.fillStyle = gridColor;
+                    ctx.beginPath();
+                    ctx.arc(x, equilibriumY, 2, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    // Highlight selected particle
+                    if (this.selectedParticle && this.selectedParticle.type === 'transverse' && 
+                        this.selectedParticle.index === i) {
+                        ctx.strokeStyle = '#FFD700';
+                        ctx.lineWidth = 3;
+                        ctx.beginPath();
+                        ctx.arc(x, currentY, 6, 0, 2 * Math.PI);
+                        ctx.stroke();
+                    }
+                    
+                    // Draw current particle position with phase relationship coloring
+                    const phaseColor = this.getPhaseRelationshipColor(i, 'transverse');
+                    ctx.fillStyle = phaseColor || particleColor;
+                    ctx.beginPath();
+                    ctx.arc(x, currentY, 4, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    // Draw motion line
+                    ctx.strokeStyle = particleColor;
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([1, 1]);
+                    ctx.beginPath();
+                    ctx.moveTo(x, equilibriumY);
+                    ctx.lineTo(x, currentY);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    
+
+                    
+                    // Draw particle label
+                    const label = this.getPhaseRelationshipLabel(i, 'transverse');
+                    this.drawParticleLabel(ctx, x, currentY, label, 'transverse');
+                }
+            }
+            
+            drawLongitudinalWave() {
+                const canvas = this.longitudinalCanvas;
+                const ctx = this.longitudinalCtx;
+                const width = canvas.width;
+                const height = canvas.height;
+                const centerY = height / 2;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                // Set colors based on dark mode
+                const isDark = document.documentElement.classList.contains('dark');
+                const particleColor = isDark ? '#F87171' : '#EF4444';
+                const gridColor = isDark ? '#374151' : '#E5E7EB';
+                const densityColor = isDark ? '#60A5FA' : '#3B82F6';
+                
+                // Calculate wave parameters
+                const k = 2 * Math.PI / this.wavelength;
+                const omega = 2 * Math.PI * this.frequency;
+                const phaseShift = omega * this.time;
+                
+                // Draw compression/rarefaction visualization
+                ctx.fillStyle = densityColor;
+                const compressionAlpha = 0.3;
+                
+                for (let x = 0; x < width; x += 5) {
+                    const displacement = this.amplitude * Math.sin(k * x - phaseShift);
+                    const density = Math.abs(displacement) / this.amplitude;
+                    
+                    ctx.globalAlpha = density * compressionAlpha;
+                    ctx.fillRect(x, centerY - 50, 5, 100);
+                }
+                
+                ctx.globalAlpha = 1;
+                
+                // Draw center line
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(width, centerY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Draw particles with enhanced tracking - OPTIMIZED DENSITY
+                const particleSpacing = 15; // Reduced particle density for better observation
+                
+                for (let i = 0; i < width / particleSpacing; i++) {
+                    const equilibriumX = i * particleSpacing;
+                    const displacement = this.amplitude * 0.5 * Math.sin(k * equilibriumX - phaseShift);
+                    const currentX = equilibriumX + displacement;
+                    const phase = k * equilibriumX - phaseShift;
+                    const velocity = -this.amplitude * 0.5 * omega * Math.cos(phase);
+                    const acceleration = -this.amplitude * 0.5 * omega * omega * Math.sin(phase);
+                    
+                    // Ensure particles stay within canvas bounds
+                    if (currentX >= 0 && currentX < width) {
+
+                        
+                        // Draw equilibrium position (small gray dot)
+                        ctx.fillStyle = gridColor;
+                        ctx.beginPath();
+                        ctx.arc(equilibriumX, centerY, 2, 0, 2 * Math.PI);
+                        ctx.fill();
+                        
+                        // Highlight selected particle
+                        if (this.selectedParticle && this.selectedParticle.type === 'longitudinal' && 
+                            this.selectedParticle.index === i) {
+                            ctx.strokeStyle = '#FFD700';
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            ctx.arc(currentX, centerY, 6, 0, 2 * Math.PI);
+                            ctx.stroke();
+                        }
+                        
+                        // Draw current particle position with phase relationship coloring
+                        const phaseColor = this.getPhaseRelationshipColor(i, 'longitudinal');
+                        ctx.fillStyle = phaseColor || particleColor;
+                        ctx.beginPath();
+                        ctx.arc(currentX, centerY, 4, 0, 2 * Math.PI);
+                        ctx.fill();
+                        
+                        // Draw motion line
+                        ctx.strokeStyle = particleColor;
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([1, 1]);
+                        ctx.beginPath();
+                        ctx.moveTo(equilibriumX, centerY - 10);
+                        ctx.lineTo(currentX, centerY - 10);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                        
+
+                        
+                        // Draw particle label
+                        const label = this.getPhaseRelationshipLabel(i, 'longitudinal');
+                        this.drawParticleLabel(ctx, currentX, centerY, label, 'longitudinal');
+                    }
+                }
+                
+                // Draw direction arrow
+                ctx.fillStyle = isDark ? '#9CA3AF' : '#6B7280';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('Wave Direction →', 20, 30);
+            }
+            
+            animate() {
+                if (this.isPlaying) {
+                    this.time += 0.016 * this.animationSpeed; // ~60fps with speed control
+                }
+                
+                this.drawTransverseWave();
+                this.drawLongitudinalWave();
+                this.updateSelectedParticleInfo();
+                
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize the simulator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new WaveSimulator();
+        });
+    </script>
+
+
+</body></html>
