@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Formation of a longitudinal wave</title>
+<style>
+:root{color-scheme:light;--ink:#18333f;--muted:#526a73;--teal:#007a79;--line:#d9e4e4;--paper:#f2f6f5;--a:#ba413d;--b:#7a4db1;--c:#086eaa}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1510px;margin:auto;padding:28px 30px}header{margin-bottom:23px}.eyebrow{font-size:12px;letter-spacing:.15em;font-weight:750;text-transform:uppercase;color:var(--teal);margin:0 0 7px}h1{font-size:clamp(27px,3.1vw,40px);line-height:1.16;letter-spacing:-.035em;margin:0 0 9px}header p{margin:0;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 302px;gap:22px;align-items:start}.stage,.controls{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;min-width:0}.stage-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:17px 20px}.stage-head strong{font-size:14px}button{font:inherit;min-height:42px;padding:8px 12px;border:1px solid #c5d4d6;border-radius:8px;color:var(--ink);background:white;cursor:pointer}button:hover{background:#e9f2f2}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #287fbb;outline-offset:3px}button.primary{background:var(--ink);color:#fff}.primary{min-width:96px}.canvas-wrap{background:#f4faf9}canvas{display:block;width:100%;height:280px}.overview-caption{padding:0 20px 13px;margin:0;color:var(--muted);font-size:12px;background:#f4faf9}.zoom-head{border-top:1px solid var(--line);display:flex;align-items:baseline;flex-wrap:wrap;justify-content:space-between;gap:5px;padding:15px 20px 0}.zoom-head strong{font-size:14px}.zoom-head span{color:var(--muted);font-size:12px}#zoom{height:192px}.particle-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0 20px 15px}.particle-values div{border-left:3px solid var(--a);padding-left:10px;font-size:12px;color:var(--muted)}.particle-values div:nth-child(2){border-color:var(--b)}.particle-values div:nth-child(3){border-color:var(--c)}.particle-values strong{font-size:14px;color:var(--ink)}.particle-values output{display:block;font-variant-numeric:tabular-nums}.transport{border-top:1px solid var(--line);display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:15px 20px}.clock{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}.status{font-size:13px;color:var(--muted);margin:11px 3px 0;min-height:40px}.controls{padding:22px}h2{font-size:18px;margin:0 0 21px}.control{margin-bottom:23px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:650}.control output{color:var(--teal);font-variant-numeric:tabular-nums;white-space:nowrap}input[type=range]{accent-color:var(--teal);width:100%;height:25px;margin:10px 0 2px;cursor:pointer}.ends{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.hint{font-size:12px;color:var(--muted);margin:8px 0 0}.source-readout{border-top:1px solid var(--line);padding-top:13px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.source-readout p{margin:5px 0}.source-readout strong{color:var(--ink)}.legend{border-top:1px solid var(--line);padding:15px 0 0;margin-top:15px;display:grid;gap:9px;font-size:12px;color:var(--muted)}.legend span{display:flex;gap:9px;align-items:center}.key{width:20px;height:12px;background:#d6ebe6;border:1px solid #699d8c;display:inline-block}.key.rare{background:#e9e2f6;border-color:#a18ab6}.key.eq{width:20px;height:16px;background:transparent;border:0;border-left:2px dashed #829798;margin-left:9px;margin-right:-9px}.learning{display:grid;grid-template-columns:repeat(3,1fr);gap:23px;margin:23px 0}.learning article{border-top:2px solid #bccfce;padding-top:11px}.learning h3{font-size:14px;margin:0 0 5px}.learning p{font-size:13px;color:var(--muted);margin:0}details{border-top:1px solid var(--line);padding:14px 0;color:var(--muted);font-size:13px}summary{font-weight:650;color:var(--ink);cursor:pointer}details p{max-width:1050px}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:1050px){main{padding:23px 20px}.layout{grid-template-columns:minmax(0,1fr)}.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}.controls h2{grid-column:1/-1;margin-bottom:15px}.source-readout{grid-column:1/3}.legend{margin:0}.control{margin-bottom:15px}}
+@media(max-width:560px){main{padding:19px 12px}header p{font-size:14px}.stage-head{padding:14px;gap:9px}.overview-caption{padding:0 14px 13px}.zoom-head{padding:13px 14px 0}.particle-values{grid-template-columns:repeat(3,minmax(0,1fr));padding:0 14px 14px;gap:12px}.particle-values div{padding-left:7px;font-size:11px}.particle-values strong{font-size:12px}.transport{padding:12px;gap:7px}.transport button{font-size:13px;padding:8px 10px}.clock{width:100%;margin-left:0}.controls{display:block;padding:19px}.control{margin-bottom:23px}.legend{margin-top:15px}.learning{grid-template-columns:1fr;gap:16px}.status{min-height:0}#zoom{height:192px}}
+</style>
+</head>
+<body>
+<main>
+<header><p class="eyebrow">S5 Physics / Wave motion</p><h1>Formation of a longitudinal wave</h1><p>Follow the vibration from the source to its neighbours, then along the medium.</p></header>
+<div class="layout">
+<section aria-label="Longitudinal wave animation">
+<div class="stage">
+<div class="stage-head"><strong>THE WHOLE MEDIUM</strong></div>
+<div class="canvas-wrap"><canvas id="overview" role="img" aria-label="A source drives forty particles horizontally. Compressions and rarefactions travel right while each particle oscillates about its equilibrium position."></canvas></div>
+<p class="overview-caption">A, B and C are the same three particles enlarged below. The dashed marks stay fixed.</p>
+<div class="zoom-head"><strong>WATCH THREE NEIGHBOURS</strong><span>Enlarged view · same motion, same time</span></div>
+<canvas id="zoom" role="img" aria-label="Enlarged view of neighbouring particles A, B and C, their fixed equilibrium positions and their directions of motion."></canvas>
+<div class="particle-values"><div><strong>A · 20 cm</strong><output id="readA">0.00 cm · at rest</output></div><div><strong>B · 30 cm</strong><output id="readB">0.00 cm · at rest</output></div><div><strong>C · 40 cm</strong><output id="readC">0.00 cm · at rest</output></div></div>
+<div class="transport"><button class="primary" id="play">Start</button><button id="restart">Restart</button><button id="step">Step +0.02 s</button><span class="clock" id="clock">Simulation time: 0.00 s</span></div>
+</div>
+<p class="status" id="status" role="status">Ready. Press Start to send the first disturbance into the stationary medium.</p>
+</section>
+<aside class="controls" aria-label="Source and playback controls">
+<h2>Control the source</h2>
+<div class="control"><label for="amplitude">Amplitude <output id="amplitudeOut">4.0 cm</output></label><input id="amplitude" type="range" min="0" max="9.4" step="0.1" value="4"><div class="ends"><span>0 cm</span><span>9.4 cm</span></div><p class="hint">Maximum displacement from equilibrium. The source changes smoothly to this setting.</p></div>
+<div class="control"><label for="frequency">Frequency <output id="frequencyOut">1.00 Hz</output></label><input id="frequency" type="range" min="0.25" max="2" step="0.05" value="1"><div class="ends"><span>0.25 Hz</span><span>2.00 Hz</span></div><p class="hint">Vibrations per simulated second. Changes spread from the source to the right.</p></div>
+<div class="control"><label for="speed">Playback speed <output id="speedOut">0.25×</output></label><input id="speed" type="range" min="0.05" max="1" step="0.05" value="0.25"><div class="ends"><span>0.05× · slow</span><span>1× · normal</span></div><p class="hint" id="speedHint">4 seconds of viewing = 1 simulated second. Wave physics is unchanged.</p></div>
+<div class="source-readout"><p><strong>Source now:</strong> <span id="sourceNow">at rest</span></p><p><strong>Wave speed:</strong> 120 cm/s (fixed)</p><p><strong>Neighbour delay:</strong> 0.083 s</p><p>Readouts use simulated time. Rightward displacement is positive.</p></div>
+<div class="legend"><span><i class="key"></i>Compression: particles closer together</span><span><i class="key rare"></i>Rarefaction: particles farther apart</span><span><i class="key eq"></i>Fixed equilibrium position</span></div>
+</aside>
+</div>
+<section class="learning" aria-label="Things to explore"><article><h3>1 / Start the disturbance</h3><p>Start slowly. The vibrator moves first, then A, B and C. Each neighbour repeats the motion a little later.</p></article><article><h3>2 / Follow one particle</h3><p>Watch A against its dashed equilibrium mark. It moves back and forth; the compression travels onward.</p></article><article><h3>3 / Change the source</h3><p>Raise the frequency during playback. The new, more closely spaced pattern travels right while the earlier wave continues ahead.</p></article></section>
+<details><summary>About the model and how to use it</summary><p>This is an idealised, one-dimensional longitudinal travelling wave. The source drives a medium represented by 40 particles, with equilibrium positions 10 cm apart. The displacement at equilibrium position x is the source's earlier displacement at time t − x/v, where v = 120 cm/s. Particles beyond the arriving disturbance remain at rest. Interactions pass the disturbance and energy through the medium; particles oscillate locally.</p><p>The dots represent particles in an ideal travelling-wave model, rather than individual air molecules. The medium continues beyond the right edge, so there is no reflected wave. The 9.4 cm amplitude limit keeps particles in order throughout the frequency range, including during live adjustments. The displayed dimensions and low frequencies are chosen for teaching; this is not a prediction of the speed of sound in air.</p><p>Frequency changes preserve the source's phase. Amplitude approaches its target at no more than 20 cm/s, including at startup; this short transition avoids jumps and keeps particles in order. After a setting has settled and its disturbance has arrived, every particle has the source's amplitude and frequency. Then T = 1/f and λ = v/f. During a change, different parts of the medium can still contain different earlier settings.</p><p>Shading is calculated from the current separation of neighbours: smaller than 10 cm indicates compression; greater than 10 cm indicates rarefaction. Labels identify local spacing minima and maxima. Particle arrows show instantaneous motion, not displacement or force; arrow length is scaled for visibility. At a turning point the velocity is zero. The enlarged view uses the same horizontal scale for equilibrium spacing and displacement.</p><p>Start/Pause freezes or resumes all motion. Step pauses and advances by 0.02 simulated seconds. Restart clears the source history and returns to rest, retaining settings. When paused, amplitude and frequency changes take effect on the next step or resume. Changing playback speed does not restart the wave. Playback speed affects viewing time only. All controls can be operated with a keyboard. Open this HTML file directly in a browser; no internet connection is needed.</p></details>
+<footer>Textbook reference: DSEPHY_TE_3B07, printed pp. 155–158 · Figs. 7.1a–d · Longitudinal waves and motion of particles.</footer>
+</main>
+<script>
+'use strict';
+// Uniform simulated-time sampling keeps delays independent of rendering/playback.
+// A <= 9.4 cm ensures hypot(20, 2*pi*2*A) < 120 cm/s, even while
+// amplitude ramps. Thus |source velocity| < wave speed and particles stay ordered.
+class WaveModel {
+  constructor(){this.targetA=4;this.frequency=1;this.reset();}
+  reset(){this.tick=0;this.remainder=0;this.phase=0;this.amplitude=0;this.history=new Float64Array(4096);}
+  get time(){return this.tick/600;}
+  advance(seconds){
+    this.remainder+=seconds;
+    const steps=Math.floor((this.remainder+1e-10)*600);
+    this.remainder-=steps/600;
+    for(let n=0;n<steps;n++){
+      this.amplitude+=Math.max(-20/600,Math.min(20/600,this.targetA-this.amplitude));
+      this.phase=(this.phase+2*Math.PI*this.frequency/600)%(2*Math.PI);
+      this.tick++;
+      this.history[this.tick%4096]=this.amplitude*Math.sin(this.phase);
+    }
+  }
+  historyAt(t){
+    if(t<=0)return 0;
+    const q=Math.min(this.tick,t*600), i=Math.floor(q), f=q-i;
+    if(i<Math.max(0,this.tick-4095))throw new Error('Source history expired');
+    const a=this.history[i%4096],b=this.history[Math.min(i+1,this.tick)%4096];
+    return a+(b-a)*f;
+  }
+  particle(x){
+    const t=this.time-x/120, u=this.historyAt(t);
+    return {x:x+u,u,velocity:(u-this.historyAt(t-1/600))*600,arrived:t>0};
+  }
+  snapshot(){return {time:this.time,amplitude:this.amplitude,frequency:this.frequency,targetA:this.targetA,particles:Array.from({length:41},(_,i)=>this.particle(i*10))};}
+}
+const model=new WaveModel();
+const $=id=>document.getElementById(id);
+let running=false,playback=.25,previousFrame=null;
+const colours=['#ba413d','#7a4db1','#086eaa'];
+const canvases=[$('overview'),$('zoom')];
+const size=new Map();
+function fit(){for(const c of canvases){const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);size.set(c,{w:r.width,h:r.height,dpr});}draw();}
+function context(c){const s=size.get(c),ctx=c.getContext('2d');ctx.setTransform(s.dpr,0,0,s.dpr,0,0);ctx.clearRect(0,0,s.w,s.h);ctx.lineCap='round';ctx.lineJoin='round';return {ctx,...s};}
+function text(ctx,s,x,y,colour='#526a73',align='left',font=12){ctx.fillStyle=colour;ctx.font=`${font}px "Segoe UI", Arial, sans-serif`;ctx.textAlign=align;ctx.fillText(s,x,y);}
+function line(ctx,x1,y1,x2,y2,colour='#8ba3a5',width=1){ctx.strokeStyle=colour;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+function arrow(ctx,x1,y1,x2,y2,colour,width=1.6){line(ctx,x1,y1,x2,y2,colour,width);const a=Math.atan2(y2-y1,x2-x1),r=5;ctx.beginPath();ctx.moveTo(x2-r*Math.cos(a-.5),y2-r*Math.sin(a-.5));ctx.lineTo(x2,y2);ctx.lineTo(x2-r*Math.cos(a+.5),y2-r*Math.sin(a+.5));ctx.stroke();}
+function eq(ctx,x,y,h){ctx.save();ctx.setLineDash([3,4]);line(ctx,x,y-h,x,y+h,'#91a6a7');ctx.restore();}
+function dot(ctx,x,y,r,c){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();}
+function direction(p){return !p.arrived?'waiting':Math.abs(p.velocity)<.65?'at rest':p.velocity>0?'moving right':'moving left';}
+function features(p){const gaps=p.slice(1).map((q,i)=>q.x-p[i].x);const out=[];for(let i=1;i<gaps.length-1;i++){const g=gaps[i];if(g<9.75&&g<=gaps[i-1]&&g<gaps[i+1])out.push({type:'Compression',x:(p[i].x+p[i+1].x)/2});if(g>10.25&&g>=gaps[i-1]&&g>gaps[i+1])out.push({type:'Rarefaction',x:(p[i].x+p[i+1].x)/2});}return out;}
+function drawOverview(){
+ const {ctx,w}=context($('overview')),small=w<560,left=small?65:105,right=w-22,scale=(right-left)/409.4,y=157;
+ const X=x=>left+x*scale,p=Array.from({length:41},(_,i)=>model.particle(i*10));
+ text(ctx,'Wave travels to the right',w/2,24,'#007a79','center',13);arrow(ctx,w/2-69,37,w/2+69,37,'#007a79',2);
+ // Spacing, not displacement, determines the density colours.
+ for(let i=0;i<40;i++){const gap=p[i+1].x-p[i].x,deviation=(10-gap)/10;if(Math.abs(deviation)>.025){ctx.fillStyle=deviation>0?`rgba(76,150,119,${Math.min(.37,Math.abs(deviation)*.8)})`:`rgba(141,111,179,${Math.min(.3,Math.abs(deviation)*.8)})`;ctx.fillRect(X(p[i].x),y-21,(gap)*scale,42);}}
+ const sourceX=X(p[0].x),bodyX=small?9:22;
+ ctx.fillStyle='#d9e7e7';ctx.fillRect(bodyX,y-25,left-bodyX-13,50);line(ctx,bodyX,y+28,left-13,y+28,'#718c90',3);
+ line(ctx,left-17,y,sourceX,y,'#355761',4);line(ctx,sourceX,y-31,sourceX,y+31,'#18333f',5);
+ text(ctx,'Vibrator',small?34:57,y+57,'#18333f','center',12);
+ if(Math.abs(p[0].velocity)>.65)arrow(ctx,small?27:49,y-42,(small?27:49)+Math.sign(p[0].velocity)*14,y-42,'#18333f');
+ for(let i=1;i<=40;i++){eq(ctx,X(i*10),y,28);const special=i>=2&&i<=4,c=special?colours[i-2]:'#247a79',gap=Math.min(p[i].x-p[i-1].x,i<40?p[i+1].x-p[i].x:Infinity)*scale;dot(ctx,X(p[i].x),y,Math.min(special?(small?3.5:5):(small?1.8:3),gap*.4),c);if(special&&!small){text(ctx,String.fromCharCode(63+i),X(i*10),y-34,c,'center',12);line(ctx,X(i*10),y-29,X(p[i].x),y-8,c,.8);if(Math.abs(p[i].velocity)>.65)arrow(ctx,X(p[i].x),y+38,X(p[i].x)+Math.sign(p[i].velocity)*Math.min(10,gap*.45,Math.abs(p[i].velocity)*.16),y+38,c);}}
+ if(small){const mid=X(30);line(ctx,X(5),y+41,X(55),y+41,'#526a73');text(ctx,'A B C',mid,y+58,'#18333f','center',11);}
+ const fs=features(p);
+ for(const [type,labelY] of [['Compression',70],['Rarefaction',97]]){const candidates=fs.filter(f=>f.type===type&&X(f.x)>left+20&&X(f.x)<right-18);if(candidates.length){const f=candidates.reduce((a,b)=>Math.abs(a.x-(type==='Compression'?150:270))<Math.abs(b.x-(type==='Compression'?150:270))?a:b),x=X(f.x),tx=Math.max(left+42,Math.min(right-43,x));text(ctx,type,tx,labelY,type==='Compression'?'#356f59':'#78568e','center',12);line(ctx,tx,labelY+5,x,y-25,type==='Compression'?'#6b9d89':'#ae98c4');}}
+ if(model.time===0)text(ctx,'All particles are at rest',Math.max(left+70,w/2),100,'#526a73','center',12);
+ line(ctx,left,239,right,239,'#bfd0d0');for(let x=0;x<=400;x+=100){line(ctx,X(x),236,X(x),243,'#8ba3a5');text(ctx,String(x),X(x),257,'#526a73','center',11);}text(ctx,'Equilibrium distance from source / cm',(left+right)/2,275,'#526a73','center',11);
+}
+function drawZoom(){
+ const {ctx,w}=context($('zoom')),scale=(w-54)/40,X=x=>27+(x-10)*scale,y=79;
+ ctx.save();ctx.beginPath();ctx.rect(14,20,w-28,142);ctx.clip();
+ for(let i=2;i<=4;i++){const p=model.particle(i*10),ex=X(i*10),x=X(p.x),c=colours[i-2];eq(ctx,ex,y,35);line(ctx,ex-9.4*scale,y+55,ex+9.4*scale,y+55,'#e1e9e9',2);dot(ctx,ex,y+55,2,'#9aadae');const minGap=Math.min(p.x-model.particle((i-1)*10).x,model.particle((i+1)*10).x-p.x)*scale;dot(ctx,x,y,Math.min(w<500?8:10,minGap*.35),c);text(ctx,String.fromCharCode(63+i),x,y-21-(w<500&&i%2?14:0),c,'center',14);if(Math.abs(p.velocity)>.65){const neighbour=model.particle((i+Math.sign(p.velocity))*10),gap=Math.abs(neighbour.x-p.x)*scale;const len=Math.min(30,gap*.45,Math.max(10,Math.abs(p.velocity)*.8));arrow(ctx,x,y+24,x+Math.sign(p.velocity)*len,y+24,c,2);}else{text(ctx,p.arrived?'at rest':'waiting',x,y+27,'#526a73','center',11);}if(Math.abs(p.u)>.15){arrow(ctx,ex,y+55,x,y+55,c);}}
+ ctx.restore();if(w<480){text(ctx,'Arrows by particles: direction of motion',w/2,173,'#526a73','center',11);text(ctx,'Lower arrows: displacement from equilibrium',w/2,189,'#526a73','center',11);}else{text(ctx,'Arrows by particles: motion   ·   Lower arrows: displacement',w/2,180,'#526a73','center',12);}
+}
+function draw(){if(!size.size)return;drawOverview();drawZoom();$('clock').textContent=`Simulation time: ${model.time.toFixed(2)} s`;$('sourceNow').textContent=model.time===0?'at rest':`${model.amplitude.toFixed(1)} cm amplitude · ${model.frequency.toFixed(2)} Hz`;
+ for(let i=0;i<3;i++){const p=model.particle((i+2)*10);$('read'+String.fromCharCode(65+i)).textContent=`${p.u>=0?'+':''}${p.u.toFixed(2)} cm · ${direction(p)}`;}}
+function controls(){ $('amplitudeOut').textContent=Number($('amplitude').value).toFixed(1)+' cm';$('frequencyOut').textContent=Number($('frequency').value).toFixed(2)+' Hz';$('speedOut').textContent=playback.toFixed(2)+'×';const inv=1/playback;$('speedHint').textContent=`${Number(inv.toFixed(1))} second${inv===1?'':'s'} of viewing = 1 simulated second. Wave physics is unchanged.`;}
+function applyTargets(){model.targetA=Number($('amplitude').value);model.frequency=Number($('frequency').value);}
+function playbackLabel(){$('play').textContent=running?'Pause':model.time===0?'Start':'Resume';}
+function status(s){$('status').textContent=s;}
+$('play').addEventListener('click',()=>{running=!running;previousFrame=null;if(running)applyTargets();playbackLabel();status(running?'Watch the source, then A, B and C. The disturbance travels right; the particles oscillate locally.':'Paused. Inspect the particle positions or use Step +0.02 s.');});
+$('restart').addEventListener('click',()=>{running=false;model.reset();applyTargets();previousFrame=null;playbackLabel();draw();status('Restarted at rest. Your settings are retained. Press Start to form a new wave.');});
+$('step').addEventListener('click',()=>{running=false;applyTargets();model.advance(.02);previousFrame=null;playbackLabel();draw();status('Paused after advancing by 0.02 simulated seconds.');});
+for(const id of ['amplitude','frequency']){$(id).addEventListener('input',()=>{controls();if(running)applyTargets();status(running?'The new setting starts at the source. Earlier motion continues farther along the medium.':'Setting selected. It takes effect at the source on the next step or resume.');draw();});}
+$('speed').addEventListener('input',()=>{playback=Number($('speed').value);controls();status(`Playback set to ${playback.toFixed(2)}×. Source frequency and wave speed are unchanged.`);});
+function frame(now){if(previousFrame!==null&&running){applyTargets();model.advance(Math.min((now-previousFrame)/1000,.05)*playback);}previousFrame=now;draw();requestAnimationFrame(frame);}
+document.addEventListener('visibilitychange',()=>{previousFrame=null;});
+new ResizeObserver(fit).observe(document.querySelector('.stage'));
+controls();fit();requestAnimationFrame(frame);
+</script>
+</body>
+</html>

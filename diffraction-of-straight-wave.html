@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diffraction of straight waves · v3</title>
+<style>
+:root{color-scheme:light;--ink:#182f3d;--muted:#526570;--paper:#f3f6f5;--line:#dce4e4;--incident:#007f83;--outgoing:#b94e12;--accent:#16495b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1500px;margin:auto;padding:30px 32px 24px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.17em;font-size:12px;font-weight:750;color:var(--accent);margin:0 0 7px}h1{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-.04em;margin:0 0 8px}header p{margin:0;color:var(--muted)}.law{flex-shrink:0;text-align:center;padding:9px 26px;border-left:1px solid #bdcbcd}.law strong{font-size:32px;font-weight:550}.law span{display:block;font-size:13px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:22px;align-items:start}.stage,.controls{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}.stage-head{padding:18px 22px 12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}.stage-head strong{font-size:14px}.legend{display:flex;flex-wrap:wrap;gap:17px;font-size:13px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:7px}.swatch{width:24px;border-top:3px solid var(--incident)}.swatch.outgoing{border-top-color:var(--outgoing)}canvas{display:block;width:100%;height:clamp(460px,60vh,650px);background:#edf7f8}.transport{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:15px 20px;border-top:1px solid var(--line)}button,select{font:inherit;min-height:42px;border:1px solid #c9d5d8;border-radius:8px;color:var(--ink);background:#fff;padding:8px 13px;cursor:pointer}button:hover{background:#edf3f4}button.primary{background:var(--accent);color:white;border-color:var(--accent);min-width:94px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #347fb5;outline-offset:3px}.clock{margin-left:auto;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}.speed{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.speed select{font-size:14px;padding:7px}.readouts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding:17px 20px;gap:15px}.readout small{display:block;color:var(--muted);font-size:12px}.readout strong{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}.readout span{font-size:13px;font-weight:400}.invariant{padding:0 20px 17px;font-size:13px;color:var(--muted);margin:0}.controls{padding:23px}.controls h2{font-size:17px;margin:0 0 18px}.mode{display:flex;background:#eef3f3;padding:4px;border-radius:10px;margin-bottom:23px;gap:4px}.mode button{flex:1;font-size:13px;padding:6px;border:0;background:transparent;line-height:1.3}.mode button[aria-pressed=true]{background:var(--accent);color:white}.control{margin-bottom:23px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}.control output{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--accent)}.control select{width:100%;margin-top:8px;font-size:14px;padding:10px 7px}input[type=range]{width:100%;margin:13px 0 3px;accent-color:var(--accent);cursor:pointer;height:22px}.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5}.toggles{border-top:1px solid var(--line);padding-top:15px;display:grid;gap:9px}.toggles label{display:flex;align-items:center;gap:9px;font-size:14px;min-height:27px;cursor:pointer}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}.ratio{margin-top:18px;padding:13px 15px;background:#eef5f4;border-radius:9px;font-size:13px}.ratio strong{display:block;font-size:20px}.note{min-height:44px;margin:12px 2px 0;font-size:13px;color:var(--muted)}.learning{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin:25px 0 19px}.learning article{border-top:2px solid #c9d8da;padding-top:12px}.learning h3{font-size:14px;margin:0 0 5px}.learning p{font-size:13px;color:var(--muted);margin:0}details{border-top:1px solid var(--line);padding:14px 0;font-size:13px;color:var(--muted)}summary{cursor:pointer;font-weight:600;color:var(--ink)}details p{max-width:1050px;margin:10px 0}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}a{color:var(--accent)}[hidden]{display:none!important}.model-note{padding:11px 20px;margin:0;background:#f6f8f5;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:900px){main{padding:20px}.layout{grid-template-columns:minmax(0,1fr)}.controls{display:grid;grid-template-columns:1fr 1fr;column-gap:25px}.controls h2,.mode,.toggles,.ratio{grid-column:1/-1}.toggles{display:flex;flex-wrap:wrap;gap:18px}.learning{gap:18px}canvas{height:500px}}
+@media(max-width:520px){main{padding:16px 12px}header{margin-bottom:18px}.law{display:none}header p{font-size:13px}h1{font-size:25px}.eyebrow{font-size:10px}.stage-head{padding:14px;gap:6px}.legend{font-size:12px;gap:12px}canvas{height:405px}.transport{padding:12px;gap:8px}.transport button{font-size:13px;padding:8px 10px}.speed{order:4}.clock{font-size:12px}.readouts{padding:14px 12px;gap:8px}.readout strong{font-size:20px}.readout small{font-size:11px}.readout span{font-size:11px}.invariant{padding:0 12px 13px;font-size:12px}.controls{padding:18px;display:block}.toggles{display:grid;gap:7px}.learning{grid-template-columns:1fr;gap:16px}.note,.model-note{font-size:12px}.model-note{padding:11px 12px}}
+</style>
+</head>
+<body><main>
+<header><div><p class="eyebrow">Wave phenomena / Interactive physics · v3</p><h1>Diffraction of straight waves</h1><p>Change the wavelength and follow waves from left to right around each barrier.</p></div><div class="law"><strong>v = fλ</strong><span>Fixed depth · 1 cm</span></div></header>
+<div class="layout">
+<section aria-label="Wave simulation"><div class="stage">
+<div class="stage-head"><strong>RIPPLE TANK · TOP VIEW</strong><div class="legend"><span><i class="swatch"></i>Incident</span><span><i class="swatch outgoing"></i>Outgoing</span></div></div>
+<canvas id="tank" role="img" aria-label="Straight waves move from left to right towards a vertical gap and diffract around its edges.">A browser supporting Canvas is required.</canvas>
+<div class="transport"><button class="primary" id="play">Pause</button><button id="restart">Restart</button><button id="step">Step +0.05 s</button><label class="speed" for="playback">Playback <select id="playback"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><span class="clock" id="clock">t = 0.00 s</span></div>
+<div class="readouts"><div class="readout"><small id="frequencyTitle">Frequency, f</small><strong id="frequencyValue"></strong></div><div class="readout"><small>Wave speed, v</small><strong id="speedValue"></strong></div><div class="readout"><small id="wavelengthTitle">Wavelength, λ</small><strong id="wavelengthValue"></strong></div></div>
+<p class="invariant" id="invariant">Diffraction changes direction. Frequency, speed and wavelength stay the same.</p>
+<p class="model-note">Schematic wavefronts · spreading is qualitative; line brightness does not represent amplitude.</p>
+</div><p class="note" id="status" role="status"></p></section>
+<aside class="controls" aria-label="Simulation controls"><h2>Explore the diffraction</h2>
+<div class="control"><label for="barrier">Barrier arrangement</label><select id="barrier"><option value="gap">Gap between two barriers</option><option value="edge">Single barrier edge</option><option value="obstacle">Small obstacle</option></select><p class="hint" id="arrangementHint"></p></div>
+<div class="mode" role="group" aria-label="Wave mode"><button id="continuous" aria-pressed="true">Continuous waves</button><button id="pulse" aria-pressed="false">Single pulse</button></div>
+<div class="control"><label for="lambda">Wavelength <output id="lambdaOut" for="lambda">30 cm</output></label><input id="lambda" type="range" min="10" max="90" step="1" value="30"><div class="range-ends"><span>10 cm</span><span>90 cm</span></div><p class="hint" id="lambdaHint">Longer wavelengths give wider spacing and more spreading.</p><p class="hint">Fixed depth: 1 cm · constant speed: 31.3 cm/s.<br>Frequency is calculated automatically.</p></div>
+<div class="control" id="widthControl"><label for="opening"><span id="widthTitle">Gap width</span><output id="widthOut" for="opening"></output></label><input id="opening" type="range" min="10" max="120" step="5" value="40"><div class="range-ends"><span>10 cm</span><span>120 cm</span></div></div>
+<div class="toggles"><label><input type="checkbox" id="geometry" checked>Geometry labels</label><label><input type="checkbox" id="directions">Wave direction arrows</label><label><input type="checkbox" id="wavelength" checked>Wavelength markers</label></div>
+<div class="ratio"><span id="ratioTitle">Compare gap width with wavelength</span><strong id="ratioValue"></strong><p class="hint" id="spreadingHint"></p></div>
+</aside></div>
+<section class="learning" aria-label="Teaching prompts"><article><h3>1 · Change the wavelength</h3><p>Keep the gap width fixed. A longer wavelength gives wider wavefront spacing and more spreading into the shadows.</p></article><article><h3>2 · Change the gap width</h3><p>Keep wavelength fixed. A narrower gap gives more spreading. Compare gap width with wavelength using the width / λ readout.</p></article><article><h3>3 · Compare the barriers</h3><p>Try a narrower gap. Then select a single edge or a small obstacle and follow the waves into the geometrical shadow.</p></article></section>
+<details><summary>About this model and how to use it</summary>
+<p><strong>Teaching reference:</strong> DSEPHY_TE_3B05, printed pp. 58–60: Experiment 5d, Table 5.3a and Figs. 5.3c–d. The diagrams here are newly drawn. Use continuous waves to compare spacing; pause and step to follow a wavefront reaching an edge.</p>
+<p><strong>Idealised shallow-water approximation:</strong> Depth is fixed at h = 0.01 m everywhere. With g = 9.81 m s⁻², v = √(gh) ≈ 31.3 cm/s. Wavelength is set directly; f = v/λ and the emission interval is λ/v. Changing wavelength changes spacing and emission frequency, while speed stays constant. Diffraction does not change frequency, speed or wavelength.</p>
+<p><strong>Wavefront construction:</strong> unobstructed straight sections join circular sections centred on barrier edges. Each curved section starts at contact and expands at v. Following the schematic <a href="https://openstax.org/books/university-physics-volume-3/pages/1-6-huygenss-principle" target="_blank" rel="noopener noreferrer">Huygens construction</a>, the extent of the drawn arcs increases smoothly with wavelength relative to the opening or obstacle. This extent is an illustration, not a calculated diffraction angle or intensity distribution. The single-edge example uses a fixed drawing scale for this comparison.</p>
+<p><strong>Single pulse:</strong> shows one representative crest from the selected wave train. The selected wavelength sets its illustrative spreading. The wavelength and derived frequency readouts describe that train; they are not the spectrum of an isolated physical pulse. Wavelength markers are hidden in this mode because there are no adjacent crests.</p>
+<p><strong>Limits:</strong> transmission strength through extremely narrow gaps is outside this simplified model; there is no imposed abrupt cutoff. Partial or full reflection from barriers, detailed interference, amplitude changes and reflections from tank walls are omitted. Where edge constructions meet behind an obstacle, they are joined into a schematic front; this is not an interference calculation.</p>
+<p><strong>Controls:</strong> changing a physical parameter, arrangement or wave mode restarts the sequence without changing play/pause. Geometry labels, wave direction arrows and wavelength markers have independent display toggles; none restarts the animation. Step advances by 0.05 simulation seconds and pauses. Playback speed changes timing only. Gap and obstacle widths are remembered separately while this page is open. No installation or internet connection is needed.</p>
+</details><footer>Diffraction of straight waves · Version 3 · English classroom simulation · Textbook reference: pp. 58–60 · Offline HTML</footer>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('tank'),ctx=canvas.getContext('2d');
+const state={lambda:30,gap:40,obstacle:30,barrier:'gap',mode:'continuous',time:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,playback:1};
+const C={incident:'#007f83',outgoing:'#b94e12',ink:'#182f3d',muted:'#526570',barrier:'#516972'};
+const SOURCE_DISTANCE=1.75,EPS=1e-9;
+let width=0,height=0,scale=1,origin={x:0,y:0},plot={},lastFrame=null,lastStatus='';
+
+// Pure model functions. Distances are metres; time is seconds.
+function physics(s=state){const v=Math.sqrt(9.81*.01),lambda=s.lambda/100,frequency=v/lambda,a=(s.barrier==='obstacle'?s.obstacle:s.gap)/100;
+ // A smooth visual extent only, deliberately not labelled a physical diffraction angle.
+ const reference=s.barrier==='edge'?.4:a,spread=Math.PI/2*(1-Math.exp(-2*lambda/reference));
+ return {v,lambda,frequency,a,spread,arrival:SOURCE_DISTANCE/v};}
+function edgePoint(edge,side,r,phi){return {x:edge+side*r*Math.sin(phi),y:r*Math.cos(phi)};}
+function front(age,p,kind=state.barrier,half=2){
+ const y=age<p.arrival?p.v*age-SOURCE_DISTANCE:Math.max(0,p.v*age-SOURCE_DISTANCE);
+ if(age<0)return {incident:[],lines:[],arcs:[]};
+ if(y<0)return {incident:[[{x:-half,y},{x:half,y}]],lines:[],arcs:[]};
+ const result={incident:[],lines:[],arcs:[]},a=p.a/2;
+ const straight=(x1,x2)=>result.lines.push([{x:x1,y},{x:x2,y}]);
+ const curve=(edge,side,end=p.spread)=>result.arcs.push({edge,side,r:y,end});
+ if(kind==='gap'){straight(-a,a);curve(-a,-1);curve(a,1);}
+ else if(kind==='edge'){straight(0,half);curve(0,-1);}
+ else {straight(-half,-a);straight(a,half);
+  // Stop at the symmetry line so the two schematic edge fronts join, not cross.
+  const end=y>a?Math.min(p.spread,Math.asin(Math.min(1,a/y))):p.spread;
+  curve(-a,1,end);curve(a,-1,end);}
+ return result;
+}
+function waveAges(p){const lifetime=(SOURCE_DISTANCE+Math.hypot((plot.bottom-plot.top)/scale,(plot.right-origin.x)/scale)+.3)/p.v;
+ if(state.mode==='pulse')return state.time<=lifetime?[state.time]:[];
+ const first=Math.max(0,Math.ceil((state.time-lifetime)*p.frequency)),last=Math.floor(state.time*p.frequency+EPS),ages=[];
+ for(let n=first;n<=last;n++)ages.push(state.time-n/p.frequency);return ages;
+}
+function frontVisible(f,half,bottom,top){
+ if([...f.incident,...f.lines].some(seg=>seg[0].y>=top&&seg[0].y<=bottom))return true;
+ return f.arcs.some(a=>{if(a.r<=EPS)return false;const reach=a.side>0?half-a.edge:half+a.edge;if(reach<0)return false;const angle=Math.min(a.end,Math.asin(Math.min(1,reach/a.r)));return a.r*Math.cos(angle)<=bottom;});
+}
+// Model x is transverse and y is forward. Rotate the display so forward is right.
+function screen(p){return {x:origin.x+p.y*scale,y:origin.y-p.x*scale};}
+function line(a,b,color,w=1.5,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=w;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([]);}
+function worldLine(a,b,color,w=1.5,dash=[]){line(screen(a),screen(b),color,w,dash);}
+function label(text,x,y,color=C.muted,size=12,align='center'){ctx.font=`${size}px system-ui, sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';const tw=ctx.measureText(text).width;ctx.fillStyle='rgba(237,247,248,.94)';const left=align==='left'?x-4:align==='right'?x-tw-4:x-tw/2-4;ctx.fillRect(left,y-size/2-3,tw+8,size+6);ctx.fillStyle=color;ctx.fillText(text,x,y);}
+function arrow(a,b,color){line(a,b,color,1.7);const angle=Math.atan2(b.y-a.y,b.x-a.x),len=7;for(const d of [-.5,.5])line(b,{x:b.x-len*Math.cos(angle+d),y:b.y-len*Math.sin(angle+d)},color,1.7);}
+function clip(left,right){ctx.beginPath();ctx.rect(left,plot.top,Math.max(0,right-left),plot.bottom-plot.top);ctx.clip();}
+function strokeArc(a){if(a.r<=EPS)return;const points=Math.max(10,Math.ceil(a.r*a.end*scale/5));ctx.beginPath();for(let n=0;n<=points;n++){const q=screen(edgePoint(a.edge,a.side,a.r,a.end*n/points));if(n===0)ctx.moveTo(q.x,q.y);else ctx.lineTo(q.x,q.y);}ctx.strokeStyle=C.outgoing;ctx.lineWidth=2.5;ctx.setLineDash([]);ctx.stroke();}
+function barrierIntervals(p){const a=p.a/2,half=(plot.bottom-plot.top)/(2*scale);return state.barrier==='gap'?[[-half,-a],[a,half]]:state.barrier==='edge'?[[-half,0]]:[[-a,a]];}
+function drawGeometry(p){if(!$('geometry').checked)return;const compact=width<450,size=compact?10:12;
+ const source=screen({x:0,y:-SOURCE_DISTANCE});label('Source',Math.max(30,source.x),plot.top-15,C.muted,size);
+ const incident=screen({x:.9,y:-.55});label('Incident',incident.x,incident.y-14,C.incident,size,'left');
+ if(state.barrier!=='edge'){const a=screen({x:-p.a/2,y:0}),b=screen({x:p.a/2,y:0}),x=origin.x-14;line({x,y:a.y},{x,y:b.y},C.muted,1);for(const y of [a.y,b.y])line({x:x-4,y},{x:x+4,y},C.muted,1);label((compact?'':state.barrier==='gap'?'Gap ':'Obstacle ')+(p.a*100).toFixed(0)+' cm',x-8,origin.y,C.ink,size,'right');}
+ else label('Barrier edge',origin.x+12,origin.y-15,C.ink,size,'left');
+ label('Outgoing',plot.right-8,plot.top-15,C.outgoing,size,'right');
+}
+function drawDirections(p){if(!$('directions').checked)return;
+ const incident=screen({x:.9,y:-.55});arrow(incident,{x:incident.x+Math.min(30,.32*scale),y:incident.y},C.incident);
+ const r=.65,phi=p.spread*.63;
+ ctx.save();clip(origin.x,plot.right);
+ if(state.barrier==='gap'){for(const side of [-1,1])arrow(screen(edgePoint(side*p.a/2,side,r,phi)),screen(edgePoint(side*p.a/2,side,r+.16,phi)),C.outgoing);arrow(screen({x:0,y:.45}),screen({x:0,y:.62}),C.outgoing);}
+ else if(state.barrier==='edge'){arrow(screen({x:.48,y:.45}),screen({x:.48,y:.63}),C.outgoing);arrow(screen(edgePoint(0,-1,r,phi)),screen(edgePoint(0,-1,r+.16,phi)),C.outgoing);}
+ else {for(const side of [-1,1]){const x=side*(p.a/2+.28);arrow(screen({x,y:.45}),screen({x,y:.62}),C.outgoing);if(p.a>=.25){const ang=Math.min(phi,Math.asin(Math.min(1,p.a/2/(r+.16)))*.7);arrow(screen(edgePoint(side*p.a/2,-side,r,ang)),screen(edgePoint(side*p.a/2,-side,r+.16,ang)),C.outgoing);}}if(p.a<.25)arrow(screen({x:0,y:.65}),screen({x:0,y:.81}),C.outgoing);}
+ ctx.restore();
+}
+function wavelengths(ages,p){if(!$('wavelength').checked||state.mode!=='continuous')return;
+ const ys=ages.map(age=>p.v*age-SOURCE_DISTANCE);
+ for(const incident of [true,false]){const candidates=ys.filter(y=>incident?y<-.08&&screen({x:0,y}).x>plot.left+12:y>.15&&screen({x:0,y}).x<plot.right-48).sort((a,b)=>a-b);if(candidates.length<2)continue;
+ const x=incident?-.9:state.barrier==='gap'?.05:state.barrier==='edge'?.75:-p.a/2-.3;
+ const a=screen({x,y:candidates[0]}),b=screen({x,y:candidates[1]}),color=incident?C.incident:C.outgoing;if(Math.abs(a.x-b.x)<14)continue;
+ line(a,b,color,1.3);for(const q of [a,b])line({x:q.x,y:q.y-4},{x:q.x,y:q.y+4},color,1.3);label('λ',(a.x+b.x)/2,a.y-12,color,13);
+ }
+}
+function draw(){if(!width)return;const p=physics(),ages=waveAges(p);ctx.clearRect(0,0,width,height);ctx.fillStyle='#edf7f8';ctx.fillRect(0,0,width,height);
+ ctx.save();clip(plot.left,plot.right);for(let x=-4;x<=4;x+=.2)worldLine({x,y:-2},{x,y:4},'rgba(69,114,126,.065)',.6);for(let y=-2;y<4;y+=.2)worldLine({x:-4,y},{x:4,y},'rgba(69,114,126,.065)',.6);ctx.restore();
+ const half=(plot.bottom-plot.top)/(2*scale);
+ for(const incident of [true,false]){ctx.save();clip(incident?plot.left:origin.x,incident?origin.x:plot.right);for(const age of ages){const f=front(age,p,state.barrier,half);if(incident){for(const seg of f.incident)worldLine(...seg,C.incident,2.5);}else{for(const seg of f.lines)worldLine(...seg,C.outgoing,2.5);for(const arc of f.arcs)strokeArc(arc);}}ctx.restore();}
+ for(const [lower,upper] of barrierIntervals(p)){const a=screen({x:upper,y:0}),b=screen({x:lower,y:0});ctx.fillStyle=C.barrier;ctx.fillRect(origin.x-4,a.y,8,b.y-a.y);ctx.fillStyle='#9eafb3';ctx.fillRect(origin.x-4,a.y,2,b.y-a.y);}
+ worldLine({x:-half,y:-SOURCE_DISTANCE},{x:half,y:-SOURCE_DISTANCE},'#91a6ad',3);
+ drawGeometry(p);drawDirections(p);wavelengths(ages,p);
+ const base=height-17,bar=.5*scale;line({x:20,y:base},{x:20+bar,y:base},C.muted,1.3);for(const x of [20,20+bar])line({x,y:base-4},{x,y:base+4},C.muted,1.3);label('50 cm',27+bar,base,C.muted,10,'left');label(state.mode==='pulse'?'SINGLE PULSE':'CONTINUOUS WAVES',width-17,base,C.muted,width<450?9:10,'right');
+ $('clock').textContent='t = '+state.time.toFixed(2)+' s';let message=state.time<p.arrival?'Follow the first straight wavefront towards the barrier. Curved sections begin only when it arrives.':state.barrier==='gap'?'The centre travels straight ahead; the edges bend into the shadows on both sides.':state.barrier==='edge'?'The open side continues straight; waves bend around the barrier edge into its shadow.':'Waves bend around both obstacle edges and join behind it. A smaller obstacle leaves a smaller shadow.';
+ if(state.mode==='pulse'&&state.time>p.arrival&&!ages.some(age=>frontVisible(front(age,p,state.barrier,half),half,(plot.right-origin.x)/scale,(plot.left-origin.x)/scale)))message='The representative pulse has left the view. Select Restart to send it again.';
+ if(lastStatus!==message){$('status').textContent=message;lastStatus=message;}
+}
+function updateReadouts(){const p=physics(),pulse=state.mode==='pulse',edge=state.barrier==='edge';
+ $('lambdaOut').textContent=state.lambda.toFixed(0)+' cm';$('widthTitle').textContent=state.barrier==='obstacle'?'Obstacle width':'Gap width';$('widthOut').textContent=(p.a*100).toFixed(0)+' cm';$('widthControl').hidden=edge;$('opening').value=state.barrier==='obstacle'?state.obstacle:state.gap;
+ $('frequencyTitle').textContent=pulse?'Selected train, f':'Derived frequency, f';$('wavelengthTitle').textContent=pulse?'Selected train, λ':'Wavelength, λ';$('frequencyValue').innerHTML=p.frequency.toFixed(2)+' <span>Hz</span>';$('speedValue').innerHTML=(p.v*100).toFixed(1)+' <span>cm s⁻¹</span>';$('wavelengthValue').innerHTML=(p.lambda*100).toFixed(0)+' <span>cm</span>';
+ $('lambdaHint').textContent=pulse?'One representative crest from the selected wave train; wavelength sets its illustrative spreading.':'Longer wavelengths give wider spacing and more spreading.';
+ $('invariant').textContent=pulse?'One representative crest from the selected train. The readouts describe the train, not an isolated pulse spectrum.':'Diffraction changes direction. Frequency, speed and wavelength stay the same.';
+ $('arrangementHint').textContent=state.barrier==='gap'?'Two barriers with a central opening.':edge?'A barrier extends upwards from the bottom; water above its edge is unobstructed.':'A central obstacle, with open water on both sides.';
+ $('ratioTitle').textContent=edge?'Around a single edge':`Compare ${state.barrier==='gap'?'gap':'obstacle'} width with wavelength`;
+ $('ratioValue').textContent=edge?'Bending into the shadow':`width / λ = ${(p.a/p.lambda).toFixed(2)}`;
+ $('spreadingHint').textContent=edge?'Longer wavelengths show more spreading in this schematic view.':state.barrier==='gap'?(p.a/p.lambda<.25?'Very narrow relative to λ. Transmission strength is outside this model.':p.a/p.lambda<1.5?'Width is comparable to or smaller than λ: pronounced spreading.':'Width is larger than λ: a straighter central front and less spreading.'):'Smaller obstacles allow the edge fronts to join sooner behind them.';
+ $('play').textContent=state.playing?'Pause':'Play';$('continuous').setAttribute('aria-pressed',String(!pulse));$('pulse').setAttribute('aria-pressed',String(pulse));canvas.setAttribute('aria-label',`Top-down ripple tank. Solid teal straight waves move from left to right towards ${state.barrier==='gap'?'a gap between two barriers':edge?'a single barrier edge':'a central obstacle'}. Solid orange outgoing wavefronts bend into the shadow. Fixed uniform water depth 1 centimetre. Wavelength ${state.lambda} centimetres.`);
+}
+function restart(){state.time=0;lastFrame=null;updateReadouts();draw();}
+function resize(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);width=rect.width;height=rect.height;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);plot={left:16,right:width-16,top:44,bottom:height-40};scale=Math.min((width-64)/3.2,(height-96)/2.4);origin={x:plot.left+(SOURCE_DISTANCE+.12)*scale,y:(plot.top+plot.bottom)/2};draw();}
+$('lambda').addEventListener('input',()=>{state.lambda=Number($('lambda').value);restart();});
+$('opening').addEventListener('input',()=>{state[state.barrier==='obstacle'?'obstacle':'gap']=Number($('opening').value);restart();});
+$('barrier').addEventListener('change',()=>{state.barrier=$('barrier').value;restart();});
+for(const mode of ['continuous','pulse'])$(mode).addEventListener('click',()=>{state.mode=mode;restart();});
+for(const id of ['geometry','directions','wavelength'])$(id).addEventListener('change',draw);
+$('play').addEventListener('click',()=>{state.playing=!state.playing;lastFrame=null;updateReadouts();});$('restart').addEventListener('click',restart);
+$('step').addEventListener('click',()=>{state.playing=false;state.time+=.05;lastFrame=null;updateReadouts();draw();});
+$('playback').addEventListener('change',()=>{state.playback=Number($('playback').value);lastFrame=null;});document.addEventListener('visibilitychange',()=>{lastFrame=null;});
+function frame(now){if(lastFrame!==null&&state.playing&&!document.hidden)state.time+=Math.min((now-lastFrame)/1000,.1)*state.playback;lastFrame=now;if(state.playing)draw();requestAnimationFrame(frame);}
+new ResizeObserver(resize).observe(canvas);updateReadouts();resize();requestAnimationFrame(frame);
+</script></body></html>

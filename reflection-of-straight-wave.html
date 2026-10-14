@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reflection of straight waves</title>
+<style>
+:root{color-scheme:light;--ink:#182f3d;--muted:#526570;--paper:#f3f6f5;--line:#dce4e4;--incident:#007f83;--reflected:#b94e12;--accent:#16495b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1500px;margin:auto;padding:30px 32px 24px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.17em;font-size:12px;font-weight:750;color:var(--accent);margin:0 0 7px}h1{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-.04em;margin:0 0 8px}header p{margin:0;color:var(--muted)}.law{flex-shrink:0;text-align:center;padding:9px 26px;border-left:1px solid #bdcbcd}.law strong{font-size:32px;font-weight:550}.law span{display:block;font-size:13px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px;align-items:start}.stage,.controls{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}.stage-head{padding:18px 22px 12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}.stage-head strong{font-size:14px}.legend{display:flex;flex-wrap:wrap;gap:17px;font-size:13px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:7px}.swatch{width:24px;height:0;border-top:3px solid var(--incident)}.swatch.reflected{border-top:3px solid var(--reflected)}.canvas-wrap{background:#edf7f8;position:relative}canvas{display:block;width:100%;height:clamp(390px,52vh,580px)}.transport{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:15px 20px;border-top:1px solid var(--line)}button,select{font:inherit;min-height:42px;border:1px solid #c9d5d8;border-radius:8px;color:var(--ink);background:#fff;padding:8px 13px;cursor:pointer}button:hover{background:#edf3f4}button.primary{background:var(--accent);color:white;border-color:var(--accent);min-width:94px}button.primary:hover{background:#0c394a}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #347fb5;outline-offset:3px}.clock{margin-left:auto;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}.speed{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.speed select{font-size:14px;padding:7px}.readouts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding:17px 20px;gap:15px}.readout small{display:block;color:var(--muted);font-size:12px}.readout strong{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}.readout span{font-size:13px;font-weight:400}.invariant{padding:0 20px 17px;font-size:13px;color:var(--muted);margin:0}.controls{padding:21px}.controls h2{font-size:17px;margin:0 0 18px}.mode{display:flex;background:#eef3f3;padding:4px;border-radius:10px;margin-bottom:24px;gap:4px}.mode button{flex:1;font-size:13px;padding:6px;border:0;background:transparent;line-height:1.3}.mode button[aria-pressed=true]{background:var(--accent);color:white}.control{margin-bottom:23px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}.control output{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--accent)}input[type=range]{width:100%;margin:13px 0 3px;accent-color:var(--accent);cursor:pointer;height:22px}.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5}.toggles{border-top:1px solid var(--line);padding-top:15px;display:grid;gap:12px}.toggles label{display:flex;align-items:center;gap:9px;font-size:14px;min-height:27px;cursor:pointer}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}.angle-result{margin-top:18px;padding:13px 15px;background:#eef5f4;border-radius:9px;display:flex;justify-content:space-between;gap:10px;font-size:14px}.angle-result strong{white-space:nowrap}.note{min-height:42px;margin:12px 2px 0;font-size:13px;color:var(--muted)}.learning{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin:25px 0 19px}.learning article{border-top:2px solid #c9d8da;padding-top:12px}.learning h3{font-size:14px;margin:0 0 5px}.learning p{font-size:13px;color:var(--muted);margin:0}details{border-top:1px solid var(--line);padding:14px 0;font-size:13px;color:var(--muted)}summary{cursor:pointer;font-weight:600;color:var(--ink)}details p{max-width:1000px;margin:10px 0}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(min-width:1200px){.controls{padding:24px}.layout{grid-template-columns:minmax(0,1fr) 310px}}
+@media(max-width:900px){main{padding:20px}.layout{grid-template-columns:minmax(0,1fr)}.controls{display:grid;grid-template-columns:1fr 1fr;column-gap:25px}.controls h2,.mode,.toggles,.angle-result{grid-column:1/-1}.mode{margin-bottom:20px}.toggles{display:flex;flex-wrap:wrap;gap:18px}.control{margin-bottom:18px}.angle-result{justify-content:flex-start;gap:20px}.learning{gap:18px}canvas{height:430px}}
+@media(max-width:520px){main{padding:16px 12px}header{align-items:flex-start;margin-bottom:18px}.law{padding:3px 0 3px 13px}.law strong{font-size:24px}.law span{font-size:10px;max-width:65px}header p{font-size:13px}h1{font-size:25px}.eyebrow{font-size:10px}.stage-head{padding:14px;gap:6px}.legend{font-size:12px;gap:12px}canvas{height:330px}.transport{padding:12px;gap:8px}.transport button{font-size:13px;padding:8px 10px}.speed{order:4}.clock{font-size:12px}.readouts{padding:14px 12px;gap:8px}.readout strong{font-size:20px}.readout small{font-size:11px}.readout span{font-size:11px}.invariant{padding:0 12px 13px;font-size:12px}.controls{padding:18px;display:block}.control{margin-bottom:22px}.toggles{display:grid;gap:7px}.learning{grid-template-columns:1fr;gap:16px}.note{font-size:12px}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="eyebrow">Wave phenomena / Interactive physics</p><h1>Reflection of straight waves</h1><p>Follow a wavefront as it meets a barrier and changes direction.</p></div><div class="law"><strong>i = r</strong><span>Law of reflection</span></div></header>
+<div class="layout">
+<section aria-label="Wave simulation">
+<div class="stage">
+<div class="stage-head"><strong>RIPPLE TANK · TOP VIEW</strong><div class="legend"><span><i class="swatch"></i>Incident</span><span><i class="swatch reflected"></i>Reflected</span></div></div>
+<div class="canvas-wrap"><canvas id="tank" role="img" aria-label="Animated straight wavefronts approaching and reflecting from a horizontal barrier. Solid teal lines are incident; solid orange lines are reflected. Angles are measured from the normal.">Your browser must support Canvas to show this simulation.</canvas></div>
+<div class="transport"><button class="primary" id="play">Pause</button><button id="restart">Restart</button><button id="step">Step +0.05 s</button><label class="speed" for="playback">Playback <select id="playback"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><span class="clock" id="clock">t = 0.00 s</span></div>
+<div class="readouts"><div class="readout"><small>Frequency, f</small><strong id="fRead">1.0 <span>Hz</span></strong></div><div class="readout"><small>Wave speed, v</small><strong id="vRead">31.3 <span>cm/s</span></strong></div><div class="readout"><small>Wavelength, λ</small><strong id="lambdaRead">31.3 <span>cm</span></strong></div></div>
+<p class="invariant">Same before and after reflection: <strong>frequency, wave speed and wavelength.</strong></p>
+</div>
+<p class="note" id="status" role="status">Wavefronts travel towards the barrier. Watch where reflection begins.</p>
+</section>
+<aside class="controls" aria-label="Simulation controls">
+<h2>Explore the reflection</h2>
+<div class="mode" role="group" aria-label="Wave mode"><button id="continuous" aria-pressed="true">Continuous waves</button><button id="pulse" aria-pressed="false">Single pulse</button></div>
+<div class="control"><label for="frequency">Frequency <output id="frequencyOut" for="frequency">1.0 Hz</output></label><input id="frequency" type="range" min="0.5" max="2" step="0.1" value="1"><div class="range-ends"><span>0.5 Hz</span><span>2.0 Hz</span></div><p class="hint" id="frequencyHint">Controls how often a new wavefront is emitted.</p></div>
+<div class="control"><label for="depth">Water depth <output id="depthOut" for="depth">1.0 cm</output></label><input id="depth" type="range" min="0.5" max="2" step="0.1" value="1"><div class="range-ends"><span>0.5 cm</span><span>2.0 cm</span></div><p class="hint">Uniform across the tank. Deeper water → faster waves.</p></div>
+<div class="control"><label for="angle">Angle of incidence <output id="angleOut" for="angle">45°</output></label><input id="angle" type="range" min="0" max="75" step="1" value="45"><div class="range-ends"><span>0°</span><span>75°</span></div><p class="hint">Measured between the incident direction and the normal.</p></div>
+<div class="toggles"><label><input id="geometry" type="checkbox" checked>Show rays, normal and angles</label><label><input id="wavelength" type="checkbox" checked>Show wavelength markers</label></div>
+<div class="angle-result"><span>Angle of reflection</span><strong id="reflectionOut">r = 45°</strong></div>
+</aside>
+</div>
+<section class="learning" aria-label="Teaching prompts"><article><h3>01 / Change the angle</h3><p>Pause near the barrier. Compare i and r. Are the wavefronts perpendicular to their travelling directions?</p></article><article><h3>02 / Change the frequency</h3><p>Keep the depth fixed. Increase f. The wavefronts become closer together, while their speed stays the same.</p></article><article><h3>03 / Change the depth</h3><p>Keep f fixed. Increase the depth. Waves move faster and their spacing increases. Reflection still gives i = r.</p></article></section>
+<details><summary>About the model and how to use it</summary><p>This is an idealised shallow-water model: <strong>v = √(gh)</strong>, with g = 9.81 m/s² and depth h in metres; <strong>λ = v/f</strong>. It illustrates the textbook relationships, rather than predicting every ripple-tank condition. The whole tank has one depth, so reflection does not change the medium or wave speed.</p><p>Each line represents a crest wavefront. A single pulse shows one travelling front; frequency and wavelength apply to the continuous wave train. Teal and orange lines show the two components separately, including where they overlap. Their interference and resulting water height are not drawn. The barrier is treated as long, with no edge diffraction, transmission or losses; waves leave the visible tank without reflecting at other edges.</p><p>Changing frequency, depth, angle or wave mode restarts the sequence and keeps the current play/pause state. Restart keeps your settings. Step pauses the animation and advances simulated time by 0.05 s. Playback speed affects viewing time only. At 0°, the waves return along the same path. All controls work with a keyboard.</p></details>
+<footer>Textbook reference: DSEPHY_TE_3B05, printed pp. 44–45 · Experiment 5b and Figs. 5.2a–c · Original diagram and animation.</footer>
+</main>
+<script>
+'use strict';
+// SI units throughout the physical model. Canvas coordinates use a uniform scale.
+const $ = id => document.getElementById(id);
+const canvas=$('tank'),ctx=canvas.getContext('2d');
+const state={frequency:1,depth:1,angle:45,mode:'continuous',time:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,playback:1};
+const L=1,HALF_WIDTH=0.22,G=9.81;
+const colors={incident:'#007f83',reflected:'#b94e12',ink:'#182f3d',muted:'#536c79'};
+let width=0,height=0,scale=1,origin={x:0,y:0},lastFrame=null,lastStatus='';
+function physics(){const a=state.angle*Math.PI/180;const v=Math.sqrt(G*state.depth/100);return {a,s:Math.sin(a),c:Math.cos(a),v,lambda:v/state.frequency};}
+// A finite front is parameterised by u along its tangent, -HALF_WIDTH <= u <= HALF_WIDTH.
+// Incident position: (sin(i)*(vt-L)+u*cos(i), -cos(i)*(vt-L)+u*sin(i)).
+// Reflect each point in y=0 after contact: x is unchanged, y changes sign.
+function fronts(age,p=physics()){
+ if(age<0)return [];
+ const q=p.v*age-L;
+ const point=(u,reflected)=>({x:p.s*q+u*p.c,y:(reflected?1:-1)*(p.c*q-u*p.s)});
+ if(p.s<1e-9){const reflected=q>=0;return [{kind:reflected?'reflected':'incident',a:point(-HALF_WIDTH,reflected),b:point(HALF_WIDTH,reflected)}];}
+ const cut=p.c*q/p.s,segments=[];
+ if(cut<HALF_WIDTH)segments.push({kind:'incident',a:point(Math.max(-HALF_WIDTH,cut),false),b:point(HALF_WIDTH,false)});
+ if(cut>-HALF_WIDTH)segments.push({kind:'reflected',a:point(-HALF_WIDTH,true),b:point(Math.min(HALF_WIDTH,cut),true)});
+ return segments;
+}
+function screen(p){return {x:origin.x+p.x*scale,y:origin.y+p.y*scale};}
+function line(a,b,color,lineWidth=2,dash=[]){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=lineWidth;ctx.setLineDash(dash);ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([]);}
+function worldLine(a,b,color,w=2,dash=[]){line(screen(a),screen(b),color,w,dash);}
+function label(text,x,y,color=colors.ink,align='center',fontSize=13){ctx.font=`600 ${fontSize}px system-ui, sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';const m=ctx.measureText(text);ctx.fillStyle='rgba(237,247,248,.94)';const left=align==='left'?x:align==='right'?x-m.width:x-m.width/2;ctx.fillRect(left-4,y-fontSize/2-3,m.width+8,fontSize+6);ctx.fillStyle=color;ctx.fillText(text,x,y);}
+function arrow(a,b,color){line(a,b,color,2);const theta=Math.atan2(b.y-a.y,b.x-a.x);const n=8;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-n*Math.cos(theta-.42),b.y-n*Math.sin(theta-.42));ctx.lineTo(b.x-n*Math.cos(theta+.42),b.y-n*Math.sin(theta+.42));ctx.closePath();ctx.fill();}
+function measure(a,b,text,color){const aa=screen(a),bb=screen(b),dx=bb.x-aa.x,dy=bb.y-aa.y,len=Math.hypot(dx,dy);if(len<23)return;const nx=-dy/len,ny=dx/len;line(aa,bb,color,1.4);for(const p of [aa,bb])line({x:p.x-4*nx,y:p.y-4*ny},{x:p.x+4*nx,y:p.y+4*ny},color,1.4);label(text,(aa.x+bb.x)/2+nx*13,(aa.y+bb.y)/2+ny*13,color,'center',width<450?11:13);}
+function resize(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);width=rect.width;height=rect.height;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);scale=Math.min((width-44)/3.3,(height-95)/1.7);origin={x:width/2,y:65};draw();}
+function updateReadouts(){const p=physics();$('frequencyOut').textContent=state.frequency.toFixed(1)+' Hz';$('depthOut').textContent=state.depth.toFixed(1)+' cm';$('angleOut').textContent=state.angle+'°';$('reflectionOut').textContent='r = '+state.angle+'°';$('fRead').innerHTML=state.mode==='pulse'?'— <span>single pulse</span>':state.frequency.toFixed(1)+' <span>Hz</span>';$('vRead').innerHTML=(p.v*100).toFixed(1)+' <span>cm/s</span>';$('lambdaRead').innerHTML=state.mode==='pulse'?'— <span>single pulse</span>':(p.lambda*100).toFixed(1)+' <span>cm</span>';$('frequencyHint').textContent=state.mode==='pulse'?'Frequency sets the spacing in continuous mode; a single pulse has no repeating frequency.':'Controls how often a new wavefront is emitted.';$('play').textContent=state.playing?'Pause':'Play';$('continuous').setAttribute('aria-pressed',state.mode==='continuous');$('pulse').setAttribute('aria-pressed',state.mode==='pulse');}
+function draw(){if(!width)return;const p=physics();ctx.clearRect(0,0,width,height);
+ // Subtle fixed grid: distances and apparent speeds remain comparable across settings.
+ ctx.save();ctx.beginPath();ctx.rect(15,origin.y,width-30,height-origin.y-35);ctx.clip();
+ for(let x=-1.6;x<=1.61;x+=.2)worldLine({x,y:0},{x,y:2.5},'#dfedef',.6);
+ for(let y=.2;y<2.5;y+=.2)worldLine({x:-2,y},{x:2,y},'#dfedef',.6);
+ const maxAge=5/p.v;
+ const newest=state.mode==='pulse'?0:Math.floor(state.time*state.frequency+1e-9);
+ const oldest=state.mode==='pulse'?0:Math.max(0,Math.ceil((state.time-maxAge)*state.frequency));
+ for(let n=oldest;n<=newest;n++){const age=state.time-n/state.frequency;if(age>maxAge)continue;for(const seg of fronts(age,p))worldLine(seg.a,seg.b,colors[seg.kind],seg.kind==='incident'?2.6:2.8,[]);}
+ ctx.restore();
+ // Barrier marks the physical boundary y=0. Water occupies y >= 0 only.
+ ctx.fillStyle='#637582';ctx.fillRect(15,origin.y-11,width-30,11);ctx.fillStyle='#82939d';for(let x=18;x<width-20;x+=14)line({x,y:origin.y-11},{x:x+9,y:origin.y-2},'#a8b5bc',1);
+ label('Straight barrier',width/2,29,colors.ink,'center',14);
+ const source={x:-L*p.s,y:L*p.c};
+ worldLine({x:source.x-HALF_WIDTH*p.c,y:source.y-HALF_WIDTH*p.s},{x:source.x+HALF_WIDTH*p.c,y:source.y+HALF_WIDTH*p.s},'#90a9ad',5);
+ const src=screen(source);label('Source',Math.max(43,src.x-10),src.y+HALF_WIDTH*p.s*scale+20,colors.muted,'center',width<450?11:12);
+ if($('geometry').checked){
+  const normalEnd=Math.min(height-50,origin.y+Math.max(105,scale*.72));line({x:origin.x,y:origin.y},{x:origin.x,y:normalEnd},'#66838d',1.4,[5,5]);
+  label('Normal',origin.x,normalEnd+14,colors.muted,'center',width<450?11:12);
+  const distance=.77;
+  const inc=screen({x:-p.s*distance,y:p.c*distance}),ref=screen({x:p.s*distance,y:p.c*distance});
+  const hit={x:origin.x,y:origin.y};
+  // Slight lateral offsets at normal incidence keep the two direction arrows visible.
+  if(state.angle===0){arrow({x:hit.x-9,y:inc.y},{x:hit.x-9,y:hit.y+18},colors.incident);arrow({x:hit.x+9,y:hit.y+18},{x:hit.x+9,y:ref.y},colors.reflected);label('i = r = 0°',origin.x+18,origin.y+35,colors.ink,'left',width<450?11:13);}
+  else{arrow(inc,hit,colors.incident);arrow(hit,ref,colors.reflected);
+   const radius=width<450?33:49;
+   ctx.strokeStyle=colors.incident;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(origin.x,origin.y,radius,Math.PI/2,Math.PI/2+p.a);ctx.stroke();
+   ctx.strokeStyle=colors.reflected;ctx.beginPath();ctx.arc(origin.x,origin.y,radius,Math.PI/2-p.a,Math.PI/2);ctx.stroke();
+   // Separate labels even for very small nonzero angles.
+   const lx=Math.max(width<450?30:42,Math.sin(p.a/2)*(radius+23)),ly=Math.cos(p.a/2)*(radius+23);
+   label('i = '+state.angle+'°',origin.x-lx,origin.y+ly,colors.incident,'right',width<450?11:13);label('r = '+state.angle+'°',origin.x+lx,origin.y+ly,colors.reflected,'left',width<450?11:13);
+  }
+ }
+ // Wavelength measurements follow propagation directions and attach to actual fronts.
+ if($('wavelength').checked&&state.mode==='continuous'){
+  for(const kind of ['incident','reflected']){
+   const candidates=[],sign=kind==='incident'?-1:1,u=sign*HALF_WIDTH*.85*p.c;
+   for(let n=Math.max(0,newest-20);n<=newest;n++){
+    const q=p.v*(state.time-n/state.frequency)-L;
+    const d=kind==='incident'?-q:q;
+    if(d>.28&&d<1.05&&(p.c*d-sign*u*p.s)*scale>27)candidates.push({n,d});
+   }
+   if(candidates.length>=2){const a=candidates[0],b=candidates[1];if(b.n-a.n===1){
+    measure({x:sign*p.s*a.d+u*p.c,y:p.c*a.d-sign*u*p.s},{x:sign*p.s*b.d+u*p.c,y:p.c*b.d-sign*u*p.s},'λ',colors[kind]);
+   }}
+  }
+ }
+ // A constant physical scale, independent of frequency, depth and playback speed.
+ const bar=0.5*scale,base=height-20;
+ line({x:23,y:base},{x:23+bar,y:base},colors.muted,1.5);line({x:23,y:base-4},{x:23,y:base+4},colors.muted,1.5);line({x:23+bar,y:base-4},{x:23+bar,y:base+4},colors.muted,1.5);label('50 cm',23+bar+10,base,colors.muted,'left',11);
+ label(state.mode==='pulse'?'SINGLE PULSE':'CONTINUOUS WAVES',width-20,base,colors.muted,'right',width<450?10:11);
+ $('clock').textContent='t = '+state.time.toFixed(2)+' s';
+ const first=(L-HALF_WIDTH*Math.tan(p.a))/p.v,last=(L+HALF_WIDTH*Math.tan(p.a))/p.v;
+ let status=state.time<first?'Wavefronts travel towards the barrier. Watch where reflection begins.':state.time<last?'Reflection is in progress: part of the first wavefront is still incident; part has reflected.':'Reflected wavefronts travel away with the same speed and spacing.';
+ if(state.mode==='pulse'&&state.time>=last)status='The whole pulse has reflected. It now travels away from the barrier.';
+ if(state.angle===0&&state.time>=first)status='Normal incidence: i = r = 0°. The reflected wave returns along the incident path.';
+ if(state.mode==='pulse'&&state.time>maxAge)status='The pulse has left the view. Select Restart to send it again.';
+ if(status!==lastStatus){$('status').textContent=status;lastStatus=status;}
+}
+function restart(){state.time=0;lastFrame=null;updateReadouts();draw();}
+for(const id of ['frequency','depth','angle'])$(id).addEventListener('input',()=>{state[id]=Number($(id).value);restart();});
+for(const id of ['geometry','wavelength'])$(id).addEventListener('change',draw);
+for(const mode of ['continuous','pulse'])$(mode).addEventListener('click',()=>{state.mode=mode;restart();});
+$('play').addEventListener('click',()=>{state.playing=!state.playing;lastFrame=null;updateReadouts();});
+$('restart').addEventListener('click',restart);
+$('step').addEventListener('click',()=>{state.playing=false;state.time+=.05;lastFrame=null;updateReadouts();draw();});
+$('playback').addEventListener('change',()=>{state.playback=Number($('playback').value);lastFrame=null;});
+document.addEventListener('visibilitychange',()=>{lastFrame=null;});
+function frame(now){if(lastFrame!==null&&state.playing&&!document.hidden)state.time+=Math.min((now-lastFrame)/1000,.1)*state.playback;lastFrame=now;if(state.playing)draw();requestAnimationFrame(frame);}
+new ResizeObserver(resize).observe(canvas);updateReadouts();resize();requestAnimationFrame(frame);
+</script>
+</body>
+</html>

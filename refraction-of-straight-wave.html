@@ -1,0 +1,180 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Refraction of straight waves</title>
+
+<style>
+
+:root{color-scheme:light;--ink:#182f3d;--muted:#526570;--paper:#f3f6f5;--line:#dce4e4;--incident:#007f83;--reflected:#b94e12;--accent:#16495b}
+
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1500px;margin:auto;padding:30px 32px 24px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.17em;font-size:12px;font-weight:750;color:var(--accent);margin:0 0 7px}h1{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-.04em;margin:0 0 8px}header p{margin:0;color:var(--muted)}.law{flex-shrink:0;text-align:center;padding:9px 26px;border-left:1px solid #bdcbcd}.law strong{font-size:32px;font-weight:550}.law span{display:block;font-size:13px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px;align-items:start}.stage,.controls{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}.stage-head{padding:18px 22px 12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}.stage-head strong{font-size:14px}.legend{display:flex;flex-wrap:wrap;gap:17px;font-size:13px;color:var(--muted)}.legend span{display:flex;align-items:center;gap:7px}.swatch{width:24px;height:0;border-top:3px solid var(--incident)}.swatch.reflected{border-top:3px solid var(--reflected)}.canvas-wrap{background:#edf7f8;position:relative}canvas{display:block;width:100%;height:clamp(390px,52vh,580px)}.transport{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:15px 20px;border-top:1px solid var(--line)}button,select{font:inherit;min-height:42px;border:1px solid #c9d5d8;border-radius:8px;color:var(--ink);background:#fff;padding:8px 13px;cursor:pointer}button:hover{background:#edf3f4}button.primary{background:var(--accent);color:white;border-color:var(--accent);min-width:94px}button.primary:hover{background:#0c394a}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #347fb5;outline-offset:3px}.clock{margin-left:auto;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}.speed{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}.speed select{font-size:14px;padding:7px}.readouts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding:17px 20px;gap:15px}.readout small{display:block;color:var(--muted);font-size:12px}.readout strong{display:block;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}.readout span{font-size:13px;font-weight:400}.invariant{padding:0 20px 17px;font-size:13px;color:var(--muted);margin:0}.controls{padding:21px}.controls h2{font-size:17px;margin:0 0 18px}.mode{display:flex;background:#eef3f3;padding:4px;border-radius:10px;margin-bottom:24px;gap:4px}.mode button{flex:1;font-size:13px;padding:6px;border:0;background:transparent;line-height:1.3}.mode button[aria-pressed=true]{background:var(--accent);color:white}.control{margin-bottom:23px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}.control output{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--accent)}input[type=range]{width:100%;margin:13px 0 3px;accent-color:var(--accent);cursor:pointer;height:22px}.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.hint{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5}.toggles{border-top:1px solid var(--line);padding-top:15px;display:grid;gap:12px}.toggles label{display:flex;align-items:center;gap:9px;font-size:14px;min-height:27px;cursor:pointer}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}.angle-result{margin-top:18px;padding:13px 15px;background:#eef5f4;border-radius:9px;display:flex;justify-content:space-between;gap:10px;font-size:14px}.angle-result strong{white-space:nowrap}.note{min-height:42px;margin:12px 2px 0;font-size:13px;color:var(--muted)}.learning{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin:25px 0 19px}.learning article{border-top:2px solid #c9d8da;padding-top:12px}.learning h3{font-size:14px;margin:0 0 5px}.learning p{font-size:13px;color:var(--muted);margin:0}details{border-top:1px solid var(--line);padding:14px 0;font-size:13px;color:var(--muted)}summary{cursor:pointer;font-weight:600;color:var(--ink)}details p{max-width:1000px;margin:10px 0}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+@media(min-width:1200px){.controls{padding:24px}.layout{grid-template-columns:minmax(0,1fr) 310px}}
+
+@media(max-width:900px){main{padding:20px}.layout{grid-template-columns:minmax(0,1fr)}.controls{display:grid;grid-template-columns:1fr 1fr;column-gap:25px}.controls h2,.mode,.toggles,.angle-result{grid-column:1/-1}.mode{margin-bottom:20px}.toggles{display:flex;flex-wrap:wrap;gap:18px}.control{margin-bottom:18px}.angle-result{justify-content:flex-start;gap:20px}.learning{gap:18px}canvas{height:430px}}
+
+@media(max-width:520px){main{padding:16px 12px}header{align-items:flex-start;margin-bottom:18px}.law{padding:3px 0 3px 13px}.law strong{font-size:24px}.law span{font-size:10px;max-width:65px}header p{font-size:13px}h1{font-size:25px}.eyebrow{font-size:10px}.stage-head{padding:14px;gap:6px}.legend{font-size:12px;gap:12px}canvas{height:330px}.transport{padding:12px;gap:8px}.transport button{font-size:13px;padding:8px 10px}.speed{order:4}.clock{font-size:12px}.readouts{padding:14px 12px;gap:8px}.readout strong{font-size:20px}.readout small{font-size:11px}.readout span{font-size:11px}.invariant{padding:0 12px 13px;font-size:12px}.controls{padding:18px;display:block}.control{margin-bottom:22px}.toggles{display:grid;gap:7px}.learning{grid-template-columns:1fr;gap:16px}.note{font-size:12px}}
+
+
+
+[hidden]{display:none!important}.swatch.refraction{border-top-color:#b94e12}.comparison{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}.comparison th,.comparison td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--line)}.comparison th{font-size:12px;color:var(--muted);font-weight:600}.comparison tbody th{color:var(--ink)}.comparison td small{font-size:11px;color:var(--muted)}.invariant{padding-top:12px}.angle-result{display:block}.angle-result strong{display:block;font-size:20px;margin-top:3px;white-space:normal}.critical{font-size:13px;color:var(--muted);margin:12px 0 0;grid-column:1/-1}.extension{margin:0;padding:12px 18px;background:#fff3df;color:#714917;font-size:13px;border-top:1px solid #ecdfc7}.region-band{display:grid;grid-template-columns:1fr 1fr;font-size:13px;text-align:center;border-top:1px solid var(--line)}.region-band div{padding:9px}.region-band strong,.region-band span{display:block}.region-band span{font-size:12px;color:var(--muted)}canvas{height:clamp(440px,58vh,640px)}.source-note{font-size:12px;color:var(--muted)}@media(max-width:520px){.law{display:none}.stage-head{display:block}.legend{margin-top:8px}.comparison th,.comparison td{padding:9px 7px;font-size:12px}.comparison th{font-size:11px}canvas{height:380px}.region-band{font-size:12px}.region-band span{font-size:11px}.extension{font-size:12px}}
+
+.region-band{position:absolute;inset:0;display:block;border:0;text-align:left;pointer-events:none;z-index:1}.region-band>div{position:absolute;left:18px;padding:4px 7px;border-radius:4px}#region1Band{top:12px}#region2Band{top:calc(50% + 14px)}
+@media(max-width:520px){.region-band>div{left:12px;padding:3px 5px}.region-band strong{font-size:11px}.region-band span{font-size:10px}}
+</style>
+
+</head>
+
+<body>
+
+<main>
+
+<header><div><p class="eyebrow">Wave phenomena / Interactive physics</p><h1>Refraction of straight waves</h1><p>Change the water depths and follow a wavefront across the boundary.</p></div><div class="law"><strong>v = fλ</strong><span>Frequency stays the same</span></div></header>
+
+<div class="layout">
+
+<section aria-label="Wave simulation"><div class="stage">
+
+<div class="stage-head"><strong>RIPPLE TANK · TOP VIEW</strong><div class="legend"><span><i class="swatch"></i>Incident</span><span><i class="swatch refraction"></i><span id="outgoingLegend">Refracted</span></span></div></div>
+
+
+
+<div class="canvas-wrap"><div class="region-band"><div id="region1Band"><strong>Region 1 · Upper / incident side</strong><span id="region1Label">2.0 cm · Deeper water</span></div><div id="region2Band"><strong>Region 2 · Lower</strong><span id="region2Label">1.0 cm · Shallower water</span></div></div><canvas id="tank" role="img" aria-label="Straight wavefronts cross from upper region 1 to lower region 2 at a horizontal depth boundary. Incident wavefronts are solid teal; refracted wavefronts are solid orange.">Your browser must support Canvas to show this simulation.</canvas></div>
+
+<div class="transport"><button class="primary" id="play">Pause</button><button id="restart">Restart</button><button id="step">Step +0.05 s</button><label class="speed" for="playback">Playback <select id="playback"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><span class="clock" id="clock">t = 0.00 s</span></div>
+
+<table class="comparison" aria-label="Wave values in each region"><thead><tr><th>Region</th><th>Frequency<br>f / Hz</th><th>Speed<br>v / cm s⁻¹</th><th>Wavelength<br>λ / cm</th></tr></thead><tbody><tr><th>Region 1</th><td id="f1">1.0</td><td id="v1">44.3</td><td id="lambda1">44.3</td></tr><tr><th>Region 2</th><td id="f2">1.0</td><td id="v2">31.3</td><td id="lambda2">31.3</td></tr></tbody></table>
+
+<p class="invariant" id="invariant">Frequency is unchanged across the boundary. Wave speed and wavelength depend on depth.</p>
+
+<p class="extension" id="extension" hidden></p>
+
+</div><p class="note" id="status" role="status">Wavefronts travel towards the boundary.</p></section>
+
+<aside class="controls" aria-label="Simulation controls"><h2>Explore the refraction</h2>
+
+<div class="mode" role="group" aria-label="Wave mode"><button id="continuous" aria-pressed="true">Continuous waves</button><button id="pulse" aria-pressed="false">Single pulse</button></div>
+
+<div class="control"><label for="frequency">Frequency <output id="frequencyOut" for="frequency">1.0 Hz</output></label><input id="frequency" type="range" min="0.5" max="2" step="0.1" value="1"><div class="range-ends"><span>0.5 Hz</span><span>2.0 Hz</span></div><p class="hint" id="frequencyHint">One source sets the frequency in both regions.</p></div>
+
+<div class="control"><label for="depth1">Region 1 depth <output id="depth1Out" for="depth1">2.0 cm</output></label><input id="depth1" type="range" min="0.5" max="2" step="0.1" value="2"><div class="range-ends"><span>0.5 cm</span><span>2.0 cm</span></div></div>
+
+<div class="control"><label for="depth2">Region 2 depth <output id="depth2Out" for="depth2">1.0 cm</output></label><input id="depth2" type="range" min="0.5" max="2" step="0.1" value="1"><div class="range-ends"><span>0.5 cm</span><span>2.0 cm</span></div><p class="hint">Darker shading represents deeper water.</p></div>
+
+<div class="control"><label for="angle">Angle of incidence <output id="angleOut" for="angle">45°</output></label><input id="angle" type="range" min="0" max="75" step="1" value="45"><div class="range-ends"><span>0°</span><span>75°</span></div><p class="hint">Measured from the normal, not the boundary.</p></div>
+
+<div class="toggles"><label><input id="geometry" type="checkbox" checked>Show rays, normal and angles</label><label><input id="wavelength" type="checkbox" checked>Show wavelength markers</label></div>
+
+<div class="angle-result"><span id="outcome">Bends towards the normal</span><strong id="angleResult">r = 30.0°</strong></div>
+
+<p class="critical" id="criticalNote">No critical angle for this direction.</p>
+
+</aside></div>
+
+<section class="learning" aria-label="Teaching prompts"><article><h3>01 / Compare the two depths</h3><p>Make region 2 shallower. Speed and wavelength decrease, and the wave bends towards the normal. Reverse the depth difference to see it bend away.</p></article><article><h3>02 / Change frequency or angle</h3><p>Higher frequency gives closer wavefronts without changing their speed. At 0° incidence, depth can change speed and wavelength without changing direction.</p></article><article><h3>03 / Explore total reflection</h3><p>Set region 1 to 0.5 cm and region 2 to 2.0 cm. Compare 29°, 30° and 31° incidence. The critical angle is 30°. This extends the textbook refraction lesson.</p></article></section>
+
+<details><summary>About the model and how to use it</summary><p>This idealised shallow-water model uses <strong>v = √(gh)</strong>, with g = 9.81 m/s² and depth h in metres, and <strong>λ = v/f</strong>. It illustrates textbook relationships rather than predicting every ripple-tank condition. Each region has uniform depth. The source frequency remains the same across the boundary.</p><p>The refraction direction follows <strong>sin r = (v₂/v₁) sin i</strong>. Solid teal lines are incident crest wavefronts. Solid orange lines are refracted wavefronts, or reflected wavefronts when the critical angle is reached or exceeded. Each part changes direction only after reaching the boundary. The lines remain perpendicular to their travelling directions.</p><p>For shallow-to-deep travel, <strong>i<sub>c</sub> = sin⁻¹(v₁/v₂)</strong>. Above i<sub>c</sub>, no propagating refracted wave crosses into region 2: total internal reflection occurs. At i<sub>c</sub>, the limiting refracted direction is along the boundary (r = 90°); the animation shows reflection and a grazing-direction guide, with no wavefronts advancing into region 2. The region 2 speed readout is its model wave speed, even when no wave is transmitted. Frequency and wavelength there are then shown as dashes.</p><p>The total-reflection case is an extension beyond printed pp. 48–51. Partial reflection below the critical angle, amplitudes, evanescent fields, interference, finite-beam diffraction and reflections from the outer tank edges are omitted. The model displays wavefront geometry, not the resulting water height. A single pulse has no repeating frequency or wavelength.</p><p>Changing frequency, either depth, incidence angle or wave mode restarts the sequence and preserves play/pause state. Display toggles leave the simulation time unchanged. Restart keeps your settings. Step pauses and advances simulated time by 0.05 s. Playback speed changes viewing time only. Wavelength markers appear when two suitable wavefronts are visible. All controls work with a keyboard.</p></details>
+
+<footer>Textbook reference: DSEPHY_TE_3B05, printed pp. 48–51 · Experiment 5c, Figs. 5.2g–h and refracted-wavefront construction · Total reflection included as an extension.</footer>
+
+</main>
+
+<script>
+
+'use strict';
+
+const $=id=>document.getElementById(id),canvas=$('tank'),ctx=canvas.getContext('2d');
+
+const state={frequency:1,depth1:2,depth2:1,angle:45,mode:'continuous',time:0,playing:!matchMedia('(prefers-reduced-motion: reduce)').matches,playback:1};
+
+const G=9.81,W=.308,EPS=1e-10;
+
+const colors={incident:'#007f83',outgoing:'#b94e12',ink:'#182f3d',muted:'#536c79'};
+
+let width=0,height=0,scale=1,origin={x:0,y:0},plot={left:16,right:800,top:46,bottom:450},lastFrame=null,lastStatus='';
+
+function physics(){const a=state.angle*Math.PI/180,s=Math.sin(a),c=Math.cos(a),v1=Math.sqrt(G*state.depth1/100),v2=Math.sqrt(G*state.depth2/100),q=v2/v1*s,critical=v2>v1?Math.asin(v1/v2):null;const regime=q>1+EPS?'total':Math.abs(q-1)<=EPS?'critical':'refract',r=regime==='total'?null:Math.asin(Math.min(1,q));return {L:Math.max(1,W*s/c+.05),a,s,c,v1,v2,q,critical,regime,r,lambda1:v1/state.frequency,lambda2:v2/state.frequency};}
+
+// A front begins at -p.L*d1 + u*t1, where d1=(cos i,sin i), t1=(-sin i,cos i).
+
+// Every u has its own boundary arrival time and contact coordinate. Propagating from
+
+// these contact points preserves both phase continuity and the wavefront orientation.
+
+function arrival(u,p){return (p.L+u*p.s/p.c)/p.v1;}
+
+function pointAt(u,age,p,kind){if(kind==='incident'){const q=p.v1*age-p.L;return {x:p.c*q-u*p.s,y:p.s*q+u*p.c};}const elapsed=Math.max(0,age-arrival(u,p)),y0=u/p.c;if(p.regime==='refract')return {x:p.v2*Math.cos(p.r)*elapsed,y:y0+p.v2*Math.sin(p.r)*elapsed};return {x:-p.v1*p.c*elapsed,y:y0+p.v1*p.s*elapsed};}
+
+function fronts(age,p=physics()){if(age<0)return [];if(p.s<EPS){const kind=age<p.L/p.v1?'incident':'outgoing';return [{kind,a:pointAt(-W,age,p,kind),b:pointAt(W,age,p,kind)}];}const cut=(p.v1*age-p.L)*p.c/p.s,out=[];if(cut<W)out.push({kind:'incident',a:pointAt(Math.max(-W,cut),age,p,'incident'),b:pointAt(W,age,p,'incident')});if(cut>-W)out.push({kind:'outgoing',a:pointAt(-W,age,p,'outgoing'),b:pointAt(Math.min(W,cut),age,p,'outgoing')});return out;}
+
+// Exchange the physical axes for a horizontal boundary: x<0 maps to the upper region.
+function screen(p){return {x:origin.x+p.y*scale,y:origin.y+p.x*scale};}
+
+function depthColor(h){const t=(h-.5)/1.5;return `rgb(${Math.round(238-34*t)},${Math.round(248-18*t)},${Math.round(248-11*t)})`;}
+
+function line(a,b,color,w=2,dash=[]){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=w;ctx.setLineDash(dash);ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.setLineDash([]);}
+
+function worldLine(a,b,color,w=2,dash=[]){line(screen(a),screen(b),color,w,dash);}
+
+function label(text,x,y,color=colors.ink,size=13,align='center'){ctx.font=`600 ${size}px system-ui,sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';const tw=ctx.measureText(text).width,left=align==='left'?x:align==='right'?x-tw:x-tw/2;ctx.fillStyle='rgba(245,249,248,.96)';ctx.fillRect(left-3,y-size/2-3,tw+6,size+6);ctx.fillStyle=color;ctx.fillText(text,x,y);}
+
+function arrow(a,b,color){line(a,b,color,1.8);const theta=Math.atan2(b.y-a.y,b.x-a.x),n=7;ctx.beginPath();ctx.fillStyle=color;ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-n*Math.cos(theta-.43),b.y-n*Math.sin(theta-.43));ctx.lineTo(b.x-n*Math.cos(theta+.43),b.y-n*Math.sin(theta+.43));ctx.closePath();ctx.fill();}
+
+function clipRegion(side){ctx.beginPath();const top=side===1?plot.top:origin.y,bottom=side===1?origin.y:plot.bottom;ctx.rect(plot.left,top,plot.right-plot.left,bottom-top);ctx.clip();}
+
+function waveAges(p){const maxAge=p.L/p.v1+7/Math.min(p.v1,p.v2),newest=state.mode==='pulse'?0:Math.floor(state.time*state.frequency+1e-9),oldest=state.mode==='pulse'?0:Math.max(0,Math.ceil((state.time-maxAge)*state.frequency));const ages=[];for(let n=oldest;n<=newest;n++){const age=state.time-n/state.frequency;if(age<=maxAge)ages.push(age);}return ages;}
+
+function drawGeometry(p){const center=screen({x:0,y:0}),inc=screen({x:-.8*p.c,y:-.8*p.s});worldLine({x:-.78,y:0},{x:.78,y:0},'#587984',1.2,[5,5]);arrow(inc,center,colors.incident);let dx,dy;if(p.regime==='refract'){dx=Math.cos(p.r);dy=Math.sin(p.r);}else{dx=-p.c;dy=p.s;}arrow(center,screen({x:.8*dx,y:.8*dy}),colors.outgoing);const rr=width<450?25:41;ctx.strokeStyle=colors.incident;ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(center.x,center.y,rr,-Math.PI/2,-Math.PI/2-p.a,true);ctx.stroke();ctx.strokeStyle=colors.outgoing;ctx.beginPath();if(p.regime==='refract')ctx.arc(center.x,center.y,rr,Math.PI/2,Math.PI/2-p.r,true);else ctx.arc(center.x,center.y,rr,-Math.PI/2,-Math.PI/2+p.a);ctx.stroke();
+ const size=width<450?11:13;label('i = '+state.angle+'°',center.x-rr-13,center.y-18,colors.incident,size,'right');
+ if(p.regime==='refract')label('r = '+(p.r*180/Math.PI).toFixed(1)+'°',center.x+rr+13,center.y+22,colors.outgoing,size,'left');else label('Reflection '+state.angle+'°',center.x+rr+13,center.y-33,colors.outgoing,width<450?10:12,'left');
+ label('Normal',center.x+12,Math.max(plot.top+15,center.y-.78*scale-11),colors.muted,width<450?10:12,'left');
+ if(p.regime==='critical'){arrow({x:center.x+6,y:center.y+5},{x:Math.min(plot.right-12,center.x+.75*scale),y:center.y+5},colors.muted);label('r = 90°',center.x+38,center.y+23,colors.muted,size,'left');}}
+function wavelengths(ages,p){if(state.mode!=='continuous')return;for(const kind of ['incident','outgoing']){const points=[];for(const age of ages){if(kind==='incident'&&age>=p.L/p.v1)continue;if(kind==='outgoing'&&age<=p.L/p.v1)continue;const q=screen(pointAt(0,age,p,kind));if(Math.abs(q.y-origin.y)>42&&Math.hypot(q.x-origin.x,q.y-origin.y)>.45*scale&&q.x>plot.left+25&&q.x<plot.right-25&&q.y>plot.top+25&&q.y<plot.bottom-25)points.push(q);}if(points.length<2)continue;const a=points[0],b=points[1],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy);if(len<21)continue;const color=colors[kind],nx=-dy/len,ny=dx/len;line(a,b,color,1.2);for(const q of [a,b])line({x:q.x-4*nx,y:q.y-4*ny},{x:q.x+4*nx,y:q.y+4*ny},color,1.2);label(kind==='incident'?'λ₁':p.regime==='refract'?'λ₂':'λ₁',(a.x+b.x)/2+nx*14,(a.y+b.y)/2+ny*14,color,width<450?11:13);}}
+
+function draw(){if(!width)return;const p=physics(),ages=waveAges(p);ctx.clearRect(0,0,width,height);ctx.fillStyle=depthColor(state.depth1);ctx.fillRect(0,0,width,origin.y);ctx.fillStyle=depthColor(state.depth2);ctx.fillRect(0,origin.y,width,height-origin.y);
+
+ ctx.save();ctx.beginPath();ctx.rect(plot.left,plot.top,plot.right-plot.left,plot.bottom-plot.top);ctx.clip();for(let x=-1.6;x<=1.6;x+=.2)worldLine({x,y:-1.6},{x,y:1.6},'rgba(69,114,126,.07)',.7);for(let y=-1.4;y<=1.4;y+=.2)worldLine({x:-2,y},{x:2,y},'rgba(69,114,126,.07)',.7);ctx.restore();
+
+ for(const kind of ['incident','outgoing']){ctx.save();clipRegion(kind==='incident'||p.regime!=='refract'?1:2);for(const age of ages)for(const seg of fronts(age,p))if(seg.kind===kind)worldLine(seg.a,seg.b,colors[kind],kind==='incident'?2.5:2.7);ctx.restore();}
+
+ line({x:plot.left,y:origin.y},{x:plot.right,y:origin.y},'#718c96',2);label('Depth boundary',width-20,origin.y-13,colors.ink,width<450?11:13,'right');
+
+ const source={x:-p.L*p.c,y:-p.L*p.s};worldLine({x:source.x+W*p.s,y:source.y-W*p.c},{x:source.x-W*p.s,y:source.y+W*p.c},'#8b9fa7',4);const sp=screen(source);label('Source',Math.max(40,sp.x-10),Math.max(plot.top+10,sp.y-W*p.s*scale-16),colors.muted,width<450?11:12);
+
+ if($('wavelength').checked)wavelengths(ages,p);if($('geometry').checked)drawGeometry(p);
+
+ const base=height-20,bar=.5*scale;line({x:22,y:base},{x:22+bar,y:base},colors.muted,1.4);for(const x of [22,22+bar])line({x,y:base-4},{x,y:base+4},colors.muted,1.4);label('50 cm',27+bar,base,colors.muted,11,'left');label(state.mode==='pulse'?'SINGLE PULSE':'CONTINUOUS WAVES',width-18,base,colors.muted,width<450?9:10,'right');
+
+ $('clock').textContent='t = '+state.time.toFixed(2)+' s';const first=arrival(-W,p);let text=state.time<first?'Wavefronts travel towards the depth boundary. Each part changes direction only on arrival.':p.regime==='total'?'Total internal reflection: the wave returns into region 1; no propagating wave crosses into region 2.':p.regime==='critical'?'At the critical angle: the limiting refraction direction is along the boundary. No wavefront advances into region 2.':Math.abs(state.depth1-state.depth2)<EPS?'Equal depths: speed, wavelength and direction stay the same.':state.angle===0?'Normal incidence: direction is unchanged, but speed and wavelength change.':state.depth2<state.depth1?'The refracted wave slows down, has a shorter wavelength and bends towards the normal.':'The refracted wave speeds up, has a longer wavelength and bends away from the normal.';if(state.mode==='pulse'&&ages.length===0)text='The pulse has left the view. Select Restart to send it again.';if(text!==lastStatus){$('status').textContent=text;lastStatus=text;}}
+
+function updateReadouts(){const p=physics(),pulse=state.mode==='pulse',transmit=p.regime==='refract';$('frequencyOut').textContent=state.frequency.toFixed(1)+' Hz';for(const n of [1,2]){$('depth'+n+'Out').textContent=state['depth'+n].toFixed(1)+' cm';$('v'+n).textContent=(p['v'+n]*100).toFixed(1);$('f'+n).textContent=pulse||n===2&&!transmit?'—':state.frequency.toFixed(1);$('lambda'+n).textContent=pulse||n===2&&!transmit?'—':(p['lambda'+n]*100).toFixed(1);$('region'+n+'Band').style.background=depthColor(state['depth'+n]);const other=n===1?2:1;const relation=state['depth'+n]===state['depth'+other]?'Same depth':state['depth'+n]>state['depth'+other]?'Deeper water':'Shallower water';$('region'+n+'Label').textContent=state['depth'+n].toFixed(1)+' cm · '+relation;}
+
+ $('angleOut').textContent=state.angle+'°';$('outgoingLegend').textContent=transmit?'Refracted':'Reflected';$('frequencyHint').textContent=pulse?'Frequency sets the spacing in continuous mode; a single pulse has no repeating frequency.':'One source sets the frequency in both regions.';
+
+ $('outcome').textContent=!transmit?p.regime==='critical'?'At the critical angle':'Total internal reflection':state.depth1===state.depth2?'Equal depths · no bending':state.angle===0?'Normal incidence · no bending':state.depth2<state.depth1?'Bends towards the normal':'Bends away from the normal';$('angleResult').textContent=p.regime==='total'?'Reflection angle = '+state.angle+'°':'r = '+(p.r*180/Math.PI).toFixed(1)+'°'+(p.regime==='critical'?' · grazing':'');$('criticalNote').textContent=p.critical===null?'No critical angle for this direction.':'Critical angle i꜀ = '+(p.critical*180/Math.PI).toFixed(1)+'° (shallow → deep).';
+
+ $('extension').hidden=transmit;$('extension').textContent=(p.regime==='critical'?'Critical-angle limit: r = 90°. ':'Total internal reflection. ')+'Extension beyond pp. 48–51. No propagating wave enters region 2; its speed readout is the model speed of that region.';
+
+ $('invariant').textContent=pulse?'A single pulse has no repeating frequency or wavelength. Speeds are shown for both water depths.':transmit?'Frequency is unchanged across the boundary. Wave speed and wavelength depend on depth.':'The reflected wave has the same frequency, speed and wavelength as the incident wave in region 1.';
+
+ $('play').textContent=state.playing?'Pause':'Play';$('continuous').setAttribute('aria-pressed',!pulse);$('pulse').setAttribute('aria-pressed',pulse);canvas.setAttribute('aria-label',transmit?'Solid teal incident wavefronts cross a horizontal depth boundary from upper region 1 into lower region 2 as solid orange refracted wavefronts. '+$('outcome').textContent+'.':'Solid teal incident and solid orange reflected wavefronts remain in upper region 1. '+$('outcome').textContent+'. No propagating wave enters region 2.');}
+
+function restart(){state.time=0;lastFrame=null;updateReadouts();draw();}
+
+function resize(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);width=rect.width;height=rect.height;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);plot={left:16,right:width-16,top:47,bottom:height-44};scale=Math.min((width-44)/3.1,(plot.bottom-plot.top)/2.7);origin={x:width/2,y:(plot.top+plot.bottom)/2};draw();}
+
+for(const id of ['frequency','depth1','depth2','angle'])$(id).addEventListener('input',()=>{state[id]=Number($(id).value);restart();});for(const id of ['geometry','wavelength'])$(id).addEventListener('change',draw);for(const mode of ['continuous','pulse'])$(mode).addEventListener('click',()=>{state.mode=mode;restart();});$('play').addEventListener('click',()=>{state.playing=!state.playing;lastFrame=null;updateReadouts();});$('restart').addEventListener('click',restart);$('step').addEventListener('click',()=>{state.playing=false;state.time+=.05;lastFrame=null;updateReadouts();draw();});$('playback').addEventListener('change',()=>{state.playback=Number($('playback').value);lastFrame=null;});document.addEventListener('visibilitychange',()=>{lastFrame=null;});function frame(now){if(lastFrame!==null&&state.playing&&!document.hidden)state.time+=Math.min((now-lastFrame)/1000,.1)*state.playback;lastFrame=now;if(state.playing)draw();requestAnimationFrame(frame);}new ResizeObserver(resize).observe(canvas);updateReadouts();resize();requestAnimationFrame(frame);
+
+</script>
+
+</body>
+
+</html>
+
