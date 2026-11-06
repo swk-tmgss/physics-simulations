@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Two-source Interference: Frequency and Phase Difference</title><style>
+:root{color-scheme:light;--ink:#182f3d;--muted:#526570;--paper:#f3f6f5;--line:#dce4e4;--one:#007f83;--two:#7652a0;--sum:#b94e12;--accent:#16495b}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1500px;margin:auto;padding:30px 32px 24px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:22px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:12px;font-weight:750;color:var(--accent);margin:0 0 7px}h1{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-.035em;margin:0 0 8px}header p{margin:0;color:var(--muted)}.law{flex-shrink:0;text-align:center;padding:9px 20px;border-left:1px solid #bdcbcd}.law strong{font-size:25px}.law span{display:block;font-size:12px;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:22px;align-items:start}.stage,.controls,.graph-card{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}.stage-head{padding:16px 20px 9px;font-weight:650;font-size:14px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.stage-head select{font-size:14px}.diagram-note{font-size:12px;color:var(--muted);margin:0;padding:0 20px 12px}.hint{font-size:12px;color:var(--muted);margin:6px 0 0}.tank-wrap{position:relative;width:100%;aspect-ratio:4/3;max-height:620px;background:#f7fafb}.tank-wrap canvas{position:absolute;inset:0;width:100%;height:100%;display:block}#tank{touch-action:none;cursor:crosshair}#overlay{pointer-events:none}#gl{touch-action:none;cursor:grab}#gl:active{cursor:grabbing}.legend{padding:10px 20px 12px;border-top:1px solid var(--line);font-size:12px}.colour-bar{height:10px;border-radius:4px;background:linear-gradient(90deg,rgb(43,112,170),rgb(247,249,245),rgb(218,104,36));margin:7px 0 3px}.legend.amplitude .colour-bar{background:linear-gradient(90deg,rgb(247,249,245),rgb(218,104,36))}.legend-labels{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}.guide-legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--muted)}.guide-legend span::before{content:'';display:inline-block;width:19px;margin-right:5px;vertical-align:middle;border-top:2px dashed #334b76}.guide-legend .anti::before{border-top:2px solid #8a3b10}.guide-legend .source1::before{border-top:2px solid var(--one)}.guide-legend .source2::before{border-top:2px solid var(--two)}button,select{font:inherit;min-height:42px;border:1px solid #c9d5d8;border-radius:8px;color:var(--ink);background:white;padding:8px 12px;cursor:pointer}button:hover{background:#edf3f4}button.primary{background:var(--accent);color:white;border-color:var(--accent);min-width:82px}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,canvas:focus-visible{outline:3px solid #347fb5;outline-offset:2px}.transport{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:13px 18px;border-top:1px solid var(--line)}.speed{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}.speed select{font-size:13px;padding:7px}.timeline{padding:9px 20px 15px;border-top:1px solid var(--line)}.timeline label,.control>label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}output{color:var(--accent);font-variant-numeric:tabular-nums}input[type=range]{width:100%;margin:8px 0 2px;accent-color:var(--accent);height:24px;cursor:pointer}.range-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}.controls{padding:22px}.controls h2{font-size:17px;margin:0 0 18px}.control{margin-bottom:20px}.probe-controls{padding-top:15px;border-top:1px solid var(--line)}.probe-controls h3{font-size:15px;margin:0 0 12px}.shortcuts{display:flex;gap:7px;flex-wrap:wrap}.shortcuts button{font-size:13px;padding:8px 11px}.toggles{border-top:1px solid var(--line);padding-top:15px;display:grid;gap:7px;margin-top:17px}.toggles label{display:flex;align-items:center;gap:8px;min-height:27px;font-size:13px;cursor:pointer}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);flex-shrink:0}.fixed{padding:12px;background:#eef5f4;border-radius:9px;font-size:12px;color:var(--muted);margin:17px 0 0}.camera-controls{padding:12px 20px;border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap}.camera-controls p{flex:1;min-width:180px;margin:0;font-size:12px;color:var(--muted)}.notice{font-size:12px;color:#713d16;margin:8px 2px;min-height:18px}.probe-card{margin-top:18px}.classification{padding:12px 20px;background:#eaf5f2;border-bottom:1px solid var(--line)}.classification[data-kind=destructive]{background:#f1edf8}.classification[data-kind=intermediate]{background:#fff5e9}.classification strong{display:block;font-size:16px}.classification span{font-size:12px;color:var(--muted)}.probe-body{display:grid;grid-template-columns:140px minmax(0,1fr)}#particle{width:100%;height:212px;background:#fff8f2;border-right:1px solid var(--line);display:block}.probe-data{padding:13px 16px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px 14px;margin:0;font-size:12px}.metrics dt{color:var(--muted)}.metrics dd{margin:0;font-weight:650;font-variant-numeric:tabular-nums}.equation{display:grid;grid-template-columns:1fr 13px 1fr 13px 1fr;gap:4px;align-items:center;text-align:center;margin-top:13px}.term{padding:7px 3px;background:#f4f8f8;border-radius:7px}.term span{font-size:11px}.term strong{font-size:22px;display:block;font-variant-numeric:tabular-nums}.one{color:var(--one)}.two{color:var(--two)}.result{color:var(--sum)}.term.result{background:#fff4eb}.phase-note{font-size:12px;color:var(--muted);margin:10px 0 0}.graph-card{margin-top:18px}#traces{display:block;width:100%;height:250px;background:#f7fafb}#traces.expanded{height:510px}.learning{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:24px 0 18px}.learning article{border-top:2px solid #c9d8da;padding-top:12px}.learning h3{font-size:14px;margin:0 0 5px}.learning p{font-size:13px;color:var(--muted);margin:0}details{border-top:1px solid var(--line);padding:14px 0;font-size:13px;color:var(--muted)}summary{cursor:pointer;font-weight:600;color:var(--ink)}details p{max-width:1100px;margin:10px 0}footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:13px}[hidden]{display:none!important}
+@media(max-width:950px){main{padding:20px}.layout{grid-template-columns:minmax(0,1fr)}.controls{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.controls h2,.fixed{grid-column:1/-1}.probe-controls{grid-column:1}.toggles{grid-column:2;grid-row:3;align-self:start;margin-top:0}}
+@media(max-width:520px){main{padding:16px 12px}.law{display:none}header p{font-size:13px}h1{font-size:25px}.eyebrow{font-size:10px}.stage-head{padding:12px;gap:7px}.stage-head select{width:100%;font-size:14px}.diagram-note{padding:0 12px 10px;font-size:11px}.legend{padding:9px 12px}.transport{padding:12px;gap:7px}.transport button{font-size:13px;padding:8px 10px}.timeline{padding:12px}.controls{display:block;padding:18px}.toggles{margin-top:17px}.classification{padding:12px}.probe-body{grid-template-columns:95px minmax(0,1fr)}#particle{height:260px}.probe-data{padding:10px}.metrics{grid-template-columns:1fr 1fr;font-size:11px;gap:8px}.term strong{font-size:17px}.term span{font-size:9px}.equation{gap:1px;grid-template-columns:1fr 8px 1fr 8px 1fr}.phase-note{font-size:11px}.learning{grid-template-columns:1fr;gap:18px}.camera-controls{padding:12px}.notice{font-size:11px}}
+
+.front-legend{padding:11px 20px;border-top:1px solid var(--line);background:#fff}.front-keys{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:13px}.front-key{display:flex;align-items:center;gap:8px}.swatch{width:32px;border-top:2px solid currentColor;flex-shrink:0}.swatch.trough{border-top-style:dashed;opacity:.75}.front-legend p{font-size:12px;color:var(--muted);margin:9px 0 0}.clock{display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px 18px;font-size:13px;padding:9px 20px;border-top:1px solid var(--line);background:#f7fafb}.clock .hint{width:100%;margin:0}.inspection{background:#f2f6f6}.probe-controls .shortcuts{margin-top:12px}#playStatus{min-height:18px}#tankWrap{max-height:590px}.probe-card{margin-top:12px}.notice:empty{display:none}
+@media(max-width:520px){.front-legend{padding:10px 12px}.front-keys{gap:8px 12px;font-size:11px}.swatch{width:24px}.clock{padding:9px 12px}.transport{gap:7px}.inspection{width:auto}}
+
+.distance-summary{padding:12px 20px;background:#f0f6f6;border-top:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums}
+.distance-summary strong{display:block}.distance-key{display:flex;gap:8px 24px;flex-wrap:wrap;margin-bottom:8px;font-weight:650}.distance-summary .hint{margin-top:5px}
+.metrics.distance-hidden{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:520px){.distance-summary{padding:12px;font-size:13px}.distance-key{display:grid;gap:7px}.distance-summary strong{font-size:13px}}
+
+.snap-buttons{display:grid;gap:8px}.snap-buttons button{text-align:left;padding:10px 12px;font-size:13px;line-height:1.35;display:flex;gap:10px;align-items:center}.snap-buttons button::before{content:'○';font-size:19px;flex:none}.snap-buttons button[aria-pressed=true]{background:#16495b;border-color:#16495b;color:white}.snap-buttons button[aria-pressed=true]::before{content:'✓'}.snap-buttons small{display:block;font-size:11px;opacity:.85}.snap-status{background:#eef5f4;border-radius:7px;padding:10px;margin-top:10px;min-height:64px}.snap-buttons+ .hint{margin-top:8px}.toggles input:disabled{cursor:not-allowed}.crest-hint{flex-basis:100%;margin:0;font-size:12px;color:var(--muted)}
+header>div:first-child{min-width:0}.law{max-width:265px}.law strong{font-size:19px}.presets button{display:block;width:100%;margin:6px 0;text-align:left;font-size:12px}.presets h3{font-size:14px}.fixed hr{border:0;border-top:1px solid #c9d8da;margin:10px 0}.metrics dd{overflow-wrap:anywhere}.shortcuts{gap:4px}.shortcuts button{padding:6px 8px;min-height:36px}.controls .toggles{grid-row:auto}.controls .control{min-width:0}#guideNote{padding:9px;background:#eef5f4;border-radius:6px}
+@media(max-width:950px){.law{display:none}.controls .presets,.controls .probe-controls,.controls .toggles{grid-column:auto}.controls{align-items:start}}@media(max-width:520px){.controls{display:block}.metrics{grid-template-columns:1fr 1fr}}
+
+/* Source phase is a separate explanatory view, not a tank coordinate. */
+.layout{grid-template-rows:auto 1fr}
+.wave-column{grid-column:1;grid-row:1 / span 2;min-width:0}
+.phase-card{grid-column:2;grid-row:1;background:white;border:1px solid var(--line);border-radius:16px;padding:17px 16px;min-width:0}
+.layout>.controls{grid-column:2;grid-row:2}
+.phase-card h2{font-size:17px;margin:0 0 4px;line-height:1.3}
+.phase-intro,.phase-reference,.phase-explanation{font-size:12px;line-height:1.5;color:var(--muted);margin:5px 0 0}
+.phase-legend{display:flex;gap:18px;justify-content:center;font-size:13px;font-weight:650;margin-top:8px}
+.phase-dial-wrap{min-width:0;align-self:center}
+#sourcePhaseDial{display:block;width:100%;height:232px}
+.phase-values{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:5px 0 0;font-variant-numeric:tabular-nums}
+.phase-values>div{background:#f3f8f8;border-radius:8px;padding:8px;min-width:0}
+.phase-values dt{font-size:12px;line-height:1.4}
+.phase-values dd{margin:3px 0 0;font-weight:700;font-size:23px;line-height:1.3;overflow-wrap:anywhere}
+.phase-values .phase-difference{grid-column:1/-1;background:#fff5ed}
+.phase-difference dd{font-size:21px;color:var(--sum)}
+.phase-values small{display:block;color:var(--muted);font-size:11px;line-height:1.45;margin-top:4px;font-weight:400}
+.phase-explanation{border-top:1px solid var(--line);padding-top:9px;margin-top:10px}
+@media(max-width:950px){
+ .layout{grid-template-rows:auto auto auto}
+ .phase-card{grid-column:1;grid-row:1}
+ .wave-column{grid-column:1;grid-row:2}
+ .layout>.controls{grid-column:1;grid-row:3}
+ .phase-content{display:grid;grid-template-columns:minmax(230px,1fr) minmax(240px,1fr);gap:20px;align-items:center}
+ #sourcePhaseDial{max-width:320px;margin:auto}
+}
+@media(max-width:520px){.phase-card{padding:15px 13px}.phase-content{display:block}#sourcePhaseDial{height:220px}.phase-values dd{font-size:22px}.phase-difference dd{font-size:20px}}
+</style></head><body><main><header><div><p class="eyebrow">Interference</p><h1>Two-source Interference: Frequency and Phase Difference</h1><p>Compare a fixed interference pattern with moving reinforcement and cancellation lines.</p></div><div class="law"><strong>λ₁ = v/f₁ · λ₂ = v/f₂</strong><span>Frequency + initial phase → interference at P</span></div></header>
+<div class="layout"><section class="wave-column" aria-label="Moving wavefronts and observation point">
+<div class="stage"><div class="stage-head" id="sourceHeading">Two sources · equal frequencies</div><p class="diagram-note">Solid circles are crests; dashed circles are troughs. Teal comes from S₁ and purple from S₂. Drag P or click the diagram; focus the diagram and use arrow keys to move P. Snapping constrains its position.</p>
+<div class="transport"><button id="play" class="primary">Play</button><button id="restart">Restart</button><button id="step">Step +0.05 s</button><label class="speed" for="playback">Motion speed <select id="playback"><option value="0.1">0.1× · very slow</option><option value="0.25" selected>0.25× · slow</option><option value="0.5">0.5×</option><option value="1">1× · normal</option></select></label><button class="inspection" id="crest">Wave 1 crest at P</button><button class="inspection" id="quarter">Advance ¼ of S₁ cycle</button><p class="crest-hint" id="crestHint" hidden></p></div>
+<div class="clock"><span>Elapsed simulation time <output id="timeOut">0.00 s</output></span><span id="phaseClock">Cycle phase: 0.00 T</span><p class="hint" id="playStatus" role="status">Paused. Press Play to start.</p></div>
+<div class="tank-wrap" id="tankWrap"><canvas id="tank" role="img" tabindex="0" aria-label="Moving circular crests and troughs from two sources, with draggable observation point P.">This simulation requires Canvas support.</canvas></div>
+<div class="distance-summary" id="distanceSummary" data-distance>
+<div class="distance-key" id="distanceKey"><span class="one" id="distanceOne"></span><span class="two" id="distanceTwo"></span></div>
+<strong>Path difference Δ = |S₂P − S₁P|</strong><output id="differenceSummary"></output>
+<p class="hint">Distances are measured between the source centres and P. Values are rounded: cm to 2 decimal places; multiples of λ to 3. Double-headed arrows measure distance, not wave direction.</p></div>
+<div class="front-legend"><div class="front-keys"><span class="front-key one"><i class="swatch"></i>S₁ crest · +1 cm</span><span class="front-key two"><i class="swatch"></i>S₂ crest · +1 cm</span><span class="front-key one trough-key"><i class="swatch trough"></i>S₁ trough · −1 cm</span><span class="front-key two trough-key"><i class="swatch trough"></i>S₂ trough · −1 cm</span></div><p>These circles show the individual contributions. The actual water displacement at P is their sum. Neighbouring crests are λ₁ apart for S₁ and λ₂ apart for S₂; a trough lies halfway between them.</p></div></div>
+<p class="notice" id="notice" role="status"></p>
+<div class="stage probe-card"><div class="classification" id="classification" data-kind="constructive"><strong id="kind">At P: constructive · maximum reinforcement</strong><span id="kindNote">The particle oscillates; it does not stay at a crest.</span></div><div class="probe-body"><canvas id="particle" role="img" aria-label="Actual vertical displacement of the particle at P."></canvas><div class="probe-data"><dl class="metrics"><div data-distance><dt>Distance r₁ / cm</dt><dd id="r1"></dd></div><div data-distance><dt>Distance r₂ / cm</dt><dd id="r2"></dd></div><div data-distance><dt>Δ / cm</dt><dd id="delta"></dd></div><div data-distance><dt id="ratioLabel">Δ / wavelength</dt><dd id="ratio"></dd></div><div><dt id="amplitudeLabel">Amplitude / cm</dt><dd id="amplitude" class="result"></dd></div><div><dt>Arrival phase lag at P</dt><dd id="phase"></dd></div></dl><div class="equation"><div class="term one"><span>y₁ / cm</span><strong id="y1"></strong></div><span>+</span><div class="term two"><span>y₂ / cm</span><strong id="y2"></strong></div><span aria-label="approximately equals">≈</span><div class="term result"><span>y / cm</span><strong id="sum"></strong></div></div><p class="phase-note">Displacements are rounded; the model adds unrounded values.</p><p class="phase-note" id="phaseNote"></p></div></div></div>
+
+<div class="graph-card" id="graphCard" hidden><div class="stage-head" id="graphTitle">Time graphs at fixed P</div><p class="diagram-note" id="graphNote">The curves update when P or the settings change. The current-time cursor follows elapsed seconds.</p><canvas id="traces" class="expanded" role="img" aria-label="Two explanatory contribution graphs and the resultant displacement against elapsed time at fixed P."></canvas></div>
+</section>
+<section class="phase-card" aria-labelledby="sourcePhaseTitle">
+<h2 id="sourcePhaseTitle">Phase at the sources</h2>
+<p class="phase-intro">Before travel to P. The arrival phases at P also include travel time.</p>
+<div class="phase-content"><div class="phase-dial-wrap">
+<div class="phase-legend"><span class="one">▲ S₁</span><span class="two">○ S₂</span></div>
+<canvas id="sourcePhaseDial" role="img" aria-label="Source phases: S₁ 0 degrees, S₂ 0 degrees. Zero phase difference; the vectors overlap.">Rotating phase vectors for S₁ and S₂.</canvas>
+<p class="phase-reference">Anticlockwise rotation. <strong>0° = maximum upward displacement.</strong></p>
+</div><dl class="phase-values">
+<div class="one"><dt>S₁ phase φ₁</dt><dd id="sourcePhaseOne">0.0°</dd></div>
+<div class="two"><dt>S₂ phase φ₂</dt><dd id="sourcePhaseTwo">0.0°</dd></div>
+<div class="phase-difference"><dt>S₂ phase lag behind S₁<br>φ₁ − φ₂ · within one cycle</dt><dd id="sourcePhaseDifference">0.0°</dd><small id="sourcePhaseTotal">Accumulated lag: 0.0°</small><small id="sourcePhaseArcNote">In phase: the vectors overlap. 0° ≡ 360°.</small></div>
+</dl></div>
+<p class="phase-explanation">The vectors represent oscillation phase; the sources themselves move vertically. Negative accumulated lag means S₂ leads S₁. Values are rounded.</p>
+</section>
+<aside class="controls" aria-label="Simulation controls"><h2>Explore the wavefronts</h2>
+<div class="control"><label for="f1">S₁ frequency <output id="f1Out">1.00 Hz</output></label><input id="f1" type="range" min="0.5" max="2" step="0.01" value="1"><div class="range-ends"><span>0.50 Hz</span><span>2.00 Hz</span></div><p class="hint"><span class="one">λ₁: <strong id="lambda1"></strong> · T₁: <strong id="period1"></strong></span></p></div>
+<div class="control"><label for="f2">S₂ frequency <output id="f2Out">1.00 Hz</output></label><input id="f2" type="range" min="0.5" max="2" step="0.01" value="1"><div class="range-ends"><span>0.50 Hz</span><span>2.00 Hz</span></div><p class="hint"><span class="two">λ₂: <strong id="lambda2"></strong> · T₂: <strong id="period2"></strong></span></p></div>
+<div class="control"><label for="initialLag">S₂ initial phase lag behind S₁ <output id="initialLagOut">0°</output></label><input id="initialLag" type="range" min="0" max="360" step="1" value="0"><div class="range-ends"><span>0°</span><span>360°</span></div><div class="shortcuts" aria-label="Initial phase presets"><button data-lag="0">0°</button><button data-lag="90">90°</button><button data-lag="180">180°</button><button data-lag="270">270°</button><button data-lag="360">360°</button></div><p class="hint">Sets the lag at t = 0. With different frequencies, the lag then changes.</p><p class="hint">Current source lag, S₂ behind S₁:<br><strong id="sourceLag"></strong></p></div>
+<div class="control presets"><h3>Compare patterns</h3><button id="presetSame">Same frequency, in phase</button><button id="presetOpposite">Same frequency, antiphase</button><button id="presetDifferent">Slightly different frequencies</button><p class="hint">Show both guide sets below to compare their motion.</p><p class="hint" id="repeatTime"></p></div>
+<div class="control"><label for="separation">Source separation D <output id="separationOut">80 cm</output></label><input id="separation" type="range" min="30" max="120" step="1" value="80"><div class="range-ends"><span>30 cm</span><span>120 cm</span></div></div>
+<div class="probe-controls"><h3>Snap observation point P</h3><p class="hint">Select any combination. If any intersection option is on, P snaps only to selected intersections. Otherwise, P snaps to the selected guide lines at the instant of placement. Turn all off for free movement. Drag P or click the tank to snap at the current instant. P stays fixed as time advances.</p><div class="snap-buttons" role="group" aria-label="Independent P snapping options">
+<button id="snapCC" aria-pressed="false"><span>Solid + solid<small>Constructive · crest + crest</small></span></button>
+<button id="snapTT" aria-pressed="false"><span>Dashed + dashed<small>Constructive · trough + trough</small></span></button>
+<button id="snapCT" aria-pressed="false"><span>Solid + dashed<small>Destructive · crest + trough</small></span></button>
+<button id="snapAnti" aria-pressed="false"><span><span id="antiSnapLabel">Antinodal lines</span><small>Matching arrival phases</small></span></button>
+<button id="snapNode" aria-pressed="false"><span><span id="nodeSnapLabel">Nodal lines</span><small>Opposite arrival phases</small></span></button></div>
+<p class="hint snap-status" id="snapStatus" role="status">Free movement. No snap selected.</p><p class="hint">Arrow keys move P. With snapping, repeated presses accumulate until another allowed point is reached. P stays outside the 3 cm source markers.</p></div>
+<div class="toggles"><label><input type="checkbox" id="troughs" checked>Show troughs</label><label><input type="checkbox" id="nodes"><span id="nodeToggleLabel">Show nodal guides</span></label><label><input type="checkbox" id="antinodes"><span id="antiToggleLabel">Show antinodal guides</span></label><label><input type="checkbox" id="paths" checked>Show distances and path difference</label><p class="hint" id="guideNote"></p><label><input type="checkbox" id="graphs">Show time graphs</label></div>
+<div class="fixed">Wave speed: <strong>30 cm/s</strong><br>Component amplitudes: <strong>1 cm each</strong><p class="hint">Playback speed changes timing only. The sources were already running before t = 0.</p></div></aside></div>
+<section class="learning" aria-label="Teaching prompts"><article><h3>1 · A stationary pattern</h3><p>Choose Same frequency, in phase. Show both guide sets and press Play. The circles move, but nodal and antinodal lines stay fixed. Snap P to a nodal line: it stays at equilibrium.</p></article><article><h3>2 · Shift the source phase</h3><p>Choose Same frequency, antiphase. The centre line is now a node. Try 90°: the pattern shifts, then remains stationary during playback. Constant source phase difference does not have to be zero.</p></article><article><h3>3 · Moving cancellation lines</h3><p>Choose Slightly different frequencies and show both guide sets. Snap P to a cancellation line, then play. P stays fixed while the line moves away. The cancellation at P is temporary. Increase the frequency difference to make the guide pattern change faster.</p></article></section>
+<details><summary>Physics, equations and controls</summary>
+<p><strong>Teaching connection:</strong> DSEPHY_TE_3B05, printed pp. 63–71. The unequal-frequency example extends the textbook's stationary interference pattern. Diagrams are newly drawn.</p>
+<p><strong>Model:</strong> v = 30 cm/s, A = 1 cm, λⱼ = v/fⱼ. Sources are at (−D/2, 0) and (+D/2, 0). θ₁ = 2πf₁(t − r₁/v), θ₂ = 2πf₂(t − r₂/v) − δ₀; y₁ = A cos θ₁, y₂ = A cos θ₂, y = y₁ + y₂. δ₀ is the initial source lag in radians. The current source lag is δ₀ + 2π(f₁ − f₂)t, displayed modulo one cycle. Negative total lag means S₂ leads S₁.</p>
+<p><strong>Rotating vectors:</strong> source phase φ₁ = 360°f₁t and φ₂ = 360°f₂t − δ₀, with δ₀ in degrees here. The dial uses the same cosine reference as the waves: 0° at the top is maximum upward displacement; phase increases anticlockwise (90° left, 180° bottom, 270° right). Equal-length teal and purple vectors show stages of oscillation, not spatial directions of source motion. The orange arc runs anticlockwise from S₂ to S₁ through the equivalent lag within one cycle; the signed accumulated lag is 360°(f₁ − f₂)t + δ₀. Coincident vectors have zero angular separation, including 360° multiples. These are source phases before propagation, distinct from the arrival phases at P.</p>
+<p><strong>Guides:</strong> arrival-phase lag θ₁ − θ₂ = 2πn gives matching phases; θ₁ − θ₂ = (2n + 1)π gives opposite phases. Equal frequencies give stationary antinodal and nodal lines, respectively. Different frequencies give moving instantaneous reinforcement and cancellation lines. These are not permanent nodes or antinodes. A fixed point does not remain cancelled. A momentary zero displacement alone does not identify a cancellation line.</p>
+<p><strong>Envelope:</strong> y = 2A cos[(θ₁ − θ₂)/2] cos[(θ₁ + θ₂)/2]. The readout 2A |cos[(θ₁ − θ₂)/2]| is a constant resultant amplitude only for equal frequencies. Otherwise it is a changing envelope. The guide pattern repeats every 1/|f₂ − f₁| seconds; the two individual wave displays need not repeat together then.</p>
+<p><strong>Circles and distances:</strong> solid circles are individual crests (+1 cm), dashed circles are troughs (−1 cm). Two crests give +2 cm, two troughs give −2 cm, and a crest with a trough gives zero at placement. Measurements use source centres; S₁P is measured in λ₁ and S₂P in λ₂. When the wavelengths differ, the same distance corresponds to different numbers of cycles. Source phase also matters, so path difference alone does not determine interference. Readouts are rounded; calculations are not.</p>
+<p><strong>Snapping:</strong> five independent options; enabled intersection types take priority over line snapping. Required guides and troughs are temporarily shown and their previous visibility restored on deselection. With only line options enabled, placement uses the nearest selected line at the current instant. With all off, P moves freely. P stays fixed during playback, restarting, stepping and time shortcuts, even when the selected line moves away. If no eligible target exists, free placement is used with a notice. The 3 cm source-marker exclusions always apply.</p>
+<p><strong>Controls:</strong> drag P, click the tank, or focus the diagram and use arrow keys (1 cm requests, accumulated for snapping). Physical settings reset time, preserve play/pause and selected snap options, and reapply placement at t = 0. Initial-phase presets also reset time. Comparison presets keep separation and display choices. Play runs continuously; Step advances 0.05 s and pauses; the quarter-cycle shortcut advances 1/(4f₁) s and pauses. Wave 1 crest at P finds its next crest, or the present crest. Display and speed changes preserve time.</p>
+<p><strong>Time graphs:</strong> both components and their sum at P's current fixed location. The window shows at least two periods of the slower source and, for unequal frequencies, at least one guide-pattern repeat time. Curves extend ahead of the cursor and scroll as time advances. They are predictions at the selected P, not a record of past P positions; there is no assumption of a common period.</p>
+<p><strong>Idealisation:</strong> equal component amplitudes everywhere, uniform speed, no attenuation, boundary reflections or startup transients. Vertical displacement is exaggerated. All code is embedded for offline use.</p></details>
+<footer>Two-source interference · Frequency and phase · Textbook connection pp. 63–71 · Offline HTML</footer>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id),TAU=2*Math.PI,R=3,EPS=1e-7;
+const C={one:'#007f83',two:'#7652a0',sum:'#b94e12',ink:'#182f3d',muted:'#526570',node:'#334b76',anti:'#8a3b10',grid:'#e3ebec'};
+const state={f1:1,f2:1,initialLag:0,separation:80,px:0,py:90,time:0,playing:false,playback:.25,snapModes:new Set()};
+let lastFrame=null,dragging=false,guideCache=[],rect=null;const surfaces=new Map();
+let lockedOverlays=[],keyDx=0,keyDy=0,noticeTimer=null;
+const snapButtons={cc:'snapCC',tt:'snapTT',ct:'snapCT',anti:'snapAnti',node:'snapNode'};
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}function clean(x){return Math.abs(x)<1e-10?0:x;}function signed(x){x=clean(x);return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2);}
+function timing(s=state){return {T:1/s.f1,T2:1/s.f2,L1:30/s.f1,L2:30/s.f2,df:s.f2-s.f1,equal:Math.abs(s.f1-s.f2)<1e-12};}
+function mod1(x){return ((x%1)+1)%1;}
+function sourceCycles(t=state.time,s=state){return (s.f1-s.f2)*t+s.initialLag/360;}
+// Full-precision source angles; display rounding never feeds back into the model.
+function sourcePhaseMetrics(t=state.time,s=state){
+ const phi1=360*s.f1*t,phi2=360*s.f2*t-s.initialLag,total=sourceCycles(t,s)*360;
+ const wrap=degrees=>{const value=mod1(degrees/360)*360;return value<1e-8||360-value<1e-8?0:value;};
+ return {phi1,phi2,total,one:wrap(phi1),two:wrap(phi2),difference:wrap(total)};
+}
+function phaseDegrees(degrees){return ((Math.round(degrees*10)/10)%360).toFixed(1)+'°';}
+function totalDegrees(degrees){const rounded=Math.round(degrees*10)/10;return (rounded>0?'+':rounded<0?'−':'')+Math.abs(rounded).toFixed(1)+'°';}
+function phaseVectorPoint(degrees,radius=1){const angle=-Math.PI/2-degrees*Math.PI/180;return {x:radius*Math.cos(angle),y:radius*Math.sin(angle)};}
+function drawSourcePhase(){
+ const {c,w,h}=surfaces.get('sourcePhaseDial'),m=sourcePhaseMetrics(),cx=w/2,cy=h/2,r=Math.min(80,(w-76)/2,(h-60)/2),arcR=r*.64;
+ c.clearRect(0,0,w,h);
+ c.fillStyle='#f7fafb';c.strokeStyle='#c9d8da';c.lineWidth=1.3;c.beginPath();c.arc(cx,cy,r,0,TAU);c.fill();c.stroke();
+ for(let degree=0;degree<360;degree+=30){const a=phaseVectorPoint(degree,r),b=phaseVectorPoint(degree,r-(degree%90?4:7));line(c,cx+a.x,cy+a.y,cx+b.x,cy+b.y,'#9eafb6',1);}
+ line(c,cx-r,cy,cx+r,cy,'#d9e3e5',1,[3,4]);line(c,cx,cy-r,cx,cy+r,'#d9e3e5',1,[3,4]);
+ for(const degree of [0,90,180,270]){const p=phaseVectorPoint(degree,r+21);text(c,degree+'°',cx+p.x,cy+p.y,C.muted,11,'center');}
+ // A decreasing Canvas angle is anticlockwise. The sweep is the directed
+ // lag S2 -> S1, not the smaller unsigned angle between the two vectors.
+ if(m.difference>1e-8){
+  const start=-Math.PI/2-m.two*Math.PI/180,end=start-m.difference*Math.PI/180;
+  c.strokeStyle=C.sum;c.lineWidth=2.2;c.beginPath();c.arc(cx,cy,arcR,start,end,true);c.stroke();
+  const x=cx+arcR*Math.cos(end),y=cy+arcR*Math.sin(end),dx=Math.sin(end),dy=-Math.cos(end),size=Math.min(7,arcR*m.difference*Math.PI/180*.35);
+  c.fillStyle=C.sum;c.beginPath();c.moveTo(x,y);c.lineTo(x-dx*size-dy*size*.5,y-dy*size+dx*size*.5);c.lineTo(x-dx*size+dy*size*.5,y-dy*size-dx*size*.5);c.closePath();c.fill();
+ }
+ const p1=phaseVectorPoint(m.one,r),p2=phaseVectorPoint(m.two,r),close=Math.hypot(p1.x-p2.x,p1.y-p2.y)<10;
+ // Equal radii, contrasting stems and different tip markers preserve
+ // identification even when the two phases (and vectors) coincide.
+ line(c,cx,cy,cx+p1.x,cy+p1.y,'white',8);line(c,cx,cy,cx+p1.x,cy+p1.y,C.one,5);
+ const ux=p1.x/r,uy=p1.y/r;
+ c.beginPath();c.moveTo(cx+p1.x,cy+p1.y);c.lineTo(cx+p1.x-ux*13-uy*6,cy+p1.y-uy*13+ux*6);c.lineTo(cx+p1.x-ux*13+uy*6,cy+p1.y-uy*13-ux*6);c.closePath();c.fillStyle=C.one;c.fill();
+ if(!close)line(c,cx,cy,cx+p2.x,cy+p2.y,'white',6);
+ line(c,cx,cy,cx+p2.x,cy+p2.y,C.two,2.5);
+ const vx=p2.x/r,vy=p2.y/r;
+ c.beginPath();c.moveTo(cx+p2.x-vx*6,cy+p2.y-vy*6);c.lineTo(cx+p2.x-vx*14-vy*4,cy+p2.y-vy*14+vx*4);c.lineTo(cx+p2.x-vx*14+vy*4,cy+p2.y-vy*14-vx*4);c.closePath();c.fillStyle=C.two;c.fill();
+ c.beginPath();c.arc(cx+p2.x,cy+p2.y,4.5,0,TAU);c.fillStyle='white';c.fill();c.lineWidth=2.1;c.strokeStyle=C.two;c.stroke();
+ dot(c,cx,cy,C.ink,3);
+ $('sourcePhaseOne').textContent=phaseDegrees(m.one);$('sourcePhaseTwo').textContent=phaseDegrees(m.two);$('sourcePhaseDifference').textContent=phaseDegrees(m.difference);
+ $('sourcePhaseTotal').textContent='Accumulated lag: '+totalDegrees(m.total);
+ $('sourcePhaseArcNote').textContent=m.difference===0?'In phase: the vectors overlap. 0° ≡ 360°.':'Orange arc: anticlockwise from S₂ to S₁.';
+ $('sourcePhaseDial').setAttribute('aria-label',`Phase at the sources before propagation: S₁ ${phaseDegrees(m.one)}, S₂ ${phaseDegrees(m.two)}. S₂ lag behind S₁ ${phaseDegrees(m.difference)} within one cycle; accumulated lag ${totalDegrees(m.total)}. ${m.difference===0?'Vectors overlap.':'Orange arc goes anticlockwise from S₂ to S₁.'} 0 degrees is maximum upward displacement.`);
+}
+function arrivalCycles(x,y,t=state.time,s=state){const d=distances(x,y,s);return sourceCycles(t,s)-d.r1*s.f1/30+d.r2*s.f2/30;}
+
+function distances(x,y,s=state){return {r1:Math.hypot(x+s.separation/2,y),r2:Math.hypot(x-s.separation/2,y)};}
+function pointValues(x=state.px,y=state.py,t=state.time,s=state){const {r1,r2}=distances(x,y,s),y1=clean(Math.cos(TAU*s.f1*(t-r1/30))),y2=clean(Math.cos(TAU*(s.f2*(t-r2/30)-s.initialLag/360)));return {y1,y2,sum:clean(y1+y2)};}
+
+function pointMetrics(x=state.px,y=state.py,s=state,t=state.time){const {r1,r2}=distances(x,y,s),q=arrivalCycles(x,y,t,s),kind=Math.abs(q-Math.round(q))<EPS?'constructive':Math.abs(q-.5-Math.round(q-.5))<EPS?'destructive':'intermediate';let phase=mod1(q)*360;if(phase<1e-8||360-phase<1e-8)phase=0;return {r1,r2,delta:Math.abs(r2-r1),q,kind,phase,totalPhase:q*360,amplitude:clean(2*Math.abs(Math.cos(Math.PI*q)))};}
+
+
+function permitted(x,y,s=state){const d=distances(x,y,s);return x>=-120-1e-9&&x<=120+1e-9&&y>=-30-1e-9&&y<=150+1e-9&&d.r1>=R-1e-8&&d.r2>=R-1e-8;}
+function safePoint(x,y,s=state){x=clamp(x,-120,120);y=clamp(y,-30,150);let moved=false;for(const sx of [-s.separation/2,s.separation/2]){const dx=x-sx,d=Math.hypot(dx,y);if(d<R){moved=true;if(d<1e-12){x=sx;y=R;}else{x=sx+dx*R/d;y=y*R/d;}}}return {x,y,moved};}
+
+// On a phase contour: r2 = m*r1 + b. The intersection of the two
+// distance circles gives x and +/-y exactly. Polynomial boundary roots
+// split each branch at tank edges, tangencies and source exclusions.
+function polyValue(p,x){let y=0;for(let i=p.length-1;i>=0;i--)y=y*x+p[i];return y;}
+function polyRoots(p,lo,hi){
+ let scale=Math.max(...p.map(Math.abs));if(scale===0)return [];p=p.map(a=>a/scale);while(p.length>1&&Math.abs(p.at(-1))<1e-15)p.pop();
+ if(p.length===1)return [];if(p.length===2){const x=-p[0]/p[1];return x>=lo-1e-9&&x<=hi+1e-9?[clamp(x,lo,hi)]:[];}
+ const critical=polyRoots(p.slice(1).map((v,i)=>v*(i+1)),lo,hi),cuts=[lo,...critical,hi],out=[];
+ const tol=x=>1e-11*p.reduce((sum,a,i)=>sum+Math.abs(a)*Math.abs(x)**i,1);
+ for(const x of cuts)if(Math.abs(polyValue(p,x))<tol(x))out.push(x);
+ for(let i=1;i<cuts.length;i++){let a=cuts[i-1],b=cuts[i],fa=polyValue(p,a),fb=polyValue(p,b);if(fa*fb>=0)continue;for(let j=0;j<65;j++){const mid=(a+b)/2,fm=polyValue(p,mid);if(fa*fm<=0){b=mid;fb=fm;}else{a=mid;fa=fm;}}out.push((a+b)/2);}
+ return out.sort((a,b)=>a-b).filter((x,i,a)=>!i||x-a[i-1]>1e-7);
+}
+function contourParts(target,t=state.time,s=state){
+ const {L1,L2}=timing(s),D=s.separation,m=L2/L1,b=L2*(target-(sourceCycles(t,s)%1));
+ const maxR=Math.hypot(120+D/2,150);let lo=Math.max(R,(R-b)/m,(D-b)/(1+m)),hi=Math.min(maxR,(maxR-b)/m);
+ // Linear triangle inequalities, including equal-frequency limiting rays.
+ for(const [k,c] of [[1-m,D+b],[m-1,D-b]]){if(Math.abs(k)<1e-13){if(c < -1e-8)return [];}else if(k>0)hi=Math.min(hi,c/k);else lo=Math.max(lo,c/k);}
+ if(hi<lo-1e-8)return [];lo=Math.max(0,lo);hi=Math.max(lo,hi);
+ const xp=[-b*b/(2*D),-m*b/D,(1-m*m)/(2*D)],u=[xp[0]+D/2,xp[1],xp[2]],yp=[0,0,1,0,0];
+ for(let i=0;i<3;i++)for(let j=0;j<3;j++)yp[i+j]-=u[i]*u[j];
+ const at=(a,sign)=>{const x=polyValue(xp,a),h2=polyValue(yp,a);return {x,y:sign*Math.sqrt(Math.max(0,h2))};};
+ let cuts=[lo,hi];for(const [p,level] of [[xp,-120],[xp,120],[yp,0],[yp,900],[yp,22500]]){const q=[...p];q[0]-=level;cuts.push(...polyRoots(q,lo,hi));}
+ cuts=cuts.sort((a,b)=>a-b).filter((x,i,a)=>!i||x-a[i-1]>1e-8);const parts=[];
+ for(const sign of [1,-1]){
+  const add=(a,b)=>parts.push({lo:a,hi:b,at:r=>at(r,sign),target});
+  for(let i=1;i<cuts.length;i++)if(permitted(...Object.values(at((cuts[i-1]+cuts[i])/2,sign)),s))add(cuts[i-1],cuts[i]);
+  for(const a of cuts){const p=at(a,sign);if(permitted(p.x,p.y,s)&&!parts.some(g=>a>=g.lo-1e-8&&a<=g.hi+1e-8&&Math.hypot(g.at(a).x-p.x,g.at(a).y-p.y)<1e-6))add(a,a);}
+ }
+ return parts;
+}
+function allContours(mode,t=state.time,s=state){const {L1,L2}=timing(s),c=sourceCycles(t,s)%1,M=Math.hypot(120+s.separation/2,150),offset=mode==='node'?.5:0,parts=[];
+ for(let n=Math.ceil(c-M/L1-offset-1e-9);n<=Math.floor(c+M/L2-offset+1e-9);n++)for(const p of contourParts(n+offset,t,s))parts.push({...p,kind:mode==='node'?'N':'A',order:n});return parts;
+}
+function samplePart(g){const pts=[],at=u=>g.at(g.lo+(g.hi-g.lo)*(1-Math.cos(Math.PI*u))/2);
+ function segment(a,b,p,q,depth){const mid=(a+b)/2,r=at(mid),dx=q.x-p.x,dy=q.y-p.y,l2=dx*dx+dy*dy,f=l2?clamp(((r.x-p.x)*dx+(r.y-p.y)*dy)/l2,0,1):0,err=Math.hypot(r.x-p.x-f*dx,r.y-p.y-f*dy);
+  if(depth<16&&(err>.04||l2>4)){segment(a,mid,p,r,depth+1);segment(mid,b,r,q,depth+1);}else pts.push(q);
+ }const p=at(0);pts.push(p);if(g.hi>g.lo+1e-10)segment(0,1,p,at(1),0);return pts;
+}
+let guideKey='';
+function rebuildGuides(){const key=[state.f1,state.f2,state.initialLag,state.separation,sourceCycles()%1].join('|');if(key===guideKey)return;guideKey=key;guideCache=[];for(const mode of ['anti','node'])for(const part of allContours(mode))guideCache.push({...part,points:samplePart(part)});}
+function nearestGuide(x,y,mode='anti',s=state,t=state.time){let best=null,bestD=Infinity;
+ for(const g of allContours(mode,t,s)){
+  const score=a=>{const p=g.at(a);return (p.x-x)**2+(p.y-y)**2;},consider=a=>{const p=g.at(a),d=score(a);if(d<bestD&&permitted(p.x,p.y,s)){best=p;bestD=d;}};
+  const n=64,step=(g.hi-g.lo)/n,values=[];for(let i=0;i<=n;i++){const a=g.lo+step*i;values.push(score(a));consider(a);}
+  for(let i=1;i<n;i++)if(values[i]<=values[i-1]&&values[i]<=values[i+1]){let l=g.lo+step*(i-1),r=g.lo+step*(i+1);for(let j=0;j<60;j++){const a=l+(r-l)/3,b=r-(r-l)/3;if(score(a)<score(b))r=b;else l=a;}consider((l+r)/2);}
+ }return best;
+}
+function crossingAt(identity,t=state.time,s=state){
+ const {L1,L2}=timing(s),a=30*t+(identity.n1+identity.o1)*L1,b=30*t+(identity.n2+identity.o2-s.initialLag/360)*L2,D=s.separation;
+ if(a<R-1e-8||b<R-1e-8||a+b<D-1e-8||Math.abs(a-b)>D+1e-8)return null;
+ const x=(a-b)*(a+b)/(2*D),h2=((a+b)**2-D*D)*(D*D-(a-b)**2)/(4*D*D);
+ if(h2 < -1e-6)return null;const y=identity.sign*Math.sqrt(Math.max(0,h2));
+ return permitted(x,y,s)?{x,y,identity:{...identity}}:null;
+}
+function nearestCrossing(x,y,mode='cc',t=state.time,s=state){
+ const maxR=Math.hypot(120+s.separation/2,150),vt=30*t,{L1,L2}=timing(s),lag=s.initialLag/360,pairs=mode==='cc'?[[0,0]]:mode==='tt'?[[.5,.5]]:[[0,.5],[.5,0]];let best=null,bestD=Infinity;
+ for(const [o1,o2] of pairs){const n1lo=Math.ceil((R-vt)/L1-o1-1e-10),n1hi=Math.floor((maxR-vt)/L1-o1+1e-10),n2lo=Math.ceil((R-vt)/L2-o2+lag-1e-10),n2hi=Math.floor((maxR-vt)/L2-o2+lag+1e-10);
+ for(let n1=n1lo;n1<=n1hi;n1++)for(let n2=n2lo;n2<=n2hi;n2++)for(const sign of y<0?[-1,1]:[1,-1]){const p=crossingAt({n1,n2,o1,o2,sign},t,s);if(!p)continue;const d=(p.x-x)**2+(p.y-y)**2;if(d<bestD-1e-9){best=p;bestD=d;}}}return best;
+}
+
+function announce(message){clearTimeout(noticeTimer);$('notice').textContent=message;if(message)noticeTimer=setTimeout(()=>{$('notice').textContent='';},4500);}
+function updateSnapUI(){
+ for(const overlay of lockedOverlays){$(overlay.id).checked=overlay.checked;$(overlay.id).disabled=false;}lockedOverlays=[];
+ const required=new Set(Object.entries({ct:'troughs',tt:'troughs',anti:'antinodes',node:'nodes'}).filter(([mode])=>state.snapModes.has(mode)).map(([,id])=>id));
+ for(const id of required){lockedOverlays.push({id,checked:$(id).checked});$(id).checked=true;$(id).disabled=true;}
+ for(const [mode,id] of Object.entries(snapButtons))$(id).setAttribute('aria-pressed',String(state.snapModes.has(mode)));
+ document.querySelectorAll('.trough-key').forEach(el=>el.hidden=!$('troughs').checked);
+ const equal=timing().equal,names={cc:'solid + solid',tt:'dashed + dashed',ct:'solid + dashed',anti:equal?'antinodal lines':'reinforcement lines at placement',node:equal?'nodal lines':'cancellation lines at placement'};
+ const targets=placementModes();
+ $('snapStatus').textContent=targets.length?'P snaps only to '+targets.map(mode=>names[mode]).join(' or ')+'. '+(targets.some(mode=>mode==='cc'||mode==='tt'||mode==='ct')?'Intersection snapping takes priority; selected line guides remain visible. ':'')+'P stays fixed during playback.':'Free movement. No snap selected.';
+ $('crest').disabled=false;$('crest').title='';$('crestHint').hidden=true;
+ $('graphTitle').textContent='Displacement against time at fixed P';
+ $('graphNote').textContent='Two contributions and their sum at the selected fixed P. The seconds axis scrolls; curves ahead of the cursor are predictions. There is no assumed common period.';
+}
+function placementModes(s=state){const intersections=['cc','tt','ct'].filter(mode=>s.snapModes.has(mode));return intersections.length?intersections:['anti','node'].filter(mode=>s.snapModes.has(mode));}
+function nearestSelected(x,y,s=state,t=state.time){
+ let best=null,bestDistance=Infinity;
+ for(const mode of placementModes(s)){const candidate=(mode==='cc'||mode==='tt'||mode==='ct')?nearestCrossing(x,y,mode,t,s):nearestGuide(x,y,mode,s,t);if(!candidate)continue;const distance=Math.hypot(candidate.x-x,candidate.y-y);if(distance<bestDistance-1e-9){best=candidate;bestDistance=distance;}}
+ return best;
+}
+function placeTarget(x,y){x=clamp(x,-120,120);y=clamp(y,-30,150);
+ let p=state.snapModes.size?nearestSelected(x,y):safePoint(x,y);
+ if(!p){announce('No selected target is available inside the tank at this instant. P remains free until a target is available; your selections are retained.');p=safePoint(x,y);}
+ state.px=p.x;state.py=p.y;return p;
+}
+function selectSnap(mode){if(state.snapModes.has(mode))state.snapModes.delete(mode);else state.snapModes.add(mode);keyDx=keyDy=0;announce('');updateSnapUI();placeTarget(state.px,state.py);draw();}
+function keyMove(dx,dy){keyDx+=dx;keyDy+=dy;const x=state.px,y=state.py;keyDx=clamp(x+keyDx,-120,120)-x;keyDy=clamp(y+keyDy,-30,150)-y;placeTarget(x+keyDx,y+keyDy);if(state.snapModes.size===0||Math.hypot(state.px-x,state.py-y)>1e-7)keyDx=keyDy=0;announce('');draw();}
+function text(c,t,x,y,color=C.muted,size=12,align='left'){c.fillStyle=color;c.font=`${size}px system-ui, sans-serif`;c.textAlign=align;c.textBaseline='middle';c.fillText(t,x,y);}
+function line(c,x1,y1,x2,y2,color=C.grid,width=1,dash=[]){c.strokeStyle=color;c.lineWidth=width;c.setLineDash(dash);c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();c.setLineDash([]);}
+function dot(c,x,y,color,r=5){c.beginPath();c.arc(x,y,r,0,TAU);c.fillStyle=color;c.fill();c.strokeStyle='white';c.lineWidth=2;c.stroke();}
+function badge(c,t,x,y,color=C.ink){c.font='11px system-ui, sans-serif';const width=c.measureText(t).width+10,height=18;const sw=surfaces.get('tank').w;x=clamp(x,width/2+3,sw-width/2-3);c.fillStyle='rgba(255,255,255,.92)';c.fillRect(x-width/2,y-height/2,width,height);text(c,t,x,y,color,11,'center');return {x:x-width/2,y:y-height/2,w:width,h:height};}
+function mapPoint(p){return {x:rect.left+(p.x+120)*rect.scale,y:rect.top+(150-p.y)*rect.scale};}
+function phaseFraction(t=state.time,s=state){return mod1(t*s.f1);}
+
+function frontRadii(maxRadius,trough=false,t=state.time,s=state,source=1){const f=source===1?s.f1:s.f2,L=30/f,lag=source===1?0:s.initialLag/360,start=mod1(f*t-lag+(trough?.5:0))*L,result=[];for(let r=start;r<=maxRadius+1e-9;r+=L)if(r>=.05)result.push(r);return result;}
+
+function nextCrestTime(t=state.time,s=state){const base=distances(s.px,s.py,s).r1/30,T=1/s.f1;return Math.max(t,base+Math.ceil((t-base)/T-1e-10)*T);}
+function wavelengthMultiple(value,source=1){return Number((value*(source===1?state.f1:state.f2)/30).toFixed(3)).toString()+(source===1?'λ₁':'λ₂');}
+
+function distanceText(value,source=1){return `≈ ${value.toFixed(2)} cm (${wavelengthMultiple(value,source)})`;}
+
+function updateDistanceUI(){const m=pointMetrics(),shown=$('paths').checked;
+ $('distanceOne').textContent='S₁P '+distanceText(m.r1);$('distanceTwo').textContent='S₂P '+distanceText(m.r2,2);$('differenceSummary').textContent='Δ ≈ '+m.delta.toFixed(2)+' cm ('+wavelengthMultiple(m.delta,1)+(timing().equal?'':'; '+wavelengthMultiple(m.delta,2))+'). '+(timing().equal?'Source phase also matters.':'Different wavelengths: path difference alone does not determine interference.');
+ document.querySelectorAll('[data-distance]').forEach(el=>el.hidden=!shown);document.querySelector('.metrics').classList.toggle('distance-hidden',!shown);
+}
+function distanceArrow(c,a,p,color){const dx=p.x-a.x,dy=p.y-a.y,len=Math.hypot(dx,dy);if(len<1)return;const ux=dx/len,uy=dy/len;
+ // Leave marker faces unobscured; the numerical distance uses their centres.
+ const inset=Math.min(Math.max(7,3*rect.scale+2),len*.22),ax=a.x+ux*inset,ay=a.y+uy*inset,bx=p.x-ux*inset,by=p.y-uy*inset;
+ line(c,ax,ay,bx,by,'rgba(255,255,255,.95)',4.5);line(c,ax,ay,bx,by,color,1.7);
+ const size=Math.min(8,(len-2*inset)*.3);for(const [x,y,direction] of [[ax,ay,1],[bx,by,-1]]){c.beginPath();c.moveTo(x,y);c.lineTo(x+direction*ux*size-uy*size*.45,y+direction*uy*size+ux*size*.45);c.lineTo(x+direction*ux*size+uy*size*.45,y+direction*uy*size-ux*size*.45);c.closePath();c.fillStyle=color;c.fill();}
+}
+function distanceLabels(c,p,reserved,w){if(!$('paths').checked)return;const m=pointMetrics();let fallbackCount=0;
+ for(const [sx,color,name,value,id] of [[-state.separation/2,C.one,'S₁P',m.r1,'distanceOne'],[state.separation/2,C.two,'S₂P',m.r2,'distanceTwo']]){
+  const a=mapPoint({x:sx,y:0}),dx=p.x-a.x,dy=p.y-a.y,len=Math.hypot(dx,dy),label=name+' '+distanceText(value,sx<0?1:2);c.font='12px system-ui, sans-serif';const bw=c.measureText(label).width+14,bh=24;let placed=false;
+  if(w>=560&&len>=55)for(const fraction of [.5,.35,.65,.22,.78]){if(placed)break;for(const side of [-1,1]){const anchor={x:a.x+dx*fraction,y:a.y+dy*fraction},nx=-dy/len*side,ny=dx/len*side,offset=Math.abs(nx)*bw/2+Math.abs(ny)*bh/2+10,x=anchor.x+nx*offset,y=anchor.y+ny*offset,b={x:x-bw/2,y:y-bh/2,w:bw,h:bh};
+   if(b.x<rect.left+4||b.x+bw>rect.left+rect.width-4||b.y<rect.top+25||b.y+bh>rect.top+rect.height-4)continue;
+   if(reserved.some(r=>b.x<r.x+r.w+5&&b.x+bw+5>r.x&&b.y<r.y+r.h+5&&b.y+bh+5>r.y))continue;
+   // Avoid covering either measurement line with a label.
+   const crossed=[-state.separation/2,state.separation/2].some(sourceX=>{const q=mapPoint({x:sourceX,y:0});for(let j=0;j<=40;j++){const xx=q.x+(p.x-q.x)*j/40,yy=q.y+(p.y-q.y)*j/40;if(xx>b.x-3&&xx<b.x+bw+3&&yy>b.y-3&&yy<b.y+bh+3)return true;}return false;});if(crossed)continue;
+   const ex=clamp(anchor.x,b.x,b.x+bw),ey=clamp(anchor.y,b.y,b.y+bh);line(c,anchor.x,anchor.y,ex,ey,'rgba(255,255,255,.95)',3);line(c,anchor.x,anchor.y,ex,ey,color,1);
+   c.fillStyle='rgba(255,255,255,.96)';c.fillRect(b.x,b.y,bw,bh);text(c,label,x,y,color,12,'center');reserved.push(b);placed=true;break;
+  }}$(id).hidden=placed;if(!placed)fallbackCount++;
+ }$('distanceKey').hidden=fallbackCount===0;
+}
+function drawTank(){const {c,w,h}=surfaces.get('tank');c.clearRect(0,0,w,h);const scale=Math.min((w-60)/240,(h-45)/180);rect={left:44+(w-60-240*scale)/2,top:18+(h-45-180*scale)/2,scale,width:240*scale,height:180*scale};
+ c.fillStyle='#f7fafb';c.fillRect(rect.left,rect.top,rect.width,rect.height);c.save();c.beginPath();c.rect(rect.left,rect.top,rect.width,rect.height);c.clip();for(let x=-120;x<=120;x+=30){const p=mapPoint({x,y:0});line(c,p.x,rect.top,p.x,rect.top+rect.height,'#e4ecee',.7);}for(let y=-30;y<=150;y+=30){const p=mapPoint({x:0,y});line(c,rect.left,p.y,rect.left+rect.width,p.y,'#e4ecee',.7);}
+ for(const trough of [true,false]){if(trough&&!$('troughs').checked)continue;for(const [sx,color] of [[-state.separation/2,C.one],[state.separation/2,C.two]]){const p=mapPoint({x:sx,y:0}),maxR=Math.hypot(120+Math.abs(sx),150);c.strokeStyle=color;c.lineWidth=trough?1.25:1.8;c.globalAlpha=trough?.7:1;c.setLineDash(trough?[5,4]:[]);for(const r of frontRadii(maxR,trough,state.time,state,sx<0?1:2)){c.beginPath();c.arc(p.x,p.y,r*scale,0,TAU);c.stroke();}}}c.globalAlpha=1;c.setLineDash([]);
+ const active=guideCache.filter(g=>g.kind==='N'?$('nodes').checked:$('antinodes').checked);for(const g of active){const points=g.points.map(mapPoint);for(const [stroke,width] of [['rgba(255,255,255,.8)',3.8],[g.kind==='N'?C.node:C.anti,1.6]]){c.strokeStyle=stroke;c.lineWidth=width;c.setLineDash(g.kind==='N'?[5,4]:[]);c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.stroke();}c.setLineDash([]);}
+ if($('paths').checked){const p=mapPoint({x:state.px,y:state.py});for(const [sx,color] of [[-state.separation/2,C.one],[state.separation/2,C.two]]){const a=mapPoint({x:sx,y:0});distanceArrow(c,a,p,color);}}
+ c.restore();c.strokeStyle='#8c9da3';c.lineWidth=.8;c.strokeRect(rect.left,rect.top,rect.width,rect.height);
+ for(let x=-120;x<=120;x+=(w<450?60:30)){const p=mapPoint({x,y:-30});text(c,String(x),p.x,rect.top+rect.height+11,C.muted,10,'center');}for(let y=-30;y<=150;y+=30){const p=mapPoint({x:-120,y});text(c,String(y),rect.left-6,p.y,C.muted,10,'right');}text(c,'y / cm',5,8,C.muted,10);text(c,'x / cm',rect.left+rect.width, h-5,C.muted,10,'right');
+ const p=mapPoint({x:state.px,y:state.py}),reserved=[{x:p.x-22,y:p.y-32,w:50,h:65}];for(const sx of [-state.separation/2,state.separation/2]){const a=mapPoint({x:sx,y:0});reserved.push({x:a.x-22,y:a.y-30,w:44,h:45});}
+ distanceLabels(c,p,reserved,w);
+ let guideLabelCount={A:0,N:0};for(const g of active){if(guideLabelCount[g.kind]>=3||g.points.length<2)continue;const label=timing().equal?`${g.kind} · ${g.kind==='A'?'matching':'opposite'}`:`${g.kind==='A'?'Reinforcement':'Cancellation'} now`,points=g.points,candidates=[.9,.75,.6,.4,.15,.02];c.font='11px system-ui, sans-serif';const bw=c.measureText(label).width+10;for(const f of candidates){const pt=mapPoint(points[Math.round(f*(points.length-1))]);const b={x:pt.x-bw/2,y:pt.y-9,w:bw,h:18};if(b.x<rect.left+3||b.x+b.w>rect.left+rect.width-3||b.y<rect.top+24||b.y+b.h>rect.top+rect.height-3)continue;if(reserved.some(a=>b.x<a.x+a.w+4&&b.x+b.w+4>a.x&&b.y<a.y+a.h+4&&b.y+b.h+4>a.y))continue;reserved.push(badge(c,label,pt.x,pt.y,g.kind==='N'?C.node:C.anti));guideLabelCount[g.kind]++;break;}}
+ for(const [sx,color,name] of [[-state.separation/2,C.one,'S₁'],[state.separation/2,C.two,'S₂']]){const a=mapPoint({x:sx,y:0});dot(c,a.x,a.y,color,Math.max(5,3*scale));badge(c,name,a.x,a.y-16,color);}dot(c,p.x,p.y,C.sum,6);const nearSource=[-state.separation/2,state.separation/2].some(sx=>{const a=mapPoint({x:sx,y:0});return Math.hypot(p.x-a.x,p.y-a.y)<35;});badge(c,'P',p.x+13,nearSource?p.y+20:p.y>rect.top+27?p.y-16:p.y+18,C.sum);
+}
+function drawParticle(v){const {c,w,h}=surfaces.get('particle');c.clearRect(0,0,w,h);const axis=w*.47,zero=h/2+6,scale=(h-78)/4;text(c,'Particle at P',w/2,15,C.sum,12,'center');text(c,'y / cm',w/2,32,C.muted,10,'center');for(let y=-2;y<=2;y++){line(c,axis-5,zero-y*scale,axis+21,zero-y*scale,y===0?'#9caeb5':'#e7ded7');text(c,(y>0?'+':'')+y,axis-9,zero-y*scale,C.muted,10,'right');}line(c,axis,zero-2*scale,axis,zero+2*scale,'#c5b7ae');line(c,axis,zero,axis,zero-v.sum*scale,C.sum,3);dot(c,axis,zero-v.sum*scale,C.sum,7);text(c,'P',axis+15,zero-v.sum*scale,C.sum,12);text(c,'0 = equilibrium',w/2,h-12,C.muted,9,'center');}
+function drawTraces(){if(!$('graphs').checked)return;const {c,w,h}=surfaces.get('traces');c.clearRect(0,0,w,h);const left=42,right=w-18,scale=38,t=timing(),windowSize=Math.max(2/Math.min(state.f1,state.f2),t.equal?0:1/Math.abs(t.df)),start=Math.max(0,state.time-windowSize*.8),samples=Math.max(800,Math.ceil(windowSize*Math.max(state.f1,state.f2)*30)),rows=[{key:'y1',top:0,zero:78,max:1,color:C.one,title:'From S₁ · y₁ / cm'},{key:'y2',top:140,zero:218,max:1,color:C.two,title:'From S₂ · y₂ / cm'},{key:'sum',top:280,zero:384,max:2,color:C.sum,title:'Actual resultant · y / cm'}];
+ for(const p of rows){text(c,p.title,14,p.top+14,p.color,12);for(let n=0;n<=4;n++)line(c,left+(right-left)*n/4,p.zero-p.max*scale,left+(right-left)*n/4,p.zero+p.max*scale);for(let y=-p.max;y<=p.max;y++){line(c,left,p.zero-y*scale,right,p.zero-y*scale,y===0?'#a7b8bd':C.grid);text(c,(y>0?'+':'')+y,left-8,p.zero-y*scale,C.muted,10,'right');}c.strokeStyle=p.color;c.lineWidth=p.key==='sum'?2.4:1.6;c.beginPath();for(let j=0;j<=samples;j++){const v=pointValues(state.px,state.py,start+windowSize*j/samples),x=left+(right-left)*j/samples,y=p.zero-scale*v[p.key];j?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();const x=left+(right-left)*(state.time-start)/windowSize;line(c,x,p.zero-p.max*scale-3,x,p.zero+p.max*scale+3,'#83949b',1,[4,4]);dot(c,x,p.zero-scale*pointValues()[p.key],p.color,4.5);}
+ for(let n=0;n<=4;n++)text(c,(start+windowSize*n/4).toFixed(2),left+(right-left)*n/4,h-28,C.muted,10,'center');text(c,'Elapsed simulation time / s · cursor = now',w/2,h-10,C.muted,11,'center');$('traces').setAttribute('aria-label',`Displacement graphs at fixed P, ${start.toFixed(2)} to ${(start+windowSize).toFixed(2)} seconds. Current time ${state.time.toFixed(2)} seconds.`);
+}
+
+function resize(){const dpr=Math.min(window.devicePixelRatio||1,2),tankRect=$('tankWrap').getBoundingClientRect();for(const id of ['tank','particle','traces','sourcePhaseDial']){const canvas=$(id),r=id==='tank'?tankRect:canvas.getBoundingClientRect(),w=r.width||tankRect.width,h=r.height||(id==='traces'?510:212),c=canvas.getContext('2d');canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));c.setTransform(dpr,0,0,dpr,0,0);surfaces.set(id,{c,w,h});}draw();}
+function updatePointUI(){updateDistanceUI();const m=pointMetrics(),equal=timing().equal;$('r1').textContent=m.r1.toFixed(2);$('r2').textContent=m.r2.toFixed(2);$('delta').textContent=m.delta.toFixed(2);$('ratio').textContent=wavelengthMultiple(m.delta)+(equal?'':'; '+wavelengthMultiple(m.delta,2));$('amplitudeLabel').textContent=equal?'Amplitude / cm':'Changing envelope / cm';$('amplitude').textContent=m.amplitude.toFixed(2);$('phase').textContent=m.phase.toFixed(1)+'°';$('phaseNote').textContent=`S₂ arrival lag behind S₁: ${m.totalPhase.toFixed(1)}° total, equivalent to ${m.phase.toFixed(1)}° within one cycle. `+(equal?'This phase relationship stays constant.':'This phase relationship changes with time.');$('classification').dataset.kind=m.kind;$('kind').textContent='At P: '+(equal?{constructive:'constructive · maximum reinforcement',destructive:'destructive · persistent cancellation',intermediate:'intermediate interference'}:{constructive:'reinforcement now · matching phases',destructive:'cancellation now · opposite phases',intermediate:'intermediate interference now'})[m.kind];
+ const phases=sourcePhaseMetrics();$('sourceLag').textContent=`${phaseDegrees(phases.difference)} within one cycle (${totalDegrees(phases.total)} total)`;
+}
+
+function updatePhysicalUI(){const t=timing();for(const id of ['f1','f2','initialLag','separation']){$(id).value=state[id];$(id+'Out').textContent=id==='initialLag'?state[id]+'°':id==='separation'?state[id]+' cm':state[id].toFixed(2)+' Hz';}
+ $('lambda1').textContent=t.L1.toFixed(2)+' cm';$('lambda2').textContent=t.L2.toFixed(2)+' cm';$('period1').textContent=t.T.toFixed(2)+' s';$('period2').textContent=t.T2.toFixed(2)+' s';$('repeatTime').textContent=t.equal?'Guide pattern: stationary.':`Guide-pattern repeat time: ${(1/Math.abs(t.df)).toFixed(2)} s. Individual waves need not repeat together then.`;
+ $('sourceHeading').textContent=t.equal?'Two coherent sources · equal frequencies · constant source phase difference':'Two sources · different frequencies · changing source phase difference';$('antiSnapLabel').textContent=t.equal?'Antinodal lines':'Reinforcement lines · now';$('nodeSnapLabel').textContent=t.equal?'Nodal lines':'Cancellation lines · now';$('antiToggleLabel').textContent=t.equal?'Show antinodal guides':'Show reinforcement guides · now';$('nodeToggleLabel').textContent=t.equal?'Show nodal guides':'Show cancellation guides · now';$('guideNote').textContent=(t.equal?'Nodal guides stay fixed (dark dashed); antinodal guides stay fixed (brown solid).':'Cancellation guides (dark dashed) and reinforcement guides (brown solid) move. These are not permanent nodes or antinodes. A fixed point does not remain cancelled.');updatePointUI();
+}
+
+function updatePlayback(){$('play').textContent=state.playing?'Pause':'Play';const message=state.playing?'Playing continuously. Slow motion changes timing only.':'Paused. Press Play or use an inspection shortcut.';if($('playStatus').textContent!==message)$('playStatus').textContent=message;}
+function draw(){if(surfaces.size!==4)return;if($('nodes').checked||$('antinodes').checked)rebuildGuides();updatePointUI();drawTank();drawSourcePhase();const v=pointValues(),m=pointMetrics(),equal=timing().equal;drawParticle(v);drawTraces();$('y1').textContent=signed(v.y1);$('y2').textContent=signed(v.y2);$('sum').textContent=signed(v.sum);$('timeOut').textContent=state.time.toFixed(2)+' s';$('phaseClock').textContent=`S₁: ${phaseFraction().toFixed(2)} of a cycle · P stays fixed`;
+ $('kindNote').textContent=equal?(m.kind==='destructive'?'P stays at equilibrium throughout playback while its contributions oscillate.':m.kind==='constructive'?'P oscillates with amplitude 2 cm, passing through equilibrium.':'A small instantaneous sum does not prove complete cancellation.'):'P stays at the same location. Its arrival-phase difference and envelope change; cancellation or reinforcement at this instant will not persist.';
+ $('particle').setAttribute('aria-label',`Particle displacement at fixed P ${signed(v.sum)} centimetres; ${equal?'amplitude':'current envelope'} ${m.amplitude.toFixed(2)} centimetres.`);$('tank').setAttribute('aria-label',`Circular wavefronts from sources at ${state.f1.toFixed(2)} and ${state.f2.toFixed(2)} hertz. P at x ${state.px.toFixed(2)}, y ${state.py.toFixed(2)} centimetres; ${$('paths').checked?`S₁P ${distanceText(m.r1)}, S₂P ${distanceText(m.r2,2)}, path difference ${m.delta.toFixed(2)} centimetres; `:''}${m.kind} interference${equal?'':' now'}.`);
+}
+
+function setTime(t,pause=false){state.time=Math.max(0,t);if(pause)state.playing=false;lastFrame=null;keyDx=keyDy=0;announce('');updatePlayback();draw();}
+function movePoint(x,y){keyDx=keyDy=0;announce('');placeTarget(x,y);draw();}
+function physicalChange(){state.time=0;lastFrame=null;keyDx=keyDy=0;announce('');rebuildGuides();const old={x:state.px,y:state.py};placeTarget(old.x,old.y);if(state.snapModes.size===0&&Math.hypot(old.x-state.px,old.y-state.py)>1e-8)announce('P was moved outside the source marker.');updateSnapUI();updatePhysicalUI();updatePlayback();draw();}
+function pointerWorld(event){const r=$('tank').getBoundingClientRect();return {x:(event.clientX-r.left-rect.left)/rect.scale-120,y:150-(event.clientY-r.top-rect.top)/rect.scale};}
+$('tank').addEventListener('pointerdown',event=>{if(event.button!==0)return;const p=pointerWorld(event);if(p.x < -120||p.x > 120||p.y < -30||p.y > 150)return;dragging=true;$('tank').setPointerCapture(event.pointerId);$('tank').focus();movePoint(p.x,p.y);});$('tank').addEventListener('pointermove',event=>{if(dragging){const p=pointerWorld(event);movePoint(p.x,p.y);}});$('tank').addEventListener('keydown',event=>{let dx=0,dy=0;if(event.key==='ArrowLeft')dx=-1;else if(event.key==='ArrowRight')dx=1;else if(event.key==='ArrowUp')dy=1;else if(event.key==='ArrowDown')dy=-1;else return;event.preventDefault();keyMove(dx,dy);});for(const name of ['pointerup','pointercancel','lostpointercapture'])$('tank').addEventListener(name,()=>{dragging=false;});
+for(const id of ['f1','f2','initialLag','separation'])$(id).addEventListener('input',()=>{state[id]=Number($(id).value);physicalChange();});for(const [mode,id] of Object.entries(snapButtons))$(id).addEventListener('click',()=>selectSnap(mode));
+for(const id of ['troughs','nodes','antinodes','paths'])$(id).addEventListener('change',()=>{if(id==='paths')updateDistanceUI();if(id==='troughs')document.querySelectorAll('.trough-key').forEach(el=>el.hidden=!$('troughs').checked);draw();});$('graphs').addEventListener('change',()=>{$('graphCard').hidden=!$('graphs').checked;resize();});
+$('play').addEventListener('click',()=>{state.playing=!state.playing;lastFrame=null;updatePlayback();draw();});$('restart').addEventListener('click',()=>setTime(0));$('step').addEventListener('click',()=>setTime(state.time+.05,true));$('crest').addEventListener('click',()=>setTime(nextCrestTime(),true));$('quarter').addEventListener('click',()=>setTime(state.time+timing().T/4,true));$('playback').addEventListener('change',()=>{state.playback=Number($('playback').value);lastFrame=null;});
+document.querySelectorAll('[data-lag]').forEach(button=>button.addEventListener('click',()=>{state.initialLag=Number(button.dataset.lag);physicalChange();}));
+for(const [id,f2,lag] of [['presetSame',1,0],['presetOpposite',1,180],['presetDifferent',1.1,0]])$(id).addEventListener('click',()=>{state.f1=1;state.f2=f2;state.initialLag=lag;physicalChange();});
+document.addEventListener('visibilitychange',()=>{lastFrame=null;});function frame(now){if(lastFrame!==null&&state.playing&&!document.hidden){state.time+=Math.min((now-lastFrame)/1000,.1)*state.playback;draw();}lastFrame=now;requestAnimationFrame(frame);}
+rebuildGuides();updateSnapUI();updatePhysicalUI();updatePlayback();const observer=new ResizeObserver(resize);for(const id of ['tankWrap','particle','traces','sourcePhaseDial'])observer.observe($(id));resize();requestAnimationFrame(()=>{draw();requestAnimationFrame(frame);});
+
+</script></body></html>
