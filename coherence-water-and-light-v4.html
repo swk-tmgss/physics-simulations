@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="An offline teaching simulation connecting common water-wave drivers, independent light emission, phase relationships and time-averaged interference.">
+<title>Coherence: From Water Waves to Light · v4</title>
+<style>
+:root{color-scheme:light;--ink:#18333f;--muted:#546975;--line:#d9e4e7;--one:#1265b1;--two:#cc580b;--accent:#155767;--paper:#f1f6f6;--soft:#eaf3f4;--green:#257662}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1480px;margin:auto;padding:19px 26px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:15px}h1{font-size:clamp(25px,2.8vw,37px);line-height:1.12;letter-spacing:-.035em;margin:3px 0 6px}header p{margin:0;color:var(--muted);font-size:14px}.eyebrow{font-size:11px!important;font-weight:750;letter-spacing:.15em;text-transform:uppercase;color:var(--accent)!important}.definition{border-left:2px solid #afc9ce;padding:7px 0 7px 19px;max-width:265px;font-size:13px;flex-shrink:0}.definition strong{display:block;color:var(--accent);font-size:17px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}button,select{font:inherit;color:inherit;background:white;border:1px solid #c1d1d7;border-radius:8px;min-height:39px;padding:7px 11px;cursor:pointer}button:hover{background:#eaf2f4}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,select:focus-visible,input:focus-visible,canvas:focus-visible,summary:focus-visible{outline:3px solid #1684c2;outline-offset:3px}.tabs button{text-align:left;padding:10px 13px;font-size:14px;font-weight:650}.tabs button[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:white}.tabs small{display:block;font-size:11px;font-weight:450;opacity:.82;margin-top:1px}.stepnum{display:inline-block;width:23px;opacity:.7}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:white;border:1px solid var(--line);padding:10px 12px;border-radius:12px;margin-bottom:12px}.toolbar label{display:flex;gap:6px;align-items:center;font-size:12px}.primary{background:var(--accent);color:white;border-color:var(--accent);min-width:72px}.primary:hover{background:#0d4655}.quiet{color:var(--muted);font-size:12px}.toolbar .clock{margin-left:auto;white-space:nowrap;font-variant-numeric:tabular-nums}.lesson-heading{display:flex;align-items:baseline;gap:12px;justify-content:space-between;margin:0 0 9px}h2{font-size:17px;line-height:1.25;margin:0}#lessonIntro{font-size:12px;margin:0;color:var(--muted)}.workspace{display:grid;grid-template-columns:1.04fr .78fr 1.18fr;gap:12px;align-items:stretch}.card{background:white;border:1px solid var(--line);border-radius:13px;min-width:0;overflow:hidden}.card-head{display:flex;gap:8px;align-items:center;padding:12px 14px 7px;font-size:13px;font-weight:700}.badge{display:inline-grid;place-items:center;background:var(--soft);border-radius:50%;height:23px;width:23px;font-size:11px;color:var(--accent)}.card p{margin:7px 14px;font-size:12px;color:var(--muted)}.card .select-row{margin:0 12px 6px}.select-row label{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}.select-row select{width:100%;font-size:12px;min-height:34px;padding:5px 7px}.surface{width:100%;display:block}.source-wrap{height:176px}.strips-wrap{height:103px;border-top:1px solid #e8eef0;background:#fbfcfd}.source-wrap canvas,.strips-wrap canvas,.dial-wrap canvas,.tank-wrap canvas,.screen-wrap canvas,.history-wrap canvas{width:100%;height:100%;display:block}.dial-wrap{height:176px}.phase-values{display:flex;justify-content:center;gap:22px;font-size:12px;font-variant-numeric:tabular-nums;margin:1px 8px}.one{color:var(--one)}.two{color:var(--two)}.delta-box{background:var(--soft);margin:10px 12px 8px;border-radius:9px;padding:9px 8px;text-align:center}.delta-box span{display:block;font-size:11px;color:var(--muted)}.delta-box strong{font-size:29px;font-variant-numeric:tabular-nums;letter-spacing:-.03em}.delta-box small{display:block;font-size:12px;font-weight:650}#phaseMessage{min-height:47px}.legend{display:flex;gap:13px;align-items:center;justify-content:center;font-size:11px;margin:7px 10px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--one);margin-right:4px}.dot.two{background:var(--two)}.micro-toggle{display:flex;align-items:center;gap:6px;font-size:12px;margin:7px 14px;min-height:25px}input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}input[type=range]{accent-color:var(--accent);width:100%;height:23px;margin:1px 0;cursor:pointer}.tank-wrap{height:247px;background:#f5fafb;position:relative}.tank-wrap canvas{touch-action:none;cursor:crosshair}.tank-options{display:flex;gap:7px;flex-wrap:wrap;padding:7px 12px}.tank-options button{font-size:11px;min-height:31px;padding:5px 8px}.tank-options label{font-size:11px;display:flex;align-items:center;gap:3px}.screen-wrap{height:182px;background:#fafcfc}.accum-control{padding:4px 13px 6px}.accum-control label{display:flex;justify-content:space-between;gap:7px;font-size:11px;font-weight:650}.accum-control .ends{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}.probe{border-top:1px solid var(--line);padding:8px 13px 10px}.probe label{font-size:11px;display:flex;justify-content:space-between}.readings{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:5px 0 0}.readings>div{padding:5px 7px;background:#f0f5f6;border-radius:6px;font-size:10px;color:var(--muted)}.readings strong{display:block;font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}output{font-variant-numeric:tabular-nums}.key-message{display:flex;gap:11px;align-items:flex-start;background:#e6f1ed;border:1px solid #bfd9cd;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:13px}.key-message strong{color:#155c48;white-space:nowrap}.key-message p{margin:0}.activity{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:11px 0 0;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:white;font-size:12px}.activity p{margin:0}.activity button{font-size:12px;min-height:33px;white-space:nowrap}.answer{color:#256a54;margin-top:5px!important}.extras{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin:12px 0 8px;font-size:12px}.extras label{display:flex;align-items:center;gap:5px}.history-wrap{height:145px;margin:8px 0;background:white;border:1px solid var(--line);border-radius:9px}.history-caption{font-size:11px;color:var(--muted);margin:3px 1px 9px}details{background:white;border:1px solid var(--line);border-radius:9px;margin-top:9px;padding:9px 13px;font-size:12px}summary{cursor:pointer;font-weight:650}details p{margin:9px 0;line-height:1.6}details ul{padding-left:20px}details a{color:#126489}.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.check{padding:12px;background:#f4f7f8;border-radius:9px}.check p{margin:0 0 7px}.check button{font-size:12px;min-height:33px;margin:2px}.feedback{min-height:30px;font-size:12px;margin:5px 0!important}.check button[data-result=right]{background:#d9efe4;border-color:#5d9c7e}.check button[data-result=wrong]{background:#fff0df;border-color:#c58d52}footer{margin-top:13px;font-size:11px;color:var(--muted)}[hidden]{display:none!important}.s-note{font-size:10px!important}.transport-note{margin:0 0 8px;font-size:11px;color:var(--muted)}.source-action{margin:4px 12px 9px;font-size:11px;min-height:30px}.no-js{padding:20px;background:#fff3dd}#status{min-height:17px}body.light .tank-only{display:none}body.water .light-only{display:none}
+@media(min-width:1000px) and (max-height:780px){main{padding-top:12px}header{margin-bottom:10px}h1{font-size:29px}.tabs button{padding:7px 11px}.toolbar{padding:7px 10px;margin-bottom:9px}.source-wrap{height:150px}.strips-wrap{height:87px}.dial-wrap{height:150px}.tank-wrap{height:215px}.screen-wrap{height:160px}.card-head{padding-top:9px}.delta-box{padding:6px;margin-top:7px}.delta-box strong{font-size:25px}.key-message{margin-top:9px;padding:8px 12px}.activity{padding:7px 11px;margin-top:8px}}
+@media(max-width:1050px){main{padding:14px 16px}.definition{max-width:220px;font-size:12px}.workspace{grid-template-columns:1fr .78fr 1.18fr;gap:8px}.toolbar button,.toolbar select{font-size:12px}.card-head{padding-left:10px;padding-right:10px}.card p{margin-left:10px;margin-right:10px}.tabs button{font-size:12px;padding:8px}.tabs small{font-size:10px}.lesson-heading{display:block}#lessonIntro{margin-top:4px}.phase-values{gap:12px}}
+@media(max-width:760px){main{padding:14px 12px}header{display:block}.definition{display:block;max-width:none;border-left:none;border-top:1px solid #c9dadd;margin-top:10px;padding:8px 0 0;font-size:12px}.tabs{grid-template-columns:1fr 1fr}.tabs button{font-size:13px;min-height:56px}.workspace{grid-template-columns:1fr 1fr}.pattern-card{grid-column:1/-1}.source-wrap{height:180px}.dial-wrap{height:180px}.screen-wrap{height:200px}.tank-wrap{height:300px}.toolbar .clock{margin-left:0}.key-message{display:block}.key-message strong{display:block;margin-bottom:4px}.activity{align-items:flex-start}.checks{grid-template-columns:1fr}.strips-wrap{height:110px}}
+@media(max-width:450px){.workspace{grid-template-columns:1fr}.pattern-card{grid-column:auto}.source-wrap{height:188px}.dial-wrap{height:184px}.phase-values{gap:30px}.card p{font-size:12px}#phaseMessage{min-height:0}.toolbar{gap:6px}.toolbar button{padding:6px 8px}.activity{display:block}.activity button{margin-top:8px}.tabs small{font-size:11px}.tank-wrap{height:270px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+/* Version 2: visible dipper motion and a dedicated finite-packet lesson. */
+body.water .source-wrap{height:232px}
+.packet-only{display:none}
+body.emission .packet-only{display:block}
+body.emission .toolbar .packet-only{display:inline-flex}
+body.emission .workspace{grid-template-columns:minmax(0,2.2fr) minmax(265px,1fr)}
+body.emission .pattern-card,body.emission .source-wrap,body.emission .strips-wrap,body.emission .select-row,body.emission #microRow,body.emission #next,body.emission #accumulate{display:none!important}
+.packet-controls{display:flex;flex-wrap:wrap;gap:9px 22px;margin:4px 15px 10px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.packet-controls label{display:flex;align-items:center;gap:6px;font-size:12px}
+.packet-wrap{height:365px;background:#fbfdfd}
+.packet-wrap canvas{display:block;width:100%;height:100%}
+.packet-readings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:9px 14px}
+.packet-reading{border:1px solid #d7e4ea;border-radius:8px;padding:8px 10px;font-size:11px;background:#f5f9fc}
+.packet-reading:nth-child(2){background:#fdf6f0;border-color:#eadbcd}
+.packet-reading strong{font-size:12px;display:block;margin-bottom:3px}
+.packet-key{background:#eef5f2;border-radius:7px;padding:8px 10px;font-size:12px;margin:8px 14px}
+.sample-caption{margin:0 14px 7px!important;font-size:11px!important;color:var(--accent)!important}
+body.emission .dial-wrap{height:206px}
+body.emission .delta-box strong{font-size:32px}
+@media(min-width:1000px) and (max-height:780px){body.water .source-wrap{height:210px}.packet-wrap{height:320px}body.emission .dial-wrap{height:180px}}
+@media(max-width:900px){body.emission .workspace{grid-template-columns:minmax(0,1.8fr) minmax(230px,1fr)}body.emission .packet-controls{display:block}.packet-controls label{margin:5px 0}.packet-readings{grid-template-columns:1fr}}
+@media(max-width:680px){body.emission .workspace{grid-template-columns:1fr}.packet-wrap{height:340px}.packet-readings{grid-template-columns:1fr 1fr}body.emission .dial-wrap{height:180px}.packet-controls{display:flex!important}.tabs small{font-size:10px}}
+@media(max-width:400px){.packet-readings{grid-template-columns:1fr}.tabs button{font-size:12px}.packet-wrap{height:335px}}
+
+/* Stage 3: follow packets, then switch the SAME screen between the two views. */
+body.observation .workspace{grid-template-columns:minmax(0,1.2fr) minmax(220px,.72fr) minmax(0,1.15fr)}
+body.observation #packetPanel{display:block}
+body.observation .source-wrap,body.observation .strips-wrap,body.observation .packet-controls,body.observation .packet-readings,body.observation .packet-key,body.observation #microRow,body.observation #step,body.observation #next,body.observation #accumulate,body.observation #nextEmission,body.observation #nextPair{display:none!important}
+body.observation .packet-wrap{height:305px}
+body.observation .dial-wrap{height:170px}
+body.observation .phase-values{gap:15px}
+body.observation .phase-card .sample-caption{background:#eaf3ef;padding:8px;border-radius:6px;margin-top:3px!important}
+.eye-views{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:4px 12px 10px}
+.eye-views button{font-size:12px;padding:9px 6px;min-height:54px;line-height:1.2}
+.eye-views button small{display:block;font-size:10px;font-weight:400;margin-top:4px}
+.eye-views button[aria-pressed=true]{background:var(--accent);color:white;border-color:var(--accent)}
+.eye-screen-wrap{height:176px;margin:0 13px;background:#26373e;border:8px solid #26373e;border-radius:10px;overflow:hidden}
+.eye-screen-wrap canvas{width:100%;height:100%;display:block}
+.eye-screen-name{text-align:center;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:7px 0 3px}
+.eye-result{font-size:15px!important;font-weight:700;text-align:center;color:var(--ink)!important;line-height:1.4;margin:7px 14px 5px!important}
+.eye-description{font-size:12px!important;line-height:1.6;text-align:center}
+.eye-actions{display:flex;justify-content:center;padding:7px 12px 11px}
+.eye-actions button{min-width:148px;font-size:12px}
+@media(min-width:1000px) and (max-height:780px){body.observation .packet-wrap{height:278px}body.observation .dial-wrap{height:150px}.eye-screen-wrap{height:153px}.eye-views button{min-height:49px}.eye-result{font-size:14px!important}}
+@media(max-width:1100px){body.observation .workspace{grid-template-columns:minmax(0,1.35fr) minmax(215px,.85fr)}body.observation .pattern-card{grid-column:1/-1}.eye-screen-wrap{height:155px}.eye-description{min-height:0}.eye-result{min-height:0}.eye-views{max-width:650px;margin:auto}.eye-actions{padding-bottom:6px}}
+@media(max-width:680px){body.observation .workspace{grid-template-columns:1fr}body.observation .pattern-card{grid-column:auto}body.observation .packet-wrap{height:300px}body.observation .dial-wrap{height:170px}.eye-views button{font-size:13px}.eye-screen-wrap{height:150px}}
+</style>
+</head>
+<body class="water">
+<noscript><p class="no-js">Enable JavaScript in your browser to run this offline simulation.</p></noscript>
+<main>
+<header><div><p class="eyebrow">Waves · Chapter 5 → Chapter 6 · v4</p><h1>Coherence: From Water Waves to Light</h1><p>Follow the sources, compare their phases, then see the pattern.</p></div><div class="definition"><strong>Coherent sources</strong>Same frequency and a constant phase difference.<br>The difference can be non-zero.</div></header>
+<nav class="tabs" role="tablist" aria-label="Teaching stages">
+<button role="tab" id="tab0" aria-controls="lesson" aria-selected="true" tabindex="0" data-stage="0"><span class="stepnum">01</span> Water waves<small>A common drive keeps time</small></button>
+<button role="tab" id="tab1" aria-controls="lesson" aria-selected="false" tabindex="-1" data-stage="1"><span class="stepnum">02</span> How ordinary light is emitted<small>Follow finite wave packets</small></button>
+<button role="tab" id="tab2" aria-controls="lesson" aria-selected="false" tabindex="-1" data-stage="2"><span class="stepnum">03</span> What the eye sees<small>Changing fringes → average brightness</small></button>
+<button role="tab" id="tab3" aria-controls="lesson" aria-selected="false" tabindex="-1" data-stage="3"><span class="stepnum">04</span> A shared light source<small>Connect to Young’s experiment</small></button>
+</nav>
+<div class="toolbar" aria-label="Playback controls"><button id="play" class="primary">Play</button><button id="restart">Restart</button><button id="step">Advance ¼ cycle</button><button id="next" class="light-only">Next phase renewal</button><button id="nextEmission" class="packet-only">Next emission</button><button id="nextPair" class="packet-only">Next overlapping pair</button><label for="speed">Playback <select id="speed"><option value=".1">0.1×</option><option value=".25" selected>0.25×</option><option value=".5">0.5×</option><option value="1">1×</option></select></label><button id="accumulate" class="light-only">Accumulate 40 intervals</button><span class="clock quiet" id="clock">Paused · 0.00 model cycles</span></div>
+<section id="lesson" role="tabpanel" aria-labelledby="tab0">
+<div class="lesson-heading"><h2 id="lessonTitle">One vibrating bar, two related sources</h2><p id="lessonIntro">Watch the moving wavefronts and the fixed pattern separately.</p></div>
+<div class="workspace">
+<article class="card source-card"><div class="card-head"><span class="badge">A</span><span id="sourceTitle">How the waves are produced</span></div><div class="select-row"><label for="scenario">Compare source arrangements</label><select id="scenario"></select></div><div class="packet-only" id="packetPanel">
+<div class="packet-controls"><label><input id="manyEmissions" type="checkbox">Many overlapping emissions</label><label><input id="pauseOverlap" type="checkbox" checked>Pause when packets overlap</label></div>
+<div class="packet-wrap"><canvas id="packetCanvas" role="img" aria-label="Atoms in two independent sources emit finite wave packets. The packets travel to a marked comparison position."></canvas></div>
+<p class="sample-caption" id="packetCaption">The phase dial reads the waves at the vertical comparison marker.</p>
+<div class="packet-readings"><div class="packet-reading"><strong class="one">S₁ at the marker</strong><span id="packet1">Waiting for a packet</span></div><div class="packet-reading"><strong class="two">S₂ at the marker</strong><span id="packet2">Waiting for a packet</span></div></div>
+<div class="packet-key" id="packetKey">Start with a few emissions. Follow each packet from its atom to the comparison marker.</div>
+</div><div class="source-wrap"><canvas id="sourceCanvas" role="img" aria-label="Two dippers attached to one vibrating bar."></canvas></div><label class="micro-toggle light-only" id="microRow"><input id="microscope" type="checkbox" checked>Show independent emitting centres</label><div class="strips-wrap"><canvas id="stripCanvas" role="img" aria-label="Two schematic wave traces, one for each source."></canvas></div><p id="sourceNote">The same bar drives both dippers. Their timing stays related.</p><button id="sharedChange" class="source-action" hidden>Apply a shared 90° phase change</button><p class="s-note light-only">Same red colour. Blue/orange identify the two contributions; they are not different light colours.</p></article>
+<article class="card phase-card"><div class="card-head"><span class="badge">B</span>Compare the source phases</div><p id="phaseLocation" class="sample-caption" hidden>Phases at the comparison marker</p><div class="legend"><span class="one"><i class="dot"></i>S₁ · ▲</span><span class="two"><i class="dot two"></i>S₂ · ○</span></div><div class="dial-wrap"><canvas id="dialCanvas" role="img" aria-label="Two rotating phase vectors."></canvas></div><div class="phase-values"><span class="one">φ₁ <strong id="phi1">0°</strong></span><span class="two">φ₂ <strong id="phi2">0°</strong></span></div><div class="delta-box"><span>S₂ phase lag behind S₁ · modulo 360°</span><strong id="phaseLag">0°</strong><small id="phaseState">Constant difference</small></div><p id="phaseMessage">Both phases advance together. Their difference stays at 0°.</p><p class="s-note">0° at the top; anticlockwise rotation. Pointers show phase, not a particle’s path. Light oscillations are schematic.</p></article>
+<article class="card pattern-card"><div class="card-head"><span class="badge">C</span><span id="patternTitle">The pattern in the water</span></div>
+<div id="waterPanel"><div class="tank-wrap"><canvas id="tankCanvas" tabindex="0" role="img" aria-label="Circular water-wave crests and troughs with a fixed observation point P. Click to position P or use arrow keys."></canvas></div><div class="tank-options"><button id="centre">P at centre</button><button id="node">P on a node</button><label><input id="guides" type="checkbox" checked>Pattern guides</label></div><p id="waterNote">Solid circles: crests. Dashed: troughs. Grey guides: nodal lines.</p><div class="probe"><div class="readings"><div>Resultant displacement at P<strong id="waterY">0.00</strong></div><div id="waterAmpLabel">Amplitude at fixed P<strong id="waterAmp">2.00</strong></div></div><p class="s-note" id="waterPNote">P stays fixed during playback. Amplitudes are in model units.</p></div></div>
+
+<div id="eyePanel" hidden>
+<div class="eye-views" role="group" aria-label="Screen viewing mode">
+<button id="slowView" aria-pressed="true">Slow motion<small>Follow the pattern</small></button>
+<button id="eyeView" aria-pressed="false">What the eye sees<small>Average brightness</small></button>
+</div>
+<div class="eye-screen-name">The same screen</div>
+<div class="eye-screen-wrap"><canvas id="eyeCanvas" role="img" aria-label="A single screen showing changing interference fringes in slow motion."></canvas></div>
+<div class="eye-actions"><button id="nextPattern">Next pattern</button></div>
+<p class="eye-result" id="eyeResult">Bright and dark positions change.</p>
+<p class="eye-description" id="eyeDescription">A point that is bright now may be dark a moment later.</p>
+</div>
+<div id="lightPanel" hidden><div class="screen-wrap"><canvas id="screenCanvas" role="img" aria-label="A short-time light pattern and the intensity averaged over many phase intervals."></canvas></div><div class="accum-control"><label for="window">Average over up to <output id="windowOut">40 phase intervals</output></label><input id="window" type="range" min="1" max="80" step="1" value="40"><div class="ends"><span>1 · short observation</span><span>80 · long observation</span></div><p class="s-note" id="samples">No time accumulated yet. Press Play or Accumulate.</p></div><div class="probe"><label for="screenP">Fixed screen point P <output id="screenPOut">0.0 mm</output></label><input id="screenP" type="range" min="-18" max="18" value="0" step=".1"><div class="readings"><div>Short-time brightness at P<strong id="instantI">0.00</strong></div><div>Accumulated brightness at P<strong id="averageI">0.00</strong></div></div><p class="s-note">Intensity scale: one source = 1; two incoherent sources average to 2. The screen remains illuminated.</p></div></div>
+</article></div>
+<div class="key-message"><strong id="takeawayLabel">Notice</strong><p id="takeaway"></p></div>
+<div class="activity"><div><p id="prompt"></p><p class="answer" id="answer" hidden></p></div><button id="reveal" aria-expanded="false">Reveal explanation</button></div>
+</section>
+<div class="extras"><label><input type="checkbox" id="historyToggle">Show phase-difference history</label><span id="status" class="quiet" role="status">Ready. Start with Play.</span></div><div id="historyPanel" hidden><div class="history-wrap"><canvas id="historyCanvas" role="img" aria-label="Source phase difference against model time."></canvas></div><p class="history-caption" id="historyCaption">Source phase difference modulo 360°. A wrap between 360° and 0° is the same angle, not a physical jump. The history is evaluated from the same model as the dial.</p></div>
+<details id="checkPanel"><summary>Check your understanding · four predictions</summary><div class="checks" id="checks"></div></details>
+<details><summary>Teacher notes · model, limits and textbook connection</summary>
+<p><strong>Teaching sequence.</strong> Chapter 5 pp. 63, 69 and 72: common drive, changing phase difference and coherent antiphase sources. Chapter 6 pp. 108–109: one source and two slits versus two independent LEDs. Chapter 6 pp. 147–148: HKDSE 2015 Paper 1B Q7 and the accompanying report. “Out of phase” is not a synonym for “incoherent”.</p>
+<p><strong>Water model.</strong> Equal component amplitudes A = 1, speed v = 1 model distance unit per model time unit and carrier frequency f = 0.8 cycles per model time unit. λ = v/f = 1.25. Sources are separated by 3 distance units. At P, each contribution is cos[2πf(t − r/v) + ψⱼ(t − r/v)]. Phase changes propagate outwards; already emitted waves are not reset. Fixed-phase cases produce exact permanent nodes. Independently wandering drivers have smooth timing fluctuations, so the displayed envelope is not a constant amplitude and their cancellation guides are not permanent nodes. Equal amplitude everywhere, no attenuation, boundary reflections or startup transients are assumed. P remains fixed during playback.</p>
+<p><strong>Version 2: finite-packet lesson.</strong> Stage 2 is a simplified classical atomic-source illustration, not a literal picture of an LED or of individual photon shapes. Each independent emission has a finite smooth envelope and an unrelated initial carrier phase. Its electric field is A(t − x/v − t₀) cos[2πf(t − x/v − t₀) + φ₀]. The envelope vanishes outside the packet; emitted packets continue propagating unchanged when a later event occurs. Both sources have the same central frequency. Their emission times, phases and emitting atoms are independently generated. Few-emission mode deliberately separates contributions to make them visible. Many-emission mode adds the overlapping fields rather than drawing a single endless packet.</p>
+<p><strong>Packet comparison.</strong> The vertical marker samples both lanes at the same propagation distance. Each pointer uses the phase of the field actually present there, including travel time. Between packets the field is zero, and no phase is displayed. Very weak fields are also hidden (amplitude below 0.035 model units). In many-emission mode the pointers show the phase of each source’s combined complex field. Within a pair of equal-frequency packets the phase difference stays fixed; it is not maintained across independent pairs. This distinction is the learning target. Gaps are not the cause of incoherence.</p>
+<p><strong>Teaching controls.</strong> Next emission pauses just after an emission begins. Next overlapping pair pauses inside the next overlap, so both phases can be compared. Automatic overlap pausing applies to few-emission mode and pauses once for each new pair. Many-emission mode restarts time and disables these pair-specific controls. Packet playback defaults to 1×; the other stages retain their own speed setting. At 1×, Stage 2 advances two model-time units per real second. All displayed times and distances are schematic.</p>
+<p><strong>Version 4: the same separated packets in Stages 2 and 3.</strong> Stage 3 reuses Stage 2's few-emission schedule, smooth finite envelopes, carrier phases, propagation delays and drawing function. Successive packets from each source are separated by empty gaps; no continuous combined trace is drawn. It opens at the first overlapping pair from Stage 2. The next-pattern button advances to the next overlapping pair. Phase pointers disappear when the corresponding packet is absent or below the same 0.035 amplitude threshold used in Stage 2. Independent pairs do not maintain their relative phase; a shared source supplies identical packet copies, including the gaps. Gaps themselves do not cause incoherence. Only a few emissions are shown for clarity; ordinary sources contain many overlapping contributions.</p>
+<p><strong>Stage 3 screen and eye average.</strong> The screen isolates phase stability. Each visible arriving packet is assigned component intensity I₀ = 1; an absent or very weak packet contributes zero. When both arrive, I(x,t) = 2 + 2 cos[2πx/Δx + δ(t)], using the same retarded packet phases as the dial. With only one packet it is uniform; between packets it is dark. The eye view shows the ideal long-observation intensity average, including the gaps. The mean visible fraction is D = (7.5/12.5)[1 − (2/π) asin(√0.035)], from the mean packet duration, mean separation and envelope threshold. Independent sources give Ī(x) = 2D; identical shared packets give Ī(x) = D[2 + 2 cos(2πx/Δx)]. Thus gaps reduce mean brightness but do not wash out coherent fringes. This is an ensemble-average limit, not a short browser-rate accumulation. Equal mean illumination and a broad constant diffraction envelope are assumed. The screen averages intensity over time at each position, not signed fields or neighbouring pixels; the packet envelopes are retained in the source drawing but amplitude variations within each visible packet are normalised on the screen.</p>
+<p><strong>Stage 3 teaching controls.</strong> Slow motion and What the eye sees use the same screen location. Switching view preserves the emission time and playback state. Next pattern advances to a later, distinct independent-source phase relationship and pauses; for coherent light it advances time while preserving the fringe positions. It is disabled in the eye view. Both source and phase animations remain slowed for explanation in either mode. Playback speed changes only the animation speed, not the calculated eye average. Independent and coherent source selections preserve the viewing mode but restart the displayed stream. The numerical averaging-window, position and visibility controls are absent from Stage 3; the Stage 4 exploration retains its controls.</p>
+<p><strong>Textbook connection.</strong> The generic atomic illustration explains independent emission at HKDSE level. The textbook’s two LEDs are another example of independent sources, although an LED emits through electron–hole recombination in a semiconductor. Neither illustration is a literal animation of individual photon shapes. Real sources can also vary in intensity, spectrum, polarisation and emission direction.</p>
+<p><strong>Ordinary light.</strong> Many independent emission processes contribute to the light. The atomic packets and LED emitting centres are simplified teaching representations, not a literal count or a one-to-one photon animation. Wave traces represent electric field, not a sideways path travelled by light. Narrow-band light from both LEDs has the same central wavelength, 650 nm. A finite wave train has a spread of frequencies: this is not a model of two infinitely long, perfectly monochromatic sine waves whose phase changes arbitrarily.</p>
+<p><strong>Two time scales.</strong> An actual optical cycle is far shorter than a phase-renewal interval, which in turn is far shorter than the eye’s observation time. The drawing greatly enlarges these scales separately and compresses the number of oscillations in a train. Model cycles, phase intervals and playback speed are teaching units, not measured LED times. In Stage 3 the packet transit to the comparison marker is included; the remaining common flight time to the screen is omitted. In Stage 4 the source sketch, phase dial and screen follow a related emission interval with the common flight time omitted. Relative path phase is included. This isolates phase stability; it is not a full simulation of the spatial extent, polarisation and spectrum of an LED.</p>
+<p><strong>Stage 4 light calculation.</strong> We use equal parallel-polarised scalar contributions, each of intensity I₀ = 1. For an interval with relative source phase δ = ψ₁ − ψ₂ and screen position x, I(x,t) = 2 + 2 cos[2πx/Δx + δ(t)]. This short-time intensity has already been averaged over optical cycles. The lower strip averages I over elapsed phase intervals, using the selected trailing window. It never averages signed electric fields to determine brightness. Equivalently, Ī = 2 + 2 Re{exp(i2πx/Δx) ⟨exp(iδ)⟩}. Independent phase renewals make the average complex factor approach zero; a finite sample may leave faint residual fringes. Accumulation is a numerical time average, not an image-blur effect.</p>
+<p><strong>Geometry and brightness.</strong> The comparison fixes λ = 650 nm, separation a = 0.325 mm and D = 3.00 m, giving fringe separation Δx = λD/a = 6.00 mm in the small-angle approximation. The two-LED schematic uses the same effective separation to isolate coherence, rather than reproducing the 6 mm separation in the examination question. Equal illumination and a broad, constant diffraction envelope are assumed over the displayed screen. Screen colour is a display mapping of intensity, not a calibrated brightness measurement. A smooth illuminated background is not zero light.</p>
+<p><strong>Shared source.</strong> A laser illuminates both narrow slits coherently. The optional filtered, small-source example gives both slits the same changing phase history; the pattern stays steady because their relative phase stays fixed. That is an approximation for suitable spatial filtering and path delays small compared with the wave-train duration. It does not imply that any extended lamp, any pair of slits or arbitrarily large path differences will preserve coherence. The imposed common phase shift is an explanatory comparison, not a control normally found on a laser pointer.</p>
+<p><strong>Phase convention.</strong> Phase increases anticlockwise from the top, with the cosine reference: 0° is maximum positive displacement or positive field. The directed arc runs from S₂ to S₁. Light-pointer rotation is deliberately slowed; the visible rotation rate is not the light frequency. When the pointers overlap, the blue triangular and orange circular tips identify both sources.</p>
+<p><strong>Controls.</strong> Changing stages or arrangements pauses and restarts the model. Restart preserves display choices. Next phase renewal advances to just after the next source renewal and pauses. Accumulate advances through the selected number of phase intervals and pauses. Display toggles, observation-point changes and averaging-window changes preserve time. The fixed random sequence repeats on Restart, allowing comparisons. There are no external scripts, fonts, images or network requests; this file works offline. All earlier versions remain separate unchanged files.</p>
+<p><strong>Further reading:</strong> <a href="https://openstax.org/books/university-physics-volume-3/pages/3-1-youngs-double-slit-interference" target="_blank" rel="noopener">OpenStax: Young’s double-slit interference</a>; <a href="https://optics.skauli.no/" target="_blank" rel="noopener">Torbjørn Skauli, University of Oslo: Optics and light, section 34</a>. These optional links require internet; the simulation does not.</p>
+</details>
+<footer>Coherence · From common water-wave drivers to Young’s double-slit experiment · Self-contained offline HTML · Version 4</footer>
+</main>
+<script>
+'use strict';
+// The model is independent of the interface so its physical relationships can be checked directly.
+const CoherenceModel=(()=>{
+ const TAU=2*Math.PI,F=.8,V=1,LAMBDA=V/F,INTERVAL=4,SEPARATION=3;
+ const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+ const wrap=x=>((x%TAU)+TAU)%TAU;
+ const smooth=x=>{x=clamp(x,0,1);return x*x*(3-2*x);};
+ function hash(k,seed){let n=(Math.imul(k|0,374761393)+Math.imul(seed,668265263))|0;n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967296;}
+ const boundary=(k,seed)=>INTERVAL*(k+.32*hash(k,seed+18));
+ function renewal(t,seed){let k=Math.floor(t/INTERVAL);if(t<boundary(k,seed))k--;const start=boundary(k,seed),end=boundary(k+1,seed),a=TAU*hash(k-1,seed),b=TAU*hash(k,seed);const delta=wrap(b-a+Math.PI)-Math.PI;return {phase:a+delta*smooth((t-start)/.45),k,start,end,transition:t-start<.45};}
+ function waterOffset(t,j,scenario){if(scenario==='wander'){const period=7.3+j*.9,k=Math.floor(t/period),u=t/period-k;const a=(hash(k,80+j)-.5)*4,b=(hash(k+1,80+j)-.5)*4;return a+(b-a)*smooth(u);}return j===1?0:scenario==='lag90'?-Math.PI/2:scenario==='lag180'?-Math.PI:0;}
+ function lightOffset(t,j,scenario,shared=0){if(scenario==='led')return renewal(t,j===1?17:93).phase;if(scenario==='filtered')return renewal(t,51).phase+shared;return shared+(j===2&&scenario==='laser180'?-Math.PI:0);}
+ function phases(t,scenario,shared=0){const water=['bar','wander','lag90','lag180'].includes(scenario);const a=TAU*F*t+(water?waterOffset(t,1,scenario):lightOffset(t,1,scenario,shared));const b=TAU*F*t+(water?waterOffset(t,2,scenario):lightOffset(t,2,scenario,shared));return {a,b,lag:wrap(a-b)};}
+ function waterAt(x,y,t,scenario){const r1=Math.hypot(x+SEPARATION/2,y),r2=Math.hypot(x-SEPARATION/2,y),a=TAU*F*(t-r1/V)+waterOffset(t-r1/V,1,scenario),b=TAU*F*(t-r2/V)+waterOffset(t-r2/V,2,scenario);return {r1,r2,a,b,y1:Math.cos(a),y2:Math.cos(b),sum:Math.cos(a)+Math.cos(b),envelope:2*Math.abs(Math.cos((a-b)/2)),lag:wrap(a-b)};}
+ function relative(t,scenario){return lightOffset(t,1,scenario)-lightOffset(t,2,scenario);}
+ const spatial=x=>TAU*x/6;
+ function intensity(x,t,scenario){return 2+2*Math.cos(spatial(x)+relative(t,scenario));}
+ function average(t,intervals,scenario){const start=Math.max(0,t-intervals*INTERVAL),duration=t-start;if(duration<1e-9){const d=relative(t,scenario);return {re:Math.cos(d),im:Math.sin(d),duration:0,n:1,visibility:1};}if(scenario!=='led'){const d=relative(t,scenario);return {re:Math.cos(d),im:Math.sin(d),duration,n:1,visibility:1};}const n=Math.max(1,Math.ceil(duration/.08));let re=0,im=0;for(let i=0;i<n;i++){const d=relative(start+(i+.5)*duration/n,scenario);re+=Math.cos(d);im+=Math.sin(d);}re/=n;im/=n;return {re,im,duration,n,visibility:Math.hypot(re,im)};}
+ const averagedIntensity=(x,a)=>clamp(2+2*(Math.cos(spatial(x))*a.re-Math.sin(spatial(x))*a.im),0,4);
+ function nextRenewal(t,scenario){const seeds=scenario==='led'?[17,93]:scenario==='filtered'?[51]:[];if(!seeds.length)return t+INTERVAL;return Math.min(...seeds.map(s=>renewal(t,s).end))+.451;}
+ function nodeAt(y,scenario,t=0){const goal=Math.PI;let prevX=-4,prev=waterAt(prevX,y,t,scenario).lag-goal;for(let x=-3.98;x<=4;x+=.02){const value=waterAt(x,y,t,scenario).lag-goal;if(value*prev<=0&&Math.abs(value-prev)<1){let lo=prevX,hi=x;for(let i=0;i<36;i++){const mid=(lo+hi)/2,v=waterAt(mid,y,t,scenario).lag-goal;if(v*prev<=0)hi=mid;else{lo=mid;prev=v;}}return {x:(lo+hi)/2,y};}prevX=x;prev=value;}return null;}
+ return {TAU,F,V,LAMBDA,INTERVAL,SEPARATION,clamp,wrap,hash,renewal,waterOffset,lightOffset,phases,waterAt,relative,intensity,average,averagedIntensity,nextRenewal,nodeAt};
+})();
+
+// Finite emission contributions. Time, size and the number of cycles are enlarged for teaching.
+const EmissionModel=(()=>{
+ const M=CoherenceModel,TRAVEL=10.8,PROBE=7.35,THRESHOLD=.035;
+ const schedules=new Map();
+ function schedule(j,many,until){
+  const key=j+':'+many,seed=(many?240:120)+j*19;
+  if(!schedules.has(key))schedules.set(key,[]);
+  const a=schedules.get(key);
+  while(!a.length||a[a.length-1].start<until){
+   const n=a.length,prev=a[n-1];
+   const start=prev?prev.start+(many?1.15+1.25*M.hash(n,seed+3):prev.duration+2.5+5*M.hash(n,seed+3)):.4+1.3*M.hash(0,seed+3);
+   a.push({source:j,id:n+1,start,duration:7.2+.6*M.hash(n,seed+9),phase:M.TAU*M.hash(n,seed+17),atom:Math.floor(6*M.hash(n,seed+23))});
+  }
+  return a;
+ }
+ function events(t,j,many=false){
+  if(t<0)return [];
+  const a=schedule(j,many,t),out=[];
+  for(let i=a.length-1;i>=0;i--){const e=a[i];if(e.start+e.duration+TRAVEL<t)break;if(e.start<=t)out.push(e);}
+  return out.reverse();
+ }
+ function envelope(age,duration){return age<=0||age>=duration?0:Math.sin(Math.PI*age/duration)**2;}
+ function contribution(e,t,delay){const age=t-e.start-delay,amplitude=envelope(age,e.duration),phase=M.TAU*M.F*age+e.phase;return {age,amplitude,phase,re:amplitude*Math.cos(phase),im:amplitude*Math.sin(phase)};}
+ function sample(t,j,many=false,delay=PROBE){
+  let re=0,im=0;const active=[];
+  for(const event of events(t,j,many)){const v=contribution(event,t,delay);re+=v.re;im+=v.im;if(v.amplitude>THRESHOLD)active.push({event,...v});}
+  const amplitude=Math.hypot(re,im),present=amplitude>THRESHOLD,phase=present?Math.atan2(im,re):null;
+  return {re,im,amplitude,present,phase,active};
+ }
+ function compare(t,many=false){const one=sample(t,1,many),two=sample(t,2,many),both=one.present&&two.present;return {one,two,both,a:one.phase,b:two.phase,lag:both?M.wrap(one.phase-two.phase):null,key:both?one.active.map(v=>v.event.id).join(',')+'|'+two.active.map(v=>v.event.id).join(','):null};}
+ function nextEmission(t,many=false){const next=[1,2].flatMap(j=>schedule(j,many,t+40).filter(e=>e.start>t+1e-5));next.sort((a,b)=>a.start-b.start);return {time:next[0].start+.22,event:next[0]};}
+ function edge(e){return e.duration/Math.PI*Math.asin(Math.sqrt(THRESHOLD));}
+ function nextPair(t){
+  const current=compare(t).key,a=schedule(1,false,t+180),b=schedule(2,false,t+180),choices=[];
+  for(const x of a)for(const y of b){if(x.id+'|'+y.id===current)continue;const lo=Math.max(x.start+edge(x),y.start+edge(y))+PROBE,hi=Math.min(x.start+x.duration-edge(x),y.start+y.duration-edge(y))+PROBE;if(hi-lo>.08&&hi>t+.04){const time=Math.max(t+.04,(lo+hi)/2);if(time<hi)choices.push({time,lo,hi,key:x.id+'|'+y.id});}}
+  choices.sort((a,b)=>a.time-b.time);return choices[0]||null;
+ }
+ function dipper(t,scenario,j){const val=tt=>Math.cos(j===1?M.phases(tt,scenario).a:M.phases(tt,scenario).b),displacement=val(t),velocity=(val(t+.0001)-val(t-.0001))/.0002;return {displacement,velocity,direction:Math.abs(velocity)<.02?(displacement>=0?'highest':'lowest'):velocity>0?'moving up':'moving down'};}
+ return {TRAVEL,PROBE,THRESHOLD,schedule,events,envelope,contribution,sample,compare,nextEmission,nextPair,dipper};
+})();
+
+
+// Stage 3 reuses Stage 2's FEW-emission schedule, packets and sampling.
+// Gaps carry no field and no phase; only overlapping pairs form fringes.
+const ObservationModel=(()=>{
+ const M=CoherenceModel,E=EmissionModel,WARMUP=E.nextPair(0).time;
+ const coherent=kind=>kind==='related';
+ const schedule=(j,until)=>E.schedule(j,false,until);
+ const events=(t,j,kind)=>E.events(t+WARMUP,coherent(kind)?1:j,false);
+ const contribution=(e,t,delay)=>E.contribution(e,t+WARMUP,delay);
+ const sample=(t,j,kind,delay=E.PROBE)=>E.sample(t+WARMUP,coherent(kind)?1:j,false,delay);
+ function compare(t,kind){const one=sample(t,1,kind),two=sample(t,2,kind),both=one.present&&two.present;return {one,two,both,a:one.phase,b:two.phase,lag:both?M.wrap(one.phase-two.phase):null,key:both?one.active[0].event.id+'|'+two.active[0].event.id:null};}
+ function instantaneous(x,t,kind){const p=compare(t,kind);if(!p.both)return Number(p.one.present)+Number(p.two.present);return M.clamp(2+2*Math.cos(M.TAU*x/6+p.lag),0,4);}
+ // Mean visible fraction: mean duration 7.5 / mean cycle 12.5,
+ // reduced by the same envelope threshold used in Stage 2's phase display.
+ const DUTY=(7.5/12.5)*(1-2*Math.asin(Math.sqrt(E.THRESHOLD))/Math.PI);
+ // Intensity, not field, is averaged. Random relative phases wash out;
+ // shared packet gaps reduce brightness but retain fringe positions.
+ const eyeAverage=(x,kind)=>DUTY*(coherent(kind)?M.clamp(2+2*Math.cos(M.TAU*x/6),0,4):2);
+ function nextPattern(t,kind){
+  const world=t+WARMUP;
+  if(!coherent(kind)){const pair=E.nextPair(world);return pair?pair.time-WARMUP:t+20;}
+  const p=sample(t,1,kind),id=p.active[0]?.event.id;
+  const next=schedule(1,world+100).find(e=>e.id!==id&&e.start+E.PROBE+e.duration/2>world+.04);
+  return next?next.start+E.PROBE+next.duration/2-WARMUP:t+20;
+ }
+ return {WARMUP,DUTY,coherent,schedule,events,contribution,sample,compare,instantaneous,eyeAverage,nextPattern};
+})();
+
+if(typeof document!=='undefined')(()=>{
+ const M=CoherenceModel,E=EmissionModel,O=ObservationModel,$=id=>document.getElementById(id),C={one:'#1265b1',two:'#cc580b',ink:'#18333f',muted:'#546975',line:'#d9e4e7',green:'#257662'};
+ const state={stage:0,scenario:'bar',t:0,playing:false,speed:.25,intervals:40,screenP:0,waterP:{x:0,y:2.6},shared:0,many:false,overlapKey:null,waterSpeed:.25,packetSpeed:1,observationSpeed:1,screenView:'slow'};
+ const stages=[
+ {title:'One vibrating bar, two related sources',intro:'Watch the moving wavefronts and the fixed pattern separately.',options:[['bar','Two dippers · one vibrating bar'],['lag90','Synchronised drivers · fixed 90° lag'],['lag180','Synchronised drivers · fixed 180° lag'],['wander','Independent drivers · wandering timing']],default:'bar',prompt:'Predict: will a fixed 180° phase difference destroy the steady interference pattern?',answer:'No. The sources remain coherent. The pattern changes position, but then stays fixed. At the centre, antiphase sources cancel.'},
+ {title:'How ordinary light is emitted',intro:'Follow finite wave packets from independent atoms, then compare their phases.',options:[['atoms','Two independent atomic light sources']],default:'atoms',prompt:'Will the next pair of packets have the same phase difference as this pair?',answer:'Usually not. Each independent emission has an unrelated phase. A briefly fixed relationship between one pair does not establish a lasting relationship between the sources. Gaps alone do not cause incoherence.'},
+ {title:'Why do we see no steady fringes?',intro:'Follow the packets, then switch the same screen to what the eye sees.',options:[['independent','Independent sources'],['related','Coherent sources · shared light']],default:'independent',prompt:'Does the eye’s averaging remove every interference pattern?',answer:'No. It washes out the rapidly changing fringes from independent sources. With coherent sources, the phase difference and fringe positions remain fixed, so the eye still sees fringes.'},
+ {title:'One light source supplies two related waves',intro:'The two slits share the incoming phase history. This connects to Young’s experiment.',options:[['laser','One laser illuminating two slits'],['filtered','Filtered small source · shared phase renewals'],['laser180','Shared light · fixed 180° offset']],default:'laser',prompt:'Predict: if both source phases change together by 90°, will the fringes move?',answer:'No. Both phases change, but their difference stays the same. In suitable common-source arrangements, the two emerging waves remain related.'}
+ ];
+ let frame=0,last=null,lastPaint=0,waterGeometry=null,dragging=false,avgCache=null,avgKey='';const surfaces=new Map();
+ function line(ctx,x1,y1,x2,y2,color,width=1,dash=[]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);}
+ function text(ctx,value,x,y,color=C.ink,size=12,align='left',weight=400){ctx.fillStyle=color;ctx.font=weight+' '+size+'px system-ui,Segoe UI,sans-serif';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(value,x,y);}
+ function circle(ctx,x,y,r,fill,stroke=null,width=1){ctx.beginPath();ctx.arc(x,y,r,0,M.TAU);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke();}}
+ function rect(ctx,x,y,w,h,fill,r=5,stroke=null){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}}
+ function triangle(ctx,x,y,size,color){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x,y-size);ctx.lineTo(x-size*.8,y+size*.6);ctx.lineTo(x+size*.8,y+size*.6);ctx.closePath();ctx.fill();}
+ function arrow(ctx,x1,y1,x2,y2,color,width=2){line(ctx,x1,y1,x2,y2,color,width);const a=Math.atan2(y2-y1,x2-x1),s=6;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-s*Math.cos(a-.5),y2-s*Math.sin(a-.5));ctx.lineTo(x2-s*Math.cos(a+.5),y2-s*Math.sin(a+.5));ctx.fill();}
+ function surface(id){const el=$(id),box=el.getBoundingClientRect();if(box.width<1||box.height<1)return null;const ratio=Math.min(window.devicePixelRatio||1,2);const width=Math.round(box.width*ratio),height=Math.round(box.height*ratio);if(el.width!==width||el.height!==height){el.width=width;el.height=height;}const ctx=el.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,box.width,box.height);const s={ctx,w:box.width,h:box.height};surfaces.set(id,s);return s;}
+ function degrees(x){return (Math.round(M.wrap(x)*180/Math.PI*10)/10%360).toFixed(1)+'°';}
+ const fmt=x=>(Math.abs(x)<.00001?0:x).toFixed(2);
+ const isWater=()=>state.stage===0;
+ const isPacket=()=>state.stage===1;
+ const isObservation=()=>state.stage===2;
+ function displayPhases(t=state.t){if(isObservation())return O.compare(t,state.scenario);if(isPacket())return E.compare(t,state.many);return {...M.phases(t,state.scenario,state.shared),one:{present:true},two:{present:true},both:true};}
+ function average(){const k=state.scenario+':'+state.t.toFixed(6)+':'+state.intervals;if(k!==avgKey){avgCache=M.average(state.t,state.intervals,state.scenario);avgKey=k;}return avgCache;}
+
+ function selectStage(n){
+  if(isObservation())state.observationSpeed=state.speed;else if(isPacket())state.packetSpeed=state.speed;else state.waterSpeed=state.speed;
+  state.stage=n;state.scenario=stages[n].default;state.playing=false;state.t=0;state.shared=0;state.overlapKey=null;
+  state.speed=isObservation()?state.observationSpeed:isPacket()?state.packetSpeed:state.waterSpeed;if(isObservation())state.screenView='slow';$('speed').value=String(state.speed);
+  // Match option values such as ".25" after numeric conversion.
+  for(const o of $('speed').options)o.selected=+o.value===state.speed;
+  state.waterP={x:0,y:2.6};
+  $('scenario').replaceChildren(...stages[n].options.map(([value,label])=>{const o=document.createElement('option');o.value=value;o.textContent=label;return o;}));
+  document.querySelectorAll('[data-stage]').forEach(el=>{const active=+el.dataset.stage===n;el.setAttribute('aria-selected',active);el.tabIndex=active?0:-1;});
+  $('lesson').setAttribute('aria-labelledby','tab'+n);$('lessonTitle').textContent=stages[n].title;$('lessonIntro').textContent=stages[n].intro;
+  $('prompt').textContent=stages[n].prompt;$('answer').textContent=stages[n].answer;$('answer').hidden=true;$('reveal').textContent='Reveal explanation';$('reveal').setAttribute('aria-expanded','false');
+  document.body.className=isWater()?'water':isPacket()?'light emission':isObservation()?'light observation':'light';$('waterPanel').hidden=!isWater();$('lightPanel').hidden=isWater()||isPacket()||isObservation();$('eyePanel').hidden=!isObservation();$('phaseLocation').hidden=!(isPacket()||isObservation());if(isPacket())$('phaseLocation').textContent='Phases at the comparison marker';
+  $('historyCaption').textContent=isObservation()?'Phase difference at the marker, as in Stage 2. Gaps mean one or both packets are absent. The slow-motion screen uses these same arriving packets.':isPacket()?'Phase difference at the marker. Gaps mean that one or both waves are absent or too weak to compare. A wrap between 360° and 0° is the same angle.':'Source phase difference modulo 360°. A wrap between 360° and 0° is the same angle, not a physical jump. The history uses the same model as the dial.';
+  $('status').textContent=isObservation()?'Choose Play or Next pattern, then compare with What the eye sees.':isPacket()?'Press Play to follow an emission, or Next overlapping pair to compare packets.':'Paused. Choose an arrangement, then press Play.';updateScenario();draw();
+ }
+ function updateScenario(){
+  const sc=state.scenario,water=isWater(),independent=sc==='led',wander=sc==='wander';
+  if(water)$('lessonTitle').textContent=sc==='bar'?'One vibrating bar, two related sources':wander?'Two independent drivers, wandering timing':'Two synchronised drivers, a fixed phase difference';
+  $('sourceTitle').textContent=isPacket()?'From an atom to a travelling packet':water?'Watch S₁ and S₂ vibrate':independent?'Two independent LEDs · many emissions':'One incoming wave, two slits';
+  $('patternTitle').textContent=water?'The pattern in the water':'Light arriving at the screen';$('microRow').hidden=!independent;
+  $('sharedChange').hidden=water||independent||isPacket()||isObservation();$('next').disabled=!independent&&sc!=='filtered';$('node').disabled=wander;
+  $('step').textContent='Advance ¼ model cycle';
+  $('sourceNote').textContent=isPacket()?'Each flash marks a new emission. The short wave train travels away; later emissions do not reset it. The curve shows electric field, not a zigzag path.':water?(sc==='bar'?'The bar moves both labelled dippers up and down together. The vertical motion is enlarged.':wander?'Watch the arrows: separate drivers do not maintain a fixed timing relationship.':'The labelled dippers keep a fixed lag. Their motion, traces and phase pointers agree.'):independent?'Many emissions overlap in each LED. These traces represent the combined field, not one atom emitting forever.':sc==='filtered'?'A suitably filtered small source illuminates both slits. Its phase renewals reach both together.':sc==='laser180'?'A phase plate adds a fixed 180° offset at S₂. The shifted fringe pattern stays steady.':'Both slits receive related light from the same laser. Light can be coherent.';
+  $('phaseState').textContent=wander?'Changing difference':independent?'Irregularly changing difference':'Constant difference';
+  $('phaseMessage').textContent=water?(wander?'The drivers do not maintain a fixed phase relationship. Watch the angle between the pointers.':'Both phases advance together. The angle between the pointers stays fixed.'):independent?'Independent emissions do not maintain a lasting phase relationship, even when the light looks continuous.':'The two phases share their changes. Their difference remains fixed.';
+  $('takeaway').textContent=isPacket()?'Independent emissions have unrelated phases. Compare successive packet pairs: their phase difference is not maintained.':water?(wander?'Water waves are not automatically coherent. Independent timing changes remove permanent nodes.':'The common drive maintains a fixed phase relationship. Moving wavefronts can form a steady interference pattern.'):independent?'The waves still superpose. Changing bright and dark positions wash out in the time average; the screen stays illuminated.':'Light can be coherent. A suitable common source provides related waves at the two slits; fixed non-zero phase differences also give steady patterns.';
+  $('pauseOverlap').disabled=state.many;$('nextPair').disabled=state.many;
+  if(isObservation())updateObservationText();
+ }
+ function drawWaterSources(c,w,h){
+  const eq=h*.62,A=Math.min(27,h*.125),waterTop=h*.45,xs=[w*.27,w*.73],motions=[E.dipper(state.t,state.scenario,1),E.dipper(state.t,state.scenario,2)],tips=motions.map(m=>eq-A*m.displacement);
+  rect(c,12,waterTop,w-24,h-waterTop-32,'#e6f3f6',8);line(c,12,waterTop,w-12,waterTop,'#79a9b8',1.6);
+  line(c,15,eq,w-15,eq,'#829ca6',1,[4,4]);text(c,'equilibrium',w/2,eq+9,C.muted,9,'center');
+  if(state.scenario==='bar'){
+   rect(c,w/2-33,7,66,27,'#d6e1e4',6);text(c,'Driver',w/2,20,C.ink,11,'center',650);
+   line(c,w/2,34,w/2,tips[0]-67,'#637c87',5);line(c,xs[0]-12,tips[0]-67,xs[1]+12,tips[1]-67,'#637c87',8);
+  }else{
+   text(c,state.scenario==='wander'?'Separate controllers':'Synchronised drivers',w/2,13,C.ink,11,'center',650);
+   for(const x of xs){rect(c,x-26,31,52,25,'#d9e4e7',5);text(c,'Drive',x,43,C.ink,10,'center');}
+  }
+  for(let j=0;j<2;j++){
+   const x=xs[j],y=tips[j],m=motions[j],col=j===0?C.one:C.two;
+   line(c,x,state.scenario==='bar'?y-67:56,x,y,col,5);circle(c,x,y,11,col,'white',2);text(c,j===0?'S₁':'S₂',x,y,'white',11,'center',750);
+   if(Math.abs(m.velocity)>.02){const dir=m.velocity>0?-1:1;arrow(c,x+24,y-dir*13,x+24,y+dir*13,col,2.5);}
+   text(c,m.direction,x,h-33,col,11,'center',650);
+  }
+  text(c,'Side view · vertical motion enlarged',w/2,h-11,C.muted,10,'center');
+  $('sourceCanvas').setAttribute('aria-label','S1 '+motions[0].direction+', displacement '+fmt(motions[0].displacement)+'. S2 '+motions[1].direction+', displacement '+fmt(motions[1].displacement)+'. '+$('sourceNote').textContent);
+ }
+ function drawPackets(){
+  const s=surface('packetCanvas');if(!s)return;const {ctx:c,w,h}=s,observation=isObservation(),shared=observation&&O.coherent(state.scenario),many=observation?false:state.many,t=state.t+(observation?O.WARMUP:0);
+  const left=w<430?88:116,right=w-18,width=right-left,px=d=>left+d/E.TRAVEL*width,probe=px(E.PROBE),rows=[h*.32,h*.75],waveHeight=w<430?24:31;
+  if(!observation)text(c,'Atoms',left/2,18,C.muted,11,'center',650);
+  arrow(c,left+5,18,Math.max(left+30,probe-85),18,'#70929b',1.5);
+  text(c,w<430?'Compare here':'Compare phases here',probe,18,C.accent||'#155767',11,'center',650);
+  rect(c,probe-7,35,14,h-60,'#e3efe9',3);line(c,probe,34,probe,h-25,'#4e8e7b',1.5,[4,4]);
+  const comparison=observation?O.compare(state.t,state.scenario):E.compare(t,many);
+  if(shared){
+   const y=(rows[0]+rows[1])/2,list=E.events(t,1,false);
+   rect(c,8,y-35,left-27,70,'#edf4fa',8);text(c,'One source',left/2-4,y-48,C.ink,11,'center',700);
+   for(let k=0;k<6;k++){const xx=21+(k%3)*(left-52)/2,yy=y-12+24*Math.floor(k/3),e=list.find(e=>e.atom===k&&t-e.start<.85);circle(c,xx,yy,e?6:4,e?'#257662':'#a9bbc3');if(e)circle(c,xx,yy,10,null,'#257662',1.5);}
+   for(const yy of rows){line(c,left-19,y,left-8,yy,'#7f9a94',1.4);line(c,left-8,yy,left,yy,'#7f9a94',1.4);}
+  }
+  for(let j=1;j<=2;j++){
+   const y=rows[j-1],col=j===1?C.one:C.two,all=E.events(t,shared?1:j,many),latest=all.filter(e=>e.start<=t).at(-1);
+   if(!shared){
+   rect(c,8,y-48,left-19,96,j===1?'#edf4fa':'#fcf2e9',8);
+   text(c,'Source '+j,left/2,y-62,col,12,'center',700);
+   for(let k=0;k<6;k++){
+    const xx=21+(k%3)*(left-44)/2,yy=y-16+32*Math.floor(k/3);
+    const flashes=all.filter(e=>e.atom===k&&t-e.start<.85),flash=flashes.length?1-(t-flashes.at(-1).start)/.85:0;
+    circle(c,xx,yy,flash>0?6.5:4,flash>0?col:'#a9bbc3');
+    if(flash>0){c.globalAlpha=flash;circle(c,xx,yy,10+6*(1-flash),null,col,1.8);c.globalAlpha=1;}
+   }
+   if(!observation)text(c,latest?'atom '+(latest.atom+1)+' → #'+latest.id:'waiting',left/2,y+62,C.muted,w<430?9:10,'center');
+   }else text(c,j===1?'S₁':'S₂',left-10,y-18,col,11,'right',700);
+   line(c,left,y,right,y,'#cfdee4',1);
+   c.save();c.beginPath();c.rect(left,y-48,width,96);c.clip();
+   for(const e of all){
+    const head=t-e.start,tail=head-e.duration,lo=Math.max(0,tail),hi=Math.min(E.TRAVEL,head);if(hi<=lo)continue;
+    const values=[];
+    for(let x=px(lo);x<=px(hi)+.1;x+=1.4){const delay=(x-left)/width*E.TRAVEL,v=E.contribution(e,t,delay);values.push({x,a:v.amplitude,value:v.re});}
+    if(!many){
+     c.globalAlpha=.1;c.fillStyle=col;c.beginPath();values.forEach((q,k)=>k?c.lineTo(q.x,y-waveHeight*q.a):c.moveTo(q.x,y-waveHeight*q.a));[...values].reverse().forEach(q=>c.lineTo(q.x,y+waveHeight*q.a));c.closePath();c.fill();c.globalAlpha=1;
+     c.strokeStyle=col;c.lineWidth=.8;c.setLineDash([3,4]);for(const sign of[-1,1]){c.beginPath();values.forEach((q,k)=>k?c.lineTo(q.x,y+sign*waveHeight*q.a):c.moveTo(q.x,y+sign*waveHeight*q.a));c.stroke();}c.setLineDash([]);
+    }
+    c.strokeStyle=col;c.lineWidth=many?1:2.2;c.globalAlpha=many?.2:1;c.beginPath();values.forEach((q,k)=>k?c.lineTo(q.x,y-waveHeight*q.value):c.moveTo(q.x,y-waveHeight*q.value));c.stroke();c.globalAlpha=1;
+    if(!many&&hi-lo>1.2)text(c,'packet '+e.id,px((lo+hi)/2),y-40,col,10,'center',650);
+   }
+   if(observation){
+    const spans=all.map(e=>[Math.max(0,t-e.start-e.duration),Math.min(E.TRAVEL,t-e.start)]).filter(a=>a[1]>a[0]).sort((a,b)=>a[0]-b[0]);
+    let edge=0;for(const span of [...spans,[E.TRAVEL,E.TRAVEL]]){if(span[0]-edge>1.4)text(c,'gap',px((edge+span[0])/2),y+14,C.muted,10,'center');edge=Math.max(edge,span[1]);}
+   }
+   if(many){c.strokeStyle=col;c.lineWidth=2.1;c.beginPath();for(let x=left;x<=right;x+=1.4){const v=E.sample(t,j,true,(x-left)/width*E.TRAVEL),yy=y-waveHeight*.52*v.re;if(x===left)c.moveTo(x,yy);else c.lineTo(x,yy);}c.stroke();}
+   c.restore();
+   const v=j===1?comparison.one:comparison.two,scale=many?.52:1;
+   if(v.present){circle(c,probe,y-waveHeight*scale*v.re,5,'white',col,2);circle(c,probe,y-waveHeight*scale*v.re,2,col);}
+   else circle(c,probe,y,4,'#fff','#a8b7be',1.5);
+   $('packet'+j).textContent=v.present?(many?v.active.length+' overlapping contributions · combined phase '+degrees(v.phase):'Packet '+v.active[0].event.id+' · atom '+(v.active[0].event.atom+1)+' · phase '+degrees(v.phase)):'Waiting for a packet — no phase displayed';
+  }
+  text(c,'EM wave: electric field oscillates as the packet travels →',w/2,h-9,C.muted,w<430?9:11,'center');
+  $('packetCaption').textContent=many?'Solid traces: combined fields. Faint traces: individual finite packets. The dial compares the combined fields at the marker.':'Follow the same packet to the marker. Its arrival, not its emission elsewhere, activates the phase pointer.';
+  $('packetKey').textContent=many?'Many finite emissions overlap, so illumination can be continuous. Continuous illumination does not guarantee a fixed phase relationship.':'Only a few emissions are shown so the packets and gaps are easy to see. Real sources contain many overlapping emissions.';
+  $('packetCanvas').setAttribute('aria-label','Finite travelling wave packets with gaps. '+$('packet1').textContent+'. '+$('packet2').textContent+'. '+(comparison.both?'Phase difference '+degrees(comparison.lag)+'.':'Waiting for both packets at the comparison marker.'));
+  if(observation)$('packetCaption').textContent=shared?'Separated copies of the same packets travel along both paths.':'Same packets and gaps as Stage 2. Compare the waves when both reach the marker.';
+ }
+ function drawSource(){if(isObservation()){drawObservationSources();return;}if(isPacket()){drawPackets();return;}const s=surface('sourceCanvas');if(!s)return;const {ctx:c,w,h}=s,sc=state.scenario,t=state.t;const p=M.phases(t,sc,state.shared);if(isWater()){drawWaterSources(c,w,h);return;
+ }else if(sc==='led'){
+  const centers=[w*.26,w*.74],show=$('microscope').checked;for(let j=0;j<2;j++){const x=centers[j],seed=j===0?17:93,e=M.renewal(t,seed),col=j===0?C.one:C.two;rect(c,x-w*.19,18,w*.38,h-38,'#fff4f3',12,'#e4c9c6');rect(c,x-36,22,72,22,'#a63a36',6);text(c,'RED LED '+(j+1),x,33,'white',10,'center',650);if(show){for(let k=0;k<12;k++){const xx=x-w*.125+(k%4)*w*.083,yy=64+Math.floor(k/4)*(h-99)/3;const selected=k===Math.floor(M.hash(e.k,seed+99)*12),fade=selected?Math.max(.22,1-(t-e.start)/(e.end-e.start)):.12;circle(c,xx,yy,selected?6:3.2,selected?col:'#b3c1c7');if(selected){circle(c,xx,yy,10+8*(1-fade),null,col,1.4);}}text(c,'independent centres',x,h-31,C.muted,9,'center');}else{circle(c,x,h*.54,20,'#d45d55');text(c,'S'+(j===0?'₁':'₂'),x,h*.54,'white',17,'center',700);}text(c,'renewal '+(e.k+1),x,h-10,col,10,'center');}
+ }else{
+  const y=h*.47,x0=19,xslit=w*.55,screen=w-22;rect(c,x0,y-16,60,32,sc==='filtered'?'#bf8b47':'#556775',6);text(c,sc==='filtered'?'Lamp':'Laser',x0+30,y,'white',11,'center',650);
+  if(sc==='filtered'){line(c,91,y-27,91,y-4,'#6c858e',4);line(c,91,y+4,91,y+27,'#6c858e',4);text(c,'filter + slit',89,y+42,C.muted,9,'center');}
+  const start=sc==='filtered'?101:80;c.fillStyle='#f7e4df';c.beginPath();c.moveTo(start,y-9);c.lineTo(xslit,y-43);c.lineTo(xslit,y+43);c.lineTo(start,y+9);c.fill();for(let k=0;k<5;k++){const xx=start+((k/5+t*.15)%1)*(xslit-start);line(c,xx,y-26,xx,y+26,'#c77462',1.4);}
+  const sy=[y-24,y+24];line(c,xslit,13,xslit,sy[0]-6,'#637b85',5);line(c,xslit,sy[0]+6,xslit,sy[1]-6,'#637b85',5);line(c,xslit,sy[1]+6,xslit,h-27,'#637b85',5);line(c,screen,14,screen,h-27,'#758b94',4);
+  sy.forEach((yy,j)=>{const col=j===0?C.one:C.two;circle(c,xslit,yy,4,col);text(c,j===0?'S₁':'S₂',xslit+9,yy-12,col,11,'left',700);for(let k=0;k<4;k++){const r=9+(k+M.wrap(j===0?p.a:p.b)/M.TAU)/4*(screen-xslit-10);c.save();c.beginPath();c.rect(xslit+3,12,screen-xslit-4,h-40);c.clip();c.strokeStyle=col;c.globalAlpha=.6;c.beginPath();c.arc(xslit,yy,r,-.9,.9);c.stroke();c.restore();}});if(sc==='laser180'){rect(c,xslit+8,sy[1]-8,5,16,'#7a5b97',1);text(c,'180°',xslit+18,sy[1]+19,'#6b4789',10,'left',650);}text(c,'double slit',xslit,h-11,C.muted,10,'center');text(c,'screen',screen,h-11,C.muted,10,'right');text(c,'one incoming phase history',w/2,8,C.muted,10,'center');
+ }
+ $('sourceCanvas').setAttribute('aria-label',$('scenario').selectedOptions[0].textContent+'. '+$('sourceNote').textContent);}
+ function drawStrips(){if(isPacket()||isObservation())return;const s=surface('stripCanvas');if(!s)return;const{ctx:c,w,h}=s;const left=35,right=w-13,sc=state.scenario;for(let j=1;j<=2;j++){const yy=h*(j===1?.3:.74),col=j===1?C.one:C.two;line(c,left,yy,right,yy,'#dce5e8',1);text(c,j===1?'S₁':'S₂',12,yy,col,11,'left',700);const span=isWater()?4:9;for(let px=left;px<right;px+=2){const tt=state.t-(right-px)/(right-left)*span;if(!isWater()&&(sc==='led'||sc==='filtered')){const seed=sc==='filtered'?51:j===1?17:93,e=M.renewal(tt,seed);if(e.k%2===0){c.fillStyle=j===1?'#e8f1fa':'#fcf0e3';c.fillRect(px,yy-17,2,34);}}}c.strokeStyle=col;c.lineWidth=1.8;c.beginPath();for(let px=left;px<=right;px+=1.3){const tt=state.t-(right-px)/(right-left)*span,ph=M.phases(tt,sc,state.shared),val=Math.cos(j===1?ph.a:ph.b),y=yy-12*val;if(px===left)c.moveTo(px,y);else c.lineTo(px,y);}c.stroke();circle(c,right,yy-12*Math.cos(j===1?M.phases(state.t,sc,state.shared).a:M.phases(state.t,sc,state.shared).b),3.4,col);}
+ text(c,isWater()?'Recent source motion → now':state.scenario==='led'?'Combined field of many emissions → now':'Recent electric-field wave trains → now',w/2,h-5,C.muted,9,'center');}
+
+ function drawDial(){
+  const s=surface('dialCanvas');if(!s)return;const {ctx:c,w,h}=s,p=displayPhases(),cx=w/2,cy=h/2,r=Math.min(w*.34,h*.36);
+  circle(c,cx,cy,r,'#f6f9fa','#c5d5db',1.2);
+  for(let k=0;k<12;k++){const a=k*Math.PI/6;line(c,cx-r*Math.sin(a),cy-r*Math.cos(a),cx-(r-5)*Math.sin(a),cy-(r-5)*Math.cos(a),'#9bb1ba',1);}
+  for(const[a,label]of[[0,'0°'],[Math.PI/2,'90°'],[Math.PI,'180°'],[3*Math.PI/2,'270°']])text(c,label,cx-(r+18)*Math.sin(a),cy-(r+16)*Math.cos(a),C.muted,10,'center');
+  line(c,cx-r,cy,cx+r,cy,'#dce5e8',1,[3,4]);line(c,cx,cy-r,cx,cy+r,'#dce5e8',1,[3,4]);
+  if(p.both&&p.lag>.0001){c.beginPath();c.strokeStyle='#397c70';c.lineWidth=2.5;c.arc(cx,cy,r*.54,-Math.PI/2-p.b,-Math.PI/2-p.b-p.lag,true);c.stroke();}
+  const tip=a=>({x:cx-r*Math.sin(a),y:cy-r*Math.cos(a)});
+  if(p.one.present){const a=tip(p.a);line(c,cx,cy,a.x,a.y,'white',6);line(c,cx,cy,a.x,a.y,C.one,3.5);triangle(c,a.x,a.y,5,C.one);}
+  if(p.two.present){const b=tip(p.b);line(c,cx,cy,b.x,b.y,C.two,2);circle(c,b.x,b.y,7,'white',C.two,2.5);}
+  circle(c,cx,cy,3,C.ink);
+  $('phi1').textContent=p.one.present?degrees(p.a):'—';$('phi2').textContent=p.two.present?degrees(p.b):'—';$('phaseLag').textContent=p.both?degrees(p.lag):'—';
+  if(isPacket()){
+   $('phaseState').textContent=!p.both?'Waiting for two waves':state.many?'Changing combined phase':'This packet pair only';
+   $('phaseMessage').textContent=!p.both?'A phase is shown only while a wave is present at the marker. Watch the next packet arrive.':state.many?'Overlapping independent contributions give a changing combined field. Continuous light can still be incoherent.':'These two packets keep their separation while they overlap. Compare the next pair: independent emissions do not preserve that separation.';
+  }
+  if(isObservation()){const shared=O.coherent(state.scenario);$('phaseState').textContent=!p.both?'Waiting for two packets':shared?'Constant difference':'This packet pair only';$('phaseMessage').textContent=!p.both?'A gap has no wave and no phase. Compare again when both packets reach the marker.':shared?'Matching packet pairs keep the same phase difference and fringe positions.':'This pair has a fixed phase difference. The next independent pair usually has a different one.';}
+  $('dialCanvas').setAttribute('aria-label','S1 phase '+$('phi1').textContent+', S2 phase '+$('phi2').textContent+', S2 lag '+$('phaseLag').textContent+'. '+$('phaseState').textContent);
+ }
+ function waveRadii(j,t,sc,trough){const roots=[],max=11,step=.025,target=trough?Math.PI:0,phase=r=>M.TAU*M.F*(t-r)+M.waterOffset(t-r,j,sc)-target;let last=phase(0),prevR=0;for(let r=step;r<=max;r+=step){const now=phase(r);const lo=Math.ceil(Math.min(last,now)/M.TAU),hi=Math.floor(Math.max(last,now)/M.TAU);for(let n=lo;n<=hi;n++){let a=prevR,b=r,fa=phase(a)-n*M.TAU;for(let k=0;k<12;k++){const m=(a+b)/2,f=phase(m)-n*M.TAU;if(f*fa<=0)b=m;else{a=m;fa=f;}}const root=(a+b)/2;if(root>.05)roots.push(root);}prevR=r;last=now;}return roots;}
+ function drawTank(){const s=surface('tankCanvas');if(!s)return;const{ctx:c,w,h}=s,scale=Math.min((w-24)/9,(h-34)/5.3),ox=w/2,oy=h-22-.6*scale;waterGeometry={scale,ox,oy,w,h};const tx=x=>ox+x*scale,ty=y=>oy-y*scale;c.fillStyle='#f6fafb';c.fillRect(0,0,w,h);for(let x=-4;x<=4;x++)line(c,tx(x),ty(-.6),tx(x),ty(4.6),'#e3edef');for(let y=0;y<=4;y++)line(c,tx(-4.5),ty(y),tx(4.5),ty(y),'#e3edef');
+ if($('guides').checked){const cols=86,rows=43,stepX=9/cols,stepY=5.2/rows;c.strokeStyle='#5c6f79';c.lineWidth=1.15;const lag=(x,y)=>M.waterAt(x,y,state.t,state.scenario).a-M.waterAt(x,y,state.t,state.scenario).b;for(let row=0;row<rows;row++){for(let col=0;col<cols;col++){const x=-4.5+col*stepX,y=-.6+row*stepY,coords=[[x,y],[x+stepX,y],[x+stepX,y+stepY],[x,y+stepY]],vals=coords.map(q=>Math.cos(lag(q[0],q[1])/2));const crossings=[];for(let k=0;k<4;k++){const n=(k+1)%4;if(vals[k]*vals[n]<0){const f=vals[k]/(vals[k]-vals[n]);crossings.push([coords[k][0]+f*(coords[n][0]-coords[k][0]),coords[k][1]+f*(coords[n][1]-coords[k][1])]);}}for(let k=0;k+1<crossings.length;k+=2)line(c,tx(crossings[k][0]),ty(crossings[k][1]),tx(crossings[k+1][0]),ty(crossings[k+1][1]),'#677b83',1.2);}}}
+ c.save();c.beginPath();c.rect(tx(-4.5),ty(4.6),9*scale,5.2*scale);c.clip();for(let j=1;j<=2;j++){const x=j===1?-1.5:1.5,col=j===1?C.one:C.two;for(const trough of[false,true]){c.strokeStyle=col;c.lineWidth=trough?.8:1.3;c.globalAlpha=trough?.35:.7;c.setLineDash(trough?[3,4]:[]);for(const r of waveRadii(j,state.t,state.scenario,trough)){c.beginPath();c.arc(tx(x),ty(0),r*scale,0,M.TAU);c.stroke();}}}c.restore();c.setLineDash([]);c.globalAlpha=1;
+ for(const[x,name,col]of[[-1.5,'S₁',C.one],[1.5,'S₂',C.two]]){circle(c,tx(x),ty(0),5,col,'white',1.8);text(c,name,tx(x),ty(0)+15,col,11,'center',700);}
+ const P=state.waterP;circle(c,tx(P.x),ty(P.y),7,'white',C.ink,2);circle(c,tx(P.x),ty(P.y),2,C.ink);text(c,'P',tx(P.x)+11,ty(P.y)-8,C.ink,12,'left',700);text(c,state.scenario==='wander'?'Cancellation guides now · not permanent nodes':'Fixed nodal guides · waves keep travelling',w/2,10,C.muted,10,'center');const v=M.waterAt(P.x,P.y,state.t,state.scenario);$('waterY').textContent=fmt(v.sum);$('waterAmp').textContent=fmt(v.envelope);$('waterAmpLabel').firstChild.nodeValue=state.scenario==='wander'?'Changing envelope at P':'Amplitude at fixed P';$('waterPNote').textContent='P stays fixed. Arrival phase lag: '+degrees(v.lag)+'. Model amplitude units.';$('tankCanvas').setAttribute('aria-label','P at '+P.x.toFixed(2)+', '+P.y.toFixed(2)+'. Resultant displacement '+fmt(v.sum)+', envelope '+fmt(v.envelope)+'. '+(state.scenario==='wander'?'Cancellation changes with time.':'Nodal positions stay fixed.'));}
+ function lightColor(i){const q=M.clamp(i/4,0,1),v=Math.pow(q,.55);return 'rgb('+Math.round(15+234*v)+','+Math.round(8+70*v)+','+Math.round(12+47*v)+')';}
+ function drawScreen(){const s=surface('screenCanvas');if(!s)return;const{ctx:c,w,h}=s,a=average(),left=15,right=w-15,top1=29,stripH=Math.max(29,h*.2),top2=top1+stripH+33;rect(c,left,top1,right-left,stripH,'#10080c',4);rect(c,left,top2,right-left,stripH,'#10080c',4);text(c,'Short-time pattern · greatly slowed',left,14,C.ink,11,'left',650);text(c,'Intensity accumulated over time',left,top2-13,C.ink,11,'left',650);for(let px=left;px<right;px++){const x=-18+(px-left)/(right-left)*36;c.fillStyle=lightColor(M.intensity(x,state.t,state.scenario));c.fillRect(px,top1,2,stripH);c.fillStyle=lightColor(M.averagedIntensity(x,a));c.fillRect(px,top2,2,stripH);}const xp=left+(state.screenP+18)/36*(right-left);for(const yy of[top1,top2]){line(c,xp,yy-3,xp,yy+stripH+3,'#fff7ce',2);triangle(c,xp,yy-5,4,C.ink);}const y=top2+stripH+13;for(let x=-18;x<=18;x+=6){const px=left+(x+18)/36*(right-left);line(c,px,y-4,px,y-1,'#8aa0aa');text(c,x===18?'18 mm':String(x),px,y+7,C.muted,9,x===-18?'left':x===18?'right':'center');}$('instantI').textContent=fmt(M.intensity(state.screenP,state.t,state.scenario));$('averageI').textContent=fmt(M.averagedIntensity(state.screenP,a));$('samples').textContent=a.duration>0?'Accumulated '+(a.duration/M.INTERVAL).toFixed(1)+' phase intervals · fringe visibility '+(100*a.visibility).toFixed(0)+'%':'No time accumulated yet. Press Play or Accumulate.';$('screenCanvas').setAttribute('aria-label','Short-time brightness at P '+$('instantI').textContent+'. Accumulated brightness '+$('averageI').textContent+'. Accumulated fringe visibility '+(100*a.visibility).toFixed(1)+' percent.');}
+
+ function drawHistory(){
+  if($('historyPanel').hidden)return;const s=surface('historyCanvas');if(!s)return;const{ctx:c,w,h}=s,left=42,right=w-15,top=19,bottom=h-25,span=isWater()?18:isPacket()?60:40,start=Math.max(0,state.t-span),end=Math.max(span,state.t);
+  for(let deg=0;deg<=360;deg+=90){const y=bottom-(bottom-top)*deg/360;line(c,left,y,right,y,'#e0e8eb');text(c,deg+'°',left-7,y,C.muted,10,'right');}
+  c.strokeStyle=C.green;c.lineWidth=2;c.beginPath();let lastLag=null,lastKey=null;
+  for(let px=left;px<=right;px++){const t=start+(end-start)*(px-left)/(right-left);if(t>state.t)break;const p=displayPhases(t);if(!p.both){lastLag=null;lastKey=null;continue;}const lag=p.lag,y=bottom-lag/M.TAU*(bottom-top),key=isPacket()&&!state.many?p.key:null;if(lastLag===null||Math.abs(lag-lastLag)>Math.PI||key!==lastKey)c.moveTo(px,y);else c.lineTo(px,y);lastLag=lag;lastKey=key;}
+  c.stroke();text(c,'earlier',left,h-9,C.muted,10);text(c,'model time →',right,h-9,C.muted,10,'right');
+ }
+ function draw(){drawSource();drawStrips();drawDial();if(isWater())drawTank();else if(isObservation())drawEyeScreen();else if(!isPacket())drawScreen();drawHistory();$('play').textContent=state.playing?'Pause':'Play';$('clock').textContent=(state.playing?'Playing':'Paused')+(isObservation()?' · sources shown slowly':' · '+(state.t*M.F).toFixed(2)+' model cycles');}
+ function reset(){state.t=0;state.shared=0;state.playing=false;state.overlapKey=null;avgKey='';$('status').textContent='Restarted with the same emission sequence.';draw();}
+ function advance(dt){state.t+=dt;state.playing=false;if(isPacket())state.overlapKey=E.compare(state.t,state.many).key;draw();}
+ $('play').addEventListener('click',()=>{state.playing=!state.playing;last=null;$('status').textContent=state.playing?isObservation()?'Playing. Source and phase animations are slowed for explanation.':isPacket()?'Playing. Follow the packets to the fixed comparison marker.':'Playing. The observation point stays fixed.':'Paused for inspection.';draw();});$('restart').addEventListener('click',reset);$('step').addEventListener('click',()=>advance(1/(4*M.F)));$('next').addEventListener('click',()=>{state.t=M.nextRenewal(state.t,state.scenario);state.playing=false;$('status').textContent='Advanced to just after a phase renewal. Compare the pointers and screen.';draw();});$('speed').addEventListener('change',()=>{state.speed=+$('speed').value;last=null;});$('scenario').addEventListener('change',()=>{state.scenario=$('scenario').value;state.shared=0;state.t=0;state.playing=false;avgKey='';updateScenario();$('status').textContent=isObservation()?'New sources selected. Playback is paused.':'New arrangement. Time and accumulation reset; playback is paused.';draw();});document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>selectStage(+b.dataset.stage)));document.querySelector('.tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const n=e.key==='Home'?0:e.key==='End'?3:(state.stage+(e.key==='ArrowRight'?1:3))%4;selectStage(n);$('tab'+n).focus();});$('window').addEventListener('input',()=>{state.intervals=+$('window').value;$('windowOut').textContent=state.intervals+' phase intervals';$('accumulate').textContent='Accumulate '+state.intervals+' intervals';draw();});$('accumulate').addEventListener('click',()=>{state.playing=false;state.t+=state.intervals*M.INTERVAL;draw();$('status').textContent='Advanced through '+state.intervals+' phase intervals. The lower strip is the calculated intensity average.';});$('screenP').addEventListener('input',()=>{state.screenP=+$('screenP').value;$('screenPOut').textContent=state.screenP.toFixed(1)+' mm';draw();});$('microscope').addEventListener('change',draw);$('guides').addEventListener('change',draw);$('historyToggle').addEventListener('change',()=>{$('historyPanel').hidden=!$('historyToggle').checked;draw();});$('sharedChange').addEventListener('click',()=>{state.shared+=Math.PI/2;$('status').textContent='Both phases shifted by 90°. Their difference and the fringe positions are unchanged.';draw();});$('centre').addEventListener('click',()=>{state.waterP={x:0,y:2.6};draw();});$('node').addEventListener('click',()=>{const p=M.nodeAt(2.6,state.scenario,state.t);if(p){state.waterP=p;$('status').textContent='P placed on an exact node. It will stay at this position during playback.';}else $('status').textContent='No eligible node on this horizontal line.';draw();});$('reveal').addEventListener('click',()=>{const show=$('answer').hidden;$('answer').hidden=!show;$('reveal').textContent=show?'Hide explanation':'Reveal explanation';$('reveal').setAttribute('aria-expanded',String(show));});
+ function place(e){if(!waterGeometry)return;const b=$('tankCanvas').getBoundingClientRect(),g=waterGeometry;let x=M.clamp((e.clientX-b.left-g.ox)/g.scale,-4.35,4.35),y=M.clamp((g.oy-(e.clientY-b.top))/g.scale,-.5,4.5);for(const sx of[-1.5,1.5]){const r=Math.hypot(x-sx,y);if(r<.22){const a=Math.atan2(y,x-sx);x=sx+.22*Math.cos(a);y=.22*Math.sin(a);}}state.waterP={x,y};draw();}
+ $('tankCanvas').addEventListener('pointerdown',e=>{dragging=true;$('tankCanvas').setPointerCapture(e.pointerId);place(e);});$('tankCanvas').addEventListener('pointermove',e=>{if(dragging)place(e);});for(const type of['pointerup','pointercancel','lostpointercapture'])$('tankCanvas').addEventListener(type,()=>dragging=false);$('tankCanvas').addEventListener('keydown',e=>{const d={ArrowLeft:[-.1,0],ArrowRight:[.1,0],ArrowUp:[0,.1],ArrowDown:[0,-.1]}[e.key];if(!d)return;e.preventDefault();state.waterP.x=M.clamp(state.waterP.x+d[0],-4.35,4.35);state.waterP.y=M.clamp(state.waterP.y+d[1],-.5,4.5);draw();});
+ const questions=[['Two dippers attached to one vibrating bar.','A stable pattern','No stable pattern',0,'The common drive maintains a constant phase difference.'],['Synchronised sources keep a fixed 180° phase difference.','A stable, shifted pattern','No stable pattern',0,'Antiphase sources can be coherent. Constant does not mean zero.'],['Two independent red LEDs illuminate the same region.','Stable bright and dark fringes','No stable observable fringes',1,'Their phase relationship changes irregularly. Intensities average to a smooth illumination.'],['One laser illuminates both slits suitably.','A stable fringe pattern','Light cannot be coherent',0,'Both slits receive related light from one source.']];questions.forEach((q,i)=>{const div=document.createElement('div');div.className='check';const p=document.createElement('p');p.textContent=(i+1)+'. '+q[0];div.append(p);const feedback=document.createElement('p');feedback.className='feedback';feedback.setAttribute('role','status');for(let j=0;j<2;j++){const b=document.createElement('button');b.textContent=q[j+1];b.addEventListener('click',()=>{div.querySelectorAll('button').forEach(x=>delete x.dataset.result);b.dataset.result=j===q[3]?'right':'wrong';feedback.textContent=(j===q[3]?'Correct. ':'Try again. ')+q[4];});div.append(b);}div.append(feedback);$('checks').append(div);});
+
+ $('nextEmission').addEventListener('click',()=>{const n=E.nextEmission(state.t,state.many);state.t=n.time;state.playing=false;state.overlapKey=E.compare(state.t,state.many).key;$('status').textContent='Source '+n.event.source+', atom '+(n.event.atom+1)+' starts packet '+n.event.id+'. Follow it to the marker; earlier packets keep travelling.';draw();});
+ $('nextPair').addEventListener('click',()=>{const n=E.nextPair(state.t);if(!n)return;state.t=n.time;state.playing=false;state.overlapKey=E.compare(state.t).key;$('status').textContent='Paused with a new pair at the marker. Compare their phase difference with the previous pair.';draw();});
+ $('manyEmissions').addEventListener('change',()=>{state.many=$('manyEmissions').checked;state.t=0;state.playing=false;state.overlapKey=null;updateScenario();$('status').textContent=state.many?'Many emissions selected. Press Play to see finite packets build into overlapping fields.':'Few emissions selected. Press Play to follow individual packets.';draw();});
+ $('pauseOverlap').addEventListener('change',()=>{state.overlapKey=E.compare(state.t,state.many).key;});
+
+
+ function updateObservationText(){
+  const shared=O.coherent(state.scenario),eye=state.screenView==='eye',p=O.compare(state.t,state.scenario);
+  $('lessonTitle').textContent=shared?'Why do coherent fringes remain visible?':'Why do we see no steady fringes?';
+  $('sourceTitle').textContent=shared?'Shared emission packets':'Independent emission packets';
+  $('patternTitle').textContent='Look at the screen';
+  $('sourceNote').textContent=shared?'One suitable common source supplies related copies of each packet to both paths.':'Only a few emissions are shown, as in Stage 2, so each packet and gap is clear. Real sources have many emissions.';
+  $('phaseLocation').textContent=eye?'Phase changes shown slowly for explanation':'Phases of the waves reaching the screen';
+  $('slowView').setAttribute('aria-pressed',String(!eye));$('eyeView').setAttribute('aria-pressed',String(eye));
+  $('nextPattern').disabled=eye;
+  $('eyeResult').textContent=shared?'Steady bright and dark fringes.':eye?'Uniform brightness. No steady fringes.':'Bright and dark positions change.';
+  $('eyeDescription').textContent=shared?(eye?'The phase difference stays fixed. Averaging keeps the same fringe pattern.':'The waves oscillate, but their phase difference stays fixed. Watch the fringe positions.'):(eye?'The changes are too fast for the eye to follow. We see the average brightness.':'Each overlapping pair gives a pattern. Choose Next pattern to compare the next pair.');
+  if(!eye&&!p.both){$('eyeResult').textContent=p.one.present||p.two.present?'One packet: no interference fringes.':'Between packets: no light arrives.';$('eyeDescription').textContent='This sparse view follows the packets in A. Choose Next pattern to compare an overlapping pair.';}
+  $('takeaway').textContent=shared?'Coherent waves keep a constant phase difference. Their fringes remain visible even though the eye averages the light intensity.':'The bright and dark positions change very rapidly. The eye detects the average brightness at each position, so no steady fringes are seen.';
+ }
+ function drawObservationSources(){drawPackets();}
+ function drawEyeScreen(){
+  updateObservationText();
+  const s=surface('eyeCanvas');if(!s)return;const{ctx:c,w,h}=s,eye=state.screenView==='eye',p=O.compare(state.t,state.scenario),shared=O.coherent(state.scenario);
+  // One spatial screen. Each pixel is computed from the selected intensity model.
+  for(let px=0;px<w;px++){const x=-15+30*px/w,I=eye?O.eyeAverage(x,state.scenario):O.instantaneous(x,state.t,state.scenario);c.fillStyle=lightColor(I);c.fillRect(px,0,2,h);}
+  $('eyeCanvas').setAttribute('aria-label',!eye&&!p.both?(p.one.present||p.two.present?'One arriving packet: uniform illumination without interference fringes.':'Gap between packets: no light arriving at this moment.'):shared?'Steady bright and dark fringes remain visible in '+(eye?'the time-averaged eye view.':'slow motion.'):(eye?'Uniformly illuminated screen. Rapidly changing fringes wash out in the time average.':'Slow-motion interference pattern. Bright and dark positions follow the current phase difference of '+(p.both?degrees(p.lag):'unavailable')+'.'));
+ }
+ function setScreenView(view){state.screenView=view;updateObservationText();draw();$('status').textContent=view==='eye'?'The same screen now shows the long-time average. Source and phase animations remain slowed for explanation.':'The same screen now shows the slowed changing pattern. Use Next pattern or Play.';}
+ $('slowView').addEventListener('click',()=>setScreenView('slow'));
+ $('eyeView').addEventListener('click',()=>setScreenView('eye'));
+ $('nextPattern').addEventListener('click',()=>{state.t=O.nextPattern(state.t,state.scenario);state.playing=false;draw();$('status').textContent=O.coherent(state.scenario)?'A later moment: the coherent fringe positions stay fixed.':'The next overlapping pair: compare its phase difference and fringe positions.';});
+
+ window.addEventListener('resize',()=>requestAnimationFrame(draw));document.addEventListener('visibilitychange',()=>{last=null;});function tick(now){if(state.playing&&!document.hidden){if(last!==null){state.t+=Math.min((now-last)/1000,.1)*state.speed*((isPacket()||isObservation())?2:1);if(isPacket()&&!state.many&&$('pauseOverlap').checked){const p=E.compare(state.t);if(p.both&&p.key!==state.overlapKey){state.overlapKey=p.key;state.playing=false;$('status').textContent='Automatically paused: two packets overlap at the marker. Compare the pointers, then Play to continue.';draw();lastPaint=now;}}}last=now;if(now-lastPaint>32){draw();lastPaint=now;}}else last=null;frame=requestAnimationFrame(tick);}selectStage(0);requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
