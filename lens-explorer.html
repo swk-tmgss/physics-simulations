@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore ray diagrams, focal length and image formation with an interactive convex or concave thin lens.">
+<title>Lens explorer · Physics Simulations</title>
+<style>
+:root{color-scheme:light;--paper:#f5f5ef;--ink:#183c3d;--muted:#526b68;--line:#d5dfd7;--green:#176957;--stage:#112f36;--mint:#9aefcb;--amber:#ffc77a;--blue:#86d2f4;--violet:#d7b4ff;font-family:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink)}button,input,select{font:inherit;color:inherit}button,select,input[type=checkbox],input[type=range]{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #3299b3;outline-offset:3px}
+.wrap{max-width:1510px;margin:auto;padding:0 clamp(14px,3.5vw,58px) 32px}.mast{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:19px 0 15px;border-bottom:1px solid #cdd8ce}.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-size:14px;font-weight:700;text-decoration:none}.brand svg{width:32px;height:32px}.mast small{color:var(--muted);font-size:13px}.intro{margin:24px 0 20px}.intro h1{font:500 clamp(38px,4.6vw,62px)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.055em;margin:0}.intro p{margin:9px 0 0;color:var(--muted);font-size:15px;line-height:1.5}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(265px,305px);gap:16px;align-items:start}.column{display:grid;gap:14px;min-width:0}.panel{background:#fffefa;border:1px solid var(--line);border-radius:15px;overflow:hidden}.panel-head,.controls-head,.result-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head{padding:14px 18px}h2{font-size:17px;font-weight:680;letter-spacing:-.025em;margin:0}.quiet,.predict{border:1px solid #becfc5;border-radius:7px;padding:7px 12px;background:transparent;color:var(--green);font-size:13px;font-weight:650}.quiet:hover,.predict:hover{background:#edf4ec}.predict[aria-pressed=true]{background:var(--green);color:white;border-color:var(--green)}
+.stage{background:var(--stage);color:#dfefe8;position:relative}.stage-top{display:flex;justify-content:space-between;align-items:center;padding:13px 17px 0;gap:8px;font-size:12px;color:#c4d8d5}.stage-top label{display:flex;align-items:center;gap:5px}.stage-top input,.ray-key input{accent-color:#97e0bf}.stage svg{display:block;width:100%;height:clamp(265px,31vh,385px);overflow:hidden;user-select:none;-webkit-user-select:none}.stage [data-drag]{touch-action:none}.stage [data-drag]:hover .halo{stroke:#fff;stroke-width:2}.stage svg text{font-family:"Segoe UI",system-ui,sans-serif;font-size:13px;font-weight:650;paint-order:stroke;stroke:var(--stage);stroke-width:3.5px;stroke-linejoin:round}.stage .focus-label{font-family:Georgia,serif;font-size:16px;font-style:italic}.stage-note{padding:0 17px 12px;font-size:12px;line-height:1.45;color:#e4edda;margin:0}.stage-note:empty{display:none}
+.ray-key{display:flex;flex-wrap:wrap;gap:8px 17px;align-items:center;padding:10px 16px;background:#193940;color:#e2edeb;font-size:12px}.ray-key span,.ray-key label{display:inline-flex;align-items:center;gap:6px}.ray-key label{cursor:pointer}.ray-key input{margin:0;width:14px;height:14px}.sw{width:18px;height:0;border-top:2px solid var(--amber)}.sw.c{border-color:var(--blue)}.sw.f{border-color:var(--violet)}.drag-help{margin:0;padding:11px 17px;color:var(--muted);font-size:13px;line-height:1.5}
+.controls{padding:17px 18px}.controls-head{margin-bottom:15px}.quiet{font-size:12px;padding:5px 9px}.field-title,.preset label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}.lens-choice{display:grid;grid-template-columns:1fr 1fr;gap:6px}.lens-choice button{display:flex;justify-content:center;align-items:center;gap:7px;border:1px solid var(--line);background:#fffefa;border-radius:7px;padding:8px;font-size:13px;font-weight:650}.lens-choice button[aria-pressed=true]{background:#dcefe4;color:#145342;border-color:#70a18b}.lens-choice svg{width:15px;height:22px}.preset{margin:14px 0 12px}.preset select{width:100%;padding:8px 6px;border:1px solid #becfc5;border-radius:7px;background:#fffefa;font-size:14px}
+.control{padding:9px 0 5px;border-top:1px solid var(--line)}.control-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.control-row label{font-size:13px;font-weight:620}.control-row i{font-family:Georgia,serif;font-weight:500}.unit{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}.unit input{width:65px;border:1px solid #c8d6cb;border-radius:5px;padding:4px 3px 4px 5px;background:#fffefa;text-align:right;font-size:13px;font-variant-numeric:tabular-nums}.control input[type=range]{width:100%;height:16px;margin:5px 0 0;accent-color:var(--green)}.control:has(input:disabled){opacity:.48}.control input:disabled{cursor:default}
+.result-head{padding:14px 18px 10px;flex-wrap:wrap}.nature{margin:0;color:#1b624d;font-size:14px;font-weight:650}.metrics{margin:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}.metrics>div{padding:12px 16px;min-width:0}.metrics>div+div{border-left:1px solid var(--line)}.metrics dt{font-size:12px;color:var(--muted);margin-bottom:4px}.metrics dd{margin:0;font-variant-numeric:tabular-nums;font-size:clamp(17px,1.5vw,24px);font-weight:650;letter-spacing:-.03em}.metrics small{display:block;font-size:12px;font-weight:400;letter-spacing:normal;color:var(--muted);margin-top:2px}.prediction{margin:0;padding:4px 18px 16px;color:var(--muted);font-size:14px}.validation{color:#99351c;font-size:12px;line-height:1.4;margin:8px 0 0}.validation:empty{display:none}[hidden]{display:none!important}
+@media(min-width:1500px){.stage svg{height:380px}}@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr) 245px;gap:10px}.controls{padding:14px 12px}.metrics>div{padding:10px}.ray-key{gap:7px 10px}}
+@media(max-width:730px){.layout{grid-template-columns:1fr}.mast{padding:12px 0}.intro{margin:16px 0}.stage svg{height:260px}.controls{padding:16px}.column{gap:10px}.metrics{grid-template-columns:repeat(2,1fr)}.metrics>div:nth-child(3){border-left:0}.metrics>div:nth-child(n+3){border-top:1px solid var(--line)}.metrics dd{font-size:18px}.controls .sliders{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}}@media(max-width:420px){.controls .sliders{grid-template-columns:1fr}.panel-head,.result-head{padding-left:12px;padding-right:12px}.mast small{font-size:12px}.ray-key{font-size:11px}.stage-top{padding-left:10px;padding-right:10px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="mast"><a id="home" class="brand" href="./"><svg aria-hidden="true" viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#194b45"/><g stroke="#f3cf8b" stroke-width="1.6" fill="none"><path d="M4 11h14l14 10M4 18h28M4 25h14l14-10"/></g><path d="M18 4Q12 18 18 32Q24 18 18 4Z" fill="#9edcc7" stroke="#173d3d"/></svg>Physics Simulations</a><small>Chapter 3 · Lenses</small></header>
+<div class="intro"><h1>Lens explorer</h1><p>Move the object, shift the lens, or change the focal length to see where the image forms.</p></div>
+<div class="layout">
+<div class="column">
+<section class="panel" aria-labelledby="bench-heading"><header class="panel-head"><h2 id="bench-heading">Ray diagram</h2><button class="predict" id="predict" aria-pressed="false">Predict image</button></header>
+<div class="stage"><div class="stage-top"><span>Light travels left to right →</span><label><input type="checkbox" id="grid" checked> Grid</label></div>
+<svg id="bench" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Lens ray diagram</title><desc id="diagram-desc">An object to the left sends light to a lens. Use the controls to adjust the diagram.</desc><defs><linearGradient id="glass"><stop stop-color="#8be6d1" stop-opacity=".55"/><stop offset=".5" stop-color="#62baa9" stop-opacity=".20"/><stop offset="1" stop-color="#a6f3df" stop-opacity=".58"/></linearGradient></defs><g id="drawing"></g></svg>
+<p id="stage-note" class="stage-note"></p></div>
+<div class="ray-key"><span><i class="sw"></i><span id="ray-one">Parallel ray</span></span><span><i class="sw c"></i><span id="ray-two">Centre ray</span></span><label><input id="third" type="checkbox"><i class="sw f"></i><span id="ray-three">Focal ray</span></label></div>
+<p class="drag-help">Drag the object’s base to move it or its tip to resize it. Drag the lens to move it, or either focus to change its focal length.</p></section>
+<section class="panel" aria-labelledby="result-heading"><header class="result-head"><h2 id="result-heading">Image properties</h2><p class="nature" id="nature"></p></header>
+<dl class="metrics" id="metrics"><div><dt>Object distance <i>u</i></dt><dd id="u-read"></dd></div><div><dt>Image distance <i>v</i></dt><dd><span id="v-read"></span><small id="side"></small></dd></div><div><dt>Image height <i>h</i><sub>i</sub></dt><dd id="height-read"></dd></div><div><dt>Magnification <i>m</i></dt><dd id="m-read"></dd></div></dl>
+<p id="prediction" class="prediction" hidden>Where will the image form? Predict its orientation and size, then reveal the rays.</p></section>
+</div>
+<aside class="panel controls" aria-labelledby="controls-heading"><header class="controls-head"><h2 id="controls-heading">Lens controls</h2><button class="quiet" id="reset">Reset</button></header>
+<span class="field-title" id="lens-label">Lens type</span><div class="lens-choice" role="group" aria-labelledby="lens-label">
+<button id="convex" aria-pressed="true"><svg aria-hidden="true" viewBox="0 0 16 24"><path d="M8 1Q-2 12 8 23Q18 12 8 1Z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Convex</button>
+<button id="concave" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 16 24"><path d="M2 2H14Q8 12 14 22H2Q8 12 2 2Z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Concave</button></div>
+<div class="preset"><label for="case">Textbook case <span id="page-ref" style="font-weight:400"></span></label><select id="case"></select></div>
+<div class="sliders" id="sliders"></div><p id="validation" class="validation" role="status"></p></aside></div>
+</main>
+<script>
+'use strict';
+const byId = id => document.getElementById(id);
+const clamp = (n,lo,hi) => Math.max(lo,Math.min(hi,n));
+const rounded = n => Math.round(n*10)/10;
+const fmt = n => Number(n.toFixed(2)).toLocaleString('en-US',{maximumFractionDigits:2});
+const initial = {type:'convex', object:-30, lens:0, h:4, f:10, distant:false, hidden:false, third:false, grid:true};
+let state = {...initial};
+const controls = [
+  {key:'u', label:'Object distance', symbol:'u'},
+  {key:'h', label:'Object height', symbol:'hₒ'},
+  {key:'lens', label:'Lens position', symbol:'x'},
+  {key:'f', label:'Focal length', symbol:'|f|'}
+];
+const cases = {
+  convex:[['distant','At infinity'],['beyond','Beyond 2F′'],['twice','At 2F′'],['between','Between 2F′ and F′'],['focus','At F′'],['within','Within F′']],
+  concave:[['distant','At infinity'],['finite','Finite object distance']]
+};
+const factors = {beyond:3,twice:2,between:1.5,focus:1,within:0.5,finite:3};
+const distance = () => rounded(state.lens-state.object);
+const focal = () => state.type==='convex'?state.f:-state.f;
+const incidentSlope = -0.18;
+function optics(){
+  const u=distance(), f=focal();
+  if(state.distant) return {v:f, hi:f*incidentSlope, m:null};
+  if(Math.abs(u-f)<1e-8) return {v:Infinity, hi:null, m:null};
+  const v=f*u/(u-f);
+  return {v,hi:-v*state.h/u,m:Math.abs(v/u)};
+}
+function caseKey(){
+  if(state.distant) return 'distant';
+  if(state.type==='concave') return 'finite';
+  const ratio=distance()/state.f;
+  if(Math.abs(ratio-2)<1e-8) return 'twice';
+  if(Math.abs(ratio-1)<1e-8) return 'focus';
+  return ratio>2?'beyond':ratio>1?'between':'within';
+}
+function bounds(key){
+  if(key==='u') return [1,80+state.lens];
+  if(key==='lens') return [state.distant?-15:Math.max(-15,rounded(state.object+1)),15];
+  return key==='h'?[1,10]:[3,20];
+}
+function setValue(key,n){
+  const [lo,hi]=bounds(key);
+  const value=rounded(clamp(n,lo,hi));
+  if(key==='u') state.object=rounded(state.lens-value);
+  else state[key]=value;
+}
+function chooseCase(key){
+  state.distant=key==='distant';
+  if(!state.distant) setValue('u',factors[key]*state.f);
+  render();
+}
+function makeControls(){
+  for(const c of controls){
+    const div=document.createElement('div');
+    div.className='control';
+    div.innerHTML='<div class="control-row"><label for="num-'+c.key+'">'+c.label+' <i>'+c.symbol+'</i></label><span class="unit"><input type="number" id="num-'+c.key+'" step="0.1" aria-label="'+c.label+' in centimetres"> cm</span></div><input id="range-'+c.key+'" type="range" step="0.1" aria-label="'+c.label+' slider">';
+    byId('sliders').append(div);
+    const num=byId('num-'+c.key), range=byId('range-'+c.key);
+    range.addEventListener('input',()=>{setValue(c.key,Number(range.value));render();});
+    function commit(){
+      const n=num.valueAsNumber,[lo,hi]=bounds(c.key);
+      if(!Number.isFinite(n)||n<lo||n>hi){
+        render();
+        byId('validation').textContent='Enter a '+c.label.toLowerCase()+' from '+fmt(lo)+' to '+fmt(hi)+' cm.';
+        return;
+      }
+      setValue(c.key,n);render();
+    }
+    num.addEventListener('change',commit);
+    num.addEventListener('keydown',e=>{if(e.key==='Enter')num.blur();});
+  }
+}
+function updateControls(){
+  for(const c of controls){
+    const value=c.key==='u'?distance():state[c.key];
+    const [lo,hi]=bounds(c.key), disabled=state.distant&&['u','h'].includes(c.key);
+    for(const prefix of ['num-','range-']){
+      const input=byId(prefix+c.key);
+      input.disabled=disabled;input.min=lo;input.max=hi;
+      input.value=disabled&&prefix==='num-'?'':value;
+      input.placeholder=disabled?(c.key==='u'?'∞':'—'):'';
+    }
+  }
+  if(byId('case').dataset.type!==state.type){
+    byId('case').replaceChildren(...cases[state.type].map(([value,label])=>new Option(label,value)));
+    byId('case').dataset.type=state.type;
+  }
+  byId('case').value=caseKey();
+  byId('page-ref').textContent=state.type==='convex'?'· p. 96':'· p. 108';
+  for(const type of ['convex','concave']) byId(type).setAttribute('aria-pressed',String(state.type===type));
+  byId('third').checked=state.third;byId('grid').checked=state.grid;
+  byId('ray-one').textContent=state.distant?'Incident ray 1':'Parallel ray';
+  byId('ray-two').textContent='Centre ray';
+  byId('ray-three').textContent=state.distant?'Third incident ray':'Focal ray';
+  byId('predict').setAttribute('aria-pressed',String(state.hidden));
+  byId('predict').textContent=state.hidden?'Reveal image':'Predict image';
+  byId('validation').textContent='';
+}
+function updateReadout(a){
+  byId('metrics').hidden=state.hidden;byId('prediction').hidden=!state.hidden;
+  const finite=Number.isFinite(a.v);
+  const size=state.distant?'diminished':Math.abs(a.m-1)<1e-8?'same size':a.m>1?'magnified':'diminished';
+  const nature=finite?(a.v>0?'Real · inverted · ':'Virtual · erect · ')+size:'Image at infinity';
+  byId('nature').textContent=state.hidden?'':nature;
+  byId('u-read').textContent=state.distant?'∞':fmt(distance())+' cm';
+  byId('v-read').textContent=finite?fmt(Math.abs(a.v))+' cm':'∞';
+  byId('side').textContent=finite?(a.v>0?'Opposite side':'Object side'):'Parallel emerging rays';
+  byId('height-read').textContent=finite?fmt(Math.abs(a.hi))+' cm':'—';
+  byId('m-read').textContent=a.m===null?'—':fmt(a.m)+'×';
+  byId('diagram-desc').textContent=state.type+' lens. '+(state.hidden?'Predict the image before revealing the emerging rays.':nature+'. '+byId('v-read').textContent+' from the lens.');
+}
+const svg=byId('bench'), ink={object:'#fbf0cf',image:'#9aefcb',parallel:'#ffc77a',centre:'#86d2f4',focus:'#d7b4ff'};
+let drag=null, view=null;
+function node(tag,attrs,parent,content){
+  const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const [key,value] of Object.entries(attrs)) el.setAttribute(key,value);
+  if(content!==undefined) el.textContent=content;
+  parent.append(el);
+  return el;
+}
+function buildView(){
+  const width=svg.clientWidth, height=svg.clientHeight;
+  let left=Math.min(-36,state.lens-2*state.f-3),right=Math.max(36,state.lens+2*state.f+3);
+  if(!state.distant) left=Math.min(left,state.object-4);
+  const pad=width<500?14:24;
+  const scale=Math.min((width-2*pad)/(right-left),(height-70)/22);
+  const ox=pad+(width-2*pad-(right-left)*scale)/2-left*scale,oy=height*.48;
+  return {width,height,scale,ox,oy};
+}
+function draw(a){
+  view=drag?drag.view:buildView();
+  const {width:w,height:h,scale,ox,oy}=view;
+  const X=x=>ox+x*scale, Y=y=>oy-y*scale;
+  const left=-ox/scale,right=(w-ox)/scale, top=oy/scale, bottom=(oy-h)/scale;
+  const L=state.lens, lx=X(L), f=focal(), u=distance();
+  const root=byId('drawing');root.replaceChildren();
+  const layer=()=>node('g',{},root);
+  const graph=layer(),glass=layer(),extensions=layer(),rays=layer(),objects=layer(),markers=layer();
+  const notices=[];
+  svg.setAttribute('viewBox','0 0 '+w+' '+h);
+  function line(g,x1,y1,x2,y2,color,sw,extra={}){
+    return node('line',{x1,y1,x2,y2,stroke:color,'stroke-width':sw,...extra},g);
+  }
+  function label(g,x,y,str,color='#daebe4',anchor='middle',extra={}){
+    return node('text',{x,y,fill:color,'text-anchor':anchor,...extra},g,str);
+  }
+  function stroke(g,xa,ya,xb,yb,color,sw=1.8,dash=''){
+    return line(g,X(xa),Y(ya),X(xb),Y(yb),color,sw,dash?{'stroke-dasharray':dash}:{});
+  }
+  function ray(xa,ya,xb,yb,color){
+    // Clip in world coordinates so the direction mark stays on the visible segment.
+    let start=0,end=1;
+    for(const [p,d,lo,hi] of [[xa,xb-xa,left,right],[ya,yb-ya,bottom,top]]){
+      if(Math.abs(d)<1e-10){if(p<lo||p>hi)return;continue;}
+      const t1=(lo-p)/d,t2=(hi-p)/d;
+      start=Math.max(start,Math.min(t1,t2));end=Math.min(end,Math.max(t1,t2));
+    }
+    if(start>=end)return;
+    const dx=xb-xa,dy=yb-ya;
+    stroke(rays,xa+start*dx,ya+start*dy,xa+end*dx,ya+end*dy,color);
+    if((end-start)*Math.hypot(dx,dy)*scale<32)return;
+    const t=start+.62*(end-start), angle=Math.atan2(-dy,dx)*180/Math.PI;
+    node('path',{d:'M-5 -3 L1 0 L-5 3',transform:'translate('+X(xa+t*dx)+' '+Y(ya+t*dy)+') rotate('+angle+')',fill:'none',stroke:color,'stroke-width':1.8,'stroke-linejoin':'round'},rays);
+  }
+  const gridStep=scale>=7?5:10;
+  if(state.grid){
+    for(let x=Math.ceil(left/gridStep)*gridStep;x<right;x+=gridStep) line(graph,X(x),0,X(x),h,'#29464b',.85);
+    for(let y=Math.ceil(bottom/gridStep)*gridStep;y<top;y+=gridStep) line(graph,0,Y(y),w,Y(y),'#29464b',.85);
+  }
+  line(graph,0,oy,w,oy,'#94aead',1.4);
+  const rulerY=h-19;
+  for(let x=Math.ceil(left/5)*5;x<right;x+=5){
+    const px=X(x);
+    if(px<19||px>w-34)continue;
+    const major=x%10===0;
+    line(graph,px,rulerY-3,px,rulerY+(major?3:0),'#84a3a2',1);
+    if(major)label(graph,px,h-2,String(x),'#aabfbe','middle',{style:'font:10px ui-monospace,monospace'});
+  }
+  label(graph,w-7,h-2,'cm','#aabfbe','end',{style:'font:11px ui-monospace,monospace'});
+  // The outline is a thin-lens symbol. Rays refract at its central plane.
+  const room=Math.min(oy-19,h-oy-25);
+  const lensHalf=Math.min(room,Math.max(52,scale*10.7));
+  const lensEdge=clamp(lensHalf*.105,6,14);
+  const lensGroup=node('g',{'data-drag':'lens',style:'cursor:ew-resize'},glass);
+  const body=state.type==='convex'
+    ?'M0 '+(-lensHalf)+' Q'+(2*lensEdge)+' 0 0 '+lensHalf+' Q'+(-2*lensEdge)+' 0 0 '+(-lensHalf)+'Z'
+    :'M'+(-lensEdge)+' '+(-lensHalf)+'H'+lensEdge+' Q'+(-.62*lensEdge)+' 0 '+lensEdge+' '+lensHalf+'H'+(-lensEdge)+' Q'+(.62*lensEdge)+' 0 '+(-lensEdge)+' '+(-lensHalf)+'Z';
+  node('path',{d:body,transform:'translate('+lx+' '+oy+')',fill:'url(#glass)',stroke:'#9edbcb','stroke-width':1.6},lensGroup);
+  line(glass,lx,oy-lensHalf,lx,oy+lensHalf,'#9edbcb',1,{'stroke-dasharray':'3 4',opacity:.6});
+  for(const [n,name] of [[-2,'2F′'],[-1,'F′'],[1,'F'],[2,'2F']]){
+    const px=X(L+n*state.f);
+    const focus=Math.abs(n)===1;
+    const g=node('g',focus?{'data-drag':n<0?'near-focus':'far-focus',style:'cursor:ew-resize'}:{},markers);
+    const labelY=oy+((state.f*scale<25&&!focus)?43:27);
+    if(focus)node('rect',{x:px-12,y:oy-7,width:24,height:39,fill:'transparent'},g);
+    line(g,px,oy-4,px,oy+5,'#b6cfca',1.3);
+    if(focus)node('circle',{cx:px,cy:oy,r:3.4,fill:'#bce7d8',stroke:'#29464b',class:'halo'},g);
+    label(g,px,labelY,name,'#d0dfd6','middle',{class:'focus-label'});
+  }
+  function drawRayAt(height,slope,color){
+    const start=state.distant?left:state.object;
+    const initialHeight=state.distant?height+slope*(start-L):state.h;
+    ray(start,initialHeight,L,height,color);
+    if(state.hidden)return;
+    const outSlope=slope-height/f;
+    ray(L,height,right,height+(right-L)*outSlope,color);
+    if(a.v<0){
+      const end=Math.max(left,L+a.v);
+      stroke(extensions,L,height,end,height+(end-L)*outSlope,color,1.45,'5 5');
+    }
+  }
+  if(state.distant){
+    const spread=Math.min(lensHalf*.62/scale,6.5);
+    drawRayAt(spread,incidentSlope,ink.parallel);
+    drawRayAt(0,incidentSlope,ink.centre);
+    if(state.third)drawRayAt(-spread,incidentSlope,ink.focus);
+    notices.push('Distant object: parallel rays arrive from its tip at a fixed angle.');
+  }else{
+    drawRayAt(state.h,0,ink.parallel);
+    drawRayAt(0,-state.h/u,ink.centre);
+    if(state.third){
+      if(!Number.isFinite(a.v))notices.push('The focal ray from the tip cannot reach the lens when the object is at F′.');
+      else if(Math.abs(a.hi)*scale>lensHalf)notices.push('The focal ray would pass outside the drawn lens.');
+      else{
+        const slope=(a.hi-state.h)/u;
+        if(!state.hidden&&f<0)stroke(extensions,L,a.hi,L-f,0,ink.focus,1.15,'3 5');
+        if(!state.hidden&&f>0&&u<f)stroke(extensions,state.object,state.h,L-f,0,ink.focus,1.15,'3 5');
+        drawRayAt(a.hi,slope,ink.focus);
+      }
+    }
+  }
+  // Keep dragging available where a ray or the optic axis crosses the symbol.
+  node('rect',{'data-drag':'lens',x:lx-10,y:oy-lensHalf,width:20,height:lensHalf*2,fill:'transparent',style:'cursor:ew-resize'},objects);
+  const usedLabels=[];
+  function arrow(xworld,height,color,isObject,isVirtual){
+    const x=X(xworld),tip=Y(height),sign=height>=0?-1:1;
+    const head=Math.min(9,Math.abs(tip-oy)*.55),half=head*.48;
+    line(objects,x,oy,x,tip-sign*head,color,3.1,isVirtual?{'stroke-dasharray':'5 4'}:{});
+    node('path',{d:'M'+(x-half)+' '+(tip-sign*head)+' L'+x+' '+tip+' L'+(x+half)+' '+(tip-sign*head)+'Z',fill:isVirtual?'var(--stage)':color,stroke:color,'stroke-width':1.5},objects);
+    if(isObject){
+      const tipG=node('g',{'data-drag':'height',style:'cursor:ns-resize'},markers);
+      node('rect',{x:x-11,y:tip-13,width:22,height:Math.min(23,Math.max(13,oy-tip+7)),fill:'transparent'},tipG);
+      const baseG=node('g',{'data-drag':'object',style:'cursor:ew-resize'},markers);
+      node('rect',{x:x-12,y:oy-3,width:24,height:18,fill:'transparent'},baseG);
+      node('circle',{cx:x,cy:oy,r:4.1,fill:'var(--stage)',stroke:color,'stroke-width':2,class:'halo'},baseG);
+    }
+    if(x<1||x>w-1||tip<1||tip>h-2)return;
+    const labelX=clamp(x,30,w-30);
+    let labelY=clamp(tip+(sign<0?-11:21),14,h-24);
+    if(sign>0&&Math.abs(labelY-(oy+27))<16) labelY=oy+49;
+    if(usedLabels.some(p=>Math.abs(p.x-labelX)<52&&Math.abs(p.y-labelY)<16))labelY=clamp(labelY-19,13,h-24);
+    label(objects,labelX,labelY,isObject?'Object':'Image',color,'middle',{'pointer-events':'none'});
+    usedLabels.push({x:labelX,y:labelY});
+  }
+  if(!state.distant)arrow(state.object,state.h,ink.object,true,false);
+  if(!state.hidden){
+    if(!Number.isFinite(a.v))notices.push('The emerging rays are parallel. A screen at any finite distance cannot capture a sharp image.');
+    else{
+      const ix=L+a.v,px=X(ix),py=Y(a.hi);
+      arrow(ix,a.hi,ink.image,false,a.v<0);
+      if(px<4||px>w-4||py<4||py>h-4){
+        const dir=px<4?'left':px>w-4?'right':py<4?'top':'bottom';
+        notices.push('Image tip beyond the '+dir+' edge · '+fmt(Math.abs(a.v))+' cm from the lens, on the '+(a.v<0?'object':'opposite')+' side.');
+      }else if(a.v<0) notices.push('Dashed lines trace the emerging rays backwards to the virtual image.');
+    }
+  }
+  byId('stage-note').textContent=notices.join(' ');
+}
+function render(){
+  updateControls();
+  const a=optics();
+  updateReadout(a);draw(a);
+}
+function pointerWorld(event,v){
+  const rect=svg.getBoundingClientRect();
+  return {x:(event.clientX-rect.left-v.ox)/v.scale,y:(v.oy-event.clientY+rect.top)/v.scale};
+}
+svg.addEventListener('pointerdown',event=>{
+  const handle=event.target.closest('[data-drag]');
+  if(!handle||drag||event.button!==0)return;
+  event.preventDefault();
+  drag={id:event.pointerId,kind:handle.dataset.drag,view,start:pointerWorld(event,view),state:{...state}};
+  svg.setPointerCapture(event.pointerId);
+});
+svg.addEventListener('pointermove',event=>{
+  if(!drag||event.pointerId!==drag.id)return;
+  const p=pointerWorld(event,drag.view),dx=p.x-drag.start.x,dy=p.y-drag.start.y;
+  const s=drag.state;
+  if(drag.kind==='object')setValue('u',s.lens-s.object-dx);
+  else if(drag.kind==='lens')setValue('lens',s.lens+dx);
+  else if(drag.kind==='height')setValue('h',s.h+dy);
+  else setValue('f',s.f+(drag.kind==='far-focus'?dx:-dx));
+  render();
+});
+function release(event){
+  if(!drag||event.pointerId!==drag.id)return;
+  drag=null;render();
+}
+for(const event of ['pointerup','pointercancel','lostpointercapture'])svg.addEventListener(event,release);
+for(const type of ['convex','concave'])byId(type).addEventListener('click',()=>{state.type=type;render();});
+byId('case').addEventListener('change',e=>chooseCase(e.target.value));
+byId('third').addEventListener('change',e=>{state.third=e.target.checked;render();});
+byId('grid').addEventListener('change',e=>{state.grid=e.target.checked;render();});
+byId('predict').addEventListener('click',()=>{state.hidden=!state.hidden;render();});
+byId('reset').addEventListener('click',()=>{state={...initial};render();});
+if(location.protocol==='file:')byId('home').removeAttribute('href');
+makeControls();render();
+new ResizeObserver(()=>{if(!drag)draw(optics());}).observe(svg);
+</script>
+</body></html>
