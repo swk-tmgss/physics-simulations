@@ -17,6 +17,7 @@
 .result-head{padding:14px 18px 10px;flex-wrap:wrap}.nature{margin:0;color:#1b624d;font-size:14px;font-weight:650}.metrics{margin:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}.metrics>div{padding:12px 16px;min-width:0}.metrics>div+div{border-left:1px solid var(--line)}.metrics dt{font-size:12px;color:var(--muted);margin-bottom:4px}.metrics dd{margin:0;font-variant-numeric:tabular-nums;font-size:clamp(17px,1.5vw,24px);font-weight:650;letter-spacing:-.03em}.metrics small{display:block;font-size:12px;font-weight:400;letter-spacing:normal;color:var(--muted);margin-top:2px}.prediction{margin:0;padding:4px 18px 16px;color:var(--muted);font-size:14px}.validation{color:#99351c;font-size:12px;line-height:1.4;margin:8px 0 0}.validation:empty{display:none}[hidden]{display:none!important}
 @media(min-width:1500px){.stage svg{height:380px}}@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr) 245px;gap:10px}.controls{padding:14px 12px}.metrics>div{padding:10px}.ray-key{gap:7px 10px}}
 @media(max-width:730px){.layout{grid-template-columns:1fr}.mast{padding:12px 0}.intro{margin:16px 0}.stage svg{height:260px}.controls{padding:16px}.column{gap:10px}.metrics{grid-template-columns:repeat(2,1fr)}.metrics>div:nth-child(3){border-left:0}.metrics>div:nth-child(n+3){border-top:1px solid var(--line)}.metrics dd{font-size:18px}.controls .sliders{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}}@media(max-width:420px){.controls .sliders{grid-template-columns:1fr}.panel-head,.result-head{padding-left:12px;padding-right:12px}.mast small{font-size:12px}.ray-key{font-size:11px}.stage-top{padding-left:10px;padding-right:10px}}
+#bench{touch-action:none}
 </style>
 </head>
 <body>
@@ -29,8 +30,8 @@
 <div class="stage"><div class="stage-top"><span>Light travels left to right →</span><label><input type="checkbox" id="grid" checked> Grid</label></div>
 <svg id="bench" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Lens ray diagram</title><desc id="diagram-desc">An object to the left sends light to a lens. Use the controls to adjust the diagram.</desc><defs><linearGradient id="glass"><stop stop-color="#8be6d1" stop-opacity=".55"/><stop offset=".5" stop-color="#62baa9" stop-opacity=".20"/><stop offset="1" stop-color="#a6f3df" stop-opacity=".58"/></linearGradient></defs><g id="drawing"></g></svg>
 <p id="stage-note" class="stage-note"></p></div>
-<div class="ray-key"><span><i class="sw"></i><span id="ray-one">Parallel ray</span></span><span><i class="sw c"></i><span id="ray-two">Centre ray</span></span><label><input id="third" type="checkbox"><i class="sw f"></i><span id="ray-three">Focal ray</span></label></div>
-<p class="drag-help">Drag the object’s base to move it or its tip to resize it. Drag the lens to move it, or either focus to change its focal length.</p></section>
+<div class="ray-key"><span><i class="sw" id="first-swatch"></i><span id="ray-one">Parallel ray</span></span><span><i class="sw c"></i>Centre ray</span><label id="third-option"><input id="third" type="checkbox"><i class="sw f"></i>Focal ray</label></div>
+<p class="drag-help" id="drag-help"></p></section>
 <section class="panel" aria-labelledby="result-heading"><header class="result-head"><h2 id="result-heading">Image properties</h2><p class="nature" id="nature"></p></header>
 <dl class="metrics" id="metrics"><div><dt>Object distance <i>u</i></dt><dd id="u-read"></dd></div><div><dt>Image distance <i>v</i></dt><dd><span id="v-read"></span><small id="side"></small></dd></div><div><dt>Image height <i>h</i><sub>i</sub></dt><dd id="height-read"></dd></div><div><dt>Magnification <i>m</i></dt><dd id="m-read"></dd></div></dl>
 <p id="prediction" class="prediction" hidden>Where will the image form? Predict its orientation and size, then reveal the rays.</p></section>
@@ -63,10 +64,11 @@ const cases = {
 const factors = {beyond:3,twice:2,between:1.5,focus:1,within:0.5,finite:3};
 const distance = () => rounded(state.lens-state.object);
 const focal = () => state.type==='convex'?state.f:-state.f;
-const incidentSlope = -0.18;
+// Rays from the top of a distant object make a common angle with the axis.
+const distantSlope = () => state.type==='convex' ? -0.24 : -0.45;
 function optics(){
   const u=distance(), f=focal();
-  if(state.distant) return {v:f, hi:f*incidentSlope, m:null};
+  if(state.distant) return {v:f, hi:f*distantSlope(), m:null};
   if(Math.abs(u-f)<1e-8) return {v:Infinity, hi:null, m:null};
   const v=f*u/(u-f);
   return {v,hi:-v*state.h/u,m:Math.abs(v/u)};
@@ -135,9 +137,12 @@ function updateControls(){
   byId('page-ref').textContent=state.type==='convex'?'· p. 96':'· p. 108';
   for(const type of ['convex','concave']) byId(type).setAttribute('aria-pressed',String(state.type===type));
   byId('third').checked=state.third;byId('grid').checked=state.grid;
-  byId('ray-one').textContent=state.distant?'Incident ray 1':'Parallel ray';
-  byId('ray-two').textContent='Centre ray';
-  byId('ray-three').textContent=state.distant?'Third incident ray':'Focal ray';
+  byId('ray-one').textContent=state.distant?'Focal ray':'Parallel ray';
+  byId('first-swatch').classList.toggle('f',state.distant);
+  byId('third-option').hidden=state.distant;
+  byId('drag-help').textContent=state.distant
+    ? 'Choose a finite object distance to drag the object. Drag the lens or either focus to adjust the diagram.'
+    : 'Drag the object arrow left or right to move it. Drag its tip up or down to change its height. You can also drag the lens or either focus.';
   byId('predict').setAttribute('aria-pressed',String(state.hidden));
   byId('predict').textContent=state.hidden?'Reveal image':'Predict image';
   byId('validation').textContent='';
@@ -250,17 +255,22 @@ function draw(a){
     if(state.hidden)return;
     const outSlope=slope-height/f;
     ray(L,height,right,height+(right-L)*outSlope,color);
-    if(a.v<0){
+    if(a.v<0&&!(state.distant&&height===0)){
       const end=Math.max(left,L+a.v);
       stroke(extensions,L,height,end,height+(end-L)*outSlope,color,1.45,'5 5');
     }
   }
   if(state.distant){
-    const spread=Math.min(lensHalf*.62/scale,6.5);
-    drawRayAt(spread,incidentSlope,ink.parallel);
-    drawRayAt(0,incidentSlope,ink.centre);
-    if(state.third)drawRayAt(-spread,incidentSlope,ink.focus);
-    notices.push('Distant object: parallel rays arrive from its tip at a fixed angle.');
+    const slope=distantSlope();
+    // At y = f × slope, the incident line crosses the axis at x = L − f
+    // and the refracted ray is horizontal for either sign of f.
+    drawRayAt(0,slope,ink.centre);
+    drawRayAt(a.hi,slope,ink.focus);
+    if(!state.hidden&&f<0)stroke(extensions,L,a.hi,L-f,0,ink.focus,1.15,'3 5');
+    notices.push('Parallel rays arrive from the top of the distant object.');
+    if(!state.hidden)notices.push(f>0
+      ? 'The focal ray passes through F′ and emerges parallel to the axis. It meets the centre ray in the focal plane through F.'
+      : 'The focal ray is aimed at F and emerges parallel to the axis. Trace it backwards to the centre ray in the focal plane through F′.');
   }else{
     drawRayAt(state.h,0,ink.parallel);
     drawRayAt(0,-state.h/u,ink.centre);
@@ -283,19 +293,20 @@ function draw(a){
     const head=Math.min(9,Math.abs(tip-oy)*.55),half=head*.48;
     line(objects,x,oy,x,tip-sign*head,color,3.1,isVirtual?{'stroke-dasharray':'5 4'}:{});
     node('path',{d:'M'+(x-half)+' '+(tip-sign*head)+' L'+x+' '+tip+' L'+(x+half)+' '+(tip-sign*head)+'Z',fill:isVirtual?'var(--stage)':color,stroke:color,'stroke-width':1.5},objects);
+    let objectHandle;
     if(isObject){
-      const tipG=node('g',{'data-drag':'height',style:'cursor:ns-resize'},markers);
-      node('rect',{x:x-11,y:tip-13,width:22,height:Math.min(23,Math.max(13,oy-tip+7)),fill:'transparent'},tipG);
-      const baseG=node('g',{'data-drag':'object',style:'cursor:ew-resize'},markers);
-      node('rect',{x:x-12,y:oy-3,width:24,height:18,fill:'transparent'},baseG);
-      node('circle',{cx:x,cy:oy,r:4.1,fill:'var(--stage)',stroke:color,'stroke-width':2,class:'halo'},baseG);
+      objectHandle=node('g',{'data-drag':'object',style:'cursor:ew-resize'},markers);
+      node('rect',{x:x-14,y:tip,width:28,height:oy-tip+14,fill:'transparent'},objectHandle);
+      node('circle',{cx:x,cy:oy,r:4.1,fill:'var(--stage)',stroke:color,'stroke-width':2,class:'halo'},objectHandle);
+      const tipHandle=node('g',{'data-drag':'tip',style:'cursor:move'},markers);
+      node('rect',{x:x-12,y:tip-9,width:24,height:9+Math.min(8,(oy-tip)/3),fill:'transparent'},tipHandle);
     }
     if(x<1||x>w-1||tip<1||tip>h-2)return;
     const labelX=clamp(x,30,w-30);
     let labelY=clamp(tip+(sign<0?-11:21),14,h-24);
     if(sign>0&&Math.abs(labelY-(oy+27))<16) labelY=oy+49;
     if(usedLabels.some(p=>Math.abs(p.x-labelX)<52&&Math.abs(p.y-labelY)<16))labelY=clamp(labelY-19,13,h-24);
-    label(objects,labelX,labelY,isObject?'Object':'Image',color,'middle',{'pointer-events':'none'});
+    label(objectHandle||objects,labelX,labelY,isObject?'Object':'Image',color,'middle',{'pointer-events':isObject?'all':'none'});
     usedLabels.push({x:labelX,y:labelY});
   }
   if(!state.distant)arrow(state.object,state.h,ink.object,true,false);
@@ -307,7 +318,7 @@ function draw(a){
       if(px<4||px>w-4||py<4||py>h-4){
         const dir=px<4?'left':px>w-4?'right':py<4?'top':'bottom';
         notices.push('Image tip beyond the '+dir+' edge · '+fmt(Math.abs(a.v))+' cm from the lens, on the '+(a.v<0?'object':'opposite')+' side.');
-      }else if(a.v<0) notices.push('Dashed lines trace the emerging rays backwards to the virtual image.');
+      }else if(a.v<0&&!state.distant) notices.push('Dashed lines trace the emerging rays backwards to the virtual image.');
     }
   }
   byId('stage-note').textContent=notices.join(' ');
@@ -332,6 +343,10 @@ svg.addEventListener('pointermove',event=>{
   if(!drag||event.pointerId!==drag.id)return;
   const p=pointerWorld(event,drag.view),dx=p.x-drag.start.x,dy=p.y-drag.start.y;
   const s=drag.state;
+  if(drag.kind==='tip'){
+    if(Math.max(Math.abs(dx),Math.abs(dy))*drag.view.scale<3)return;
+    drag.kind=Math.abs(dx)>=Math.abs(dy)?'object':'height';
+  }
   if(drag.kind==='object')setValue('u',s.lens-s.object-dx);
   else if(drag.kind==='lens')setValue('lens',s.lens+dx);
   else if(drag.kind==='height')setValue('h',s.h+dy);
